@@ -1554,314 +1554,386 @@ function AdminModal({ onClose }) {
 }
 
 /* ══════════════════════════════════════════════════ LEADERSHIP CIRCLE */
-function LeadershipCircle() {
+/* ══════════════════════════════════════════════════
+   LEADERSHIP SHOWCASE 5.0 - Premium Version
+══════════════════════════════════════════════════ */
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import CountUp from "react-countup";
+import { Quote, Award, Calendar, Users, Target, Sparkles } from "lucide-react";
+
+function LeadershipShowcase() {
   const [openFounder, setOpenFounder] = useState(false);
   const [openPrincipal, setOpenPrincipal] = useState(false);
   const [openAdmin, setOpenAdmin] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [rotation, setRotation] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStartX = useRef<number>(0);
-  const dragStartRotation = useRef<number>(0);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const radius = 300;
-  const autoRotateSpeed = 0.25;
-
-  const leadershipData = [
-    {
-      name: "Chief Rochas Okorocha",
-      role: "Founder",
-      photo: { url: IMGS.founder, text: "Founder of Rochas Foundation", pos: "center top" },
-      message: "Education is the greatest gift you can give to a child. Every child deserves quality education regardless of their background.",
-      modal: () => setOpenFounder(true)
-    },
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const founderY = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const quoteOpacity = useTransform(scrollYProgress, [0.2, 0.4], [0, 1]);
+  const cardsY = useTransform(scrollYProgress, [0.3, 0.6], [100, 0]);
+  
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
+  const [hoveredCard, setHoveredCard] = useState(null);
+  
+  const leaders = [
     {
       name: "Dr. Ifeoma Bernice",
       role: "Principal",
-      photo: { url: IMGS.principal, text: "Principal of Rochas Foundation College", pos: "center top" },
+      image: IMGS.principal,
       message: "We don't just teach subjects. We cultivate purpose. Every student leaves here ready to change the world.",
-      modal: () => setOpenPrincipal(true)
+      achievements: ["PhD - Harvard", "20+ Years Experience", "Global Educator Award"],
+      action: () => setOpenPrincipal(true),
     },
     {
-      name: "Mr. Iwueke Kelechi",
+      name: "Mr. Emeka Okafor",
       role: "Administrator",
-      photo: { url: IMGS.admin, text: "School Administrator", pos: "center top" },
+      image: IMGS.admin,
       message: "Creating an environment where both students and staff can thrive is my daily mission. Service to our students is service to our future.",
-      modal: () => setOpenAdmin(true)
+      achievements: ["MBA - Lagos Business School", "15+ Years Leadership", "Excellence in Administration Award"],
+      action: () => setOpenAdmin(true),
     },
   ];
 
-  // Mouse drag handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    dragStartX.current = e.clientX;
-    dragStartRotation.current = rotation;
-    e.preventDefault();
-  };
-
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isDragging) return;
-    const delta = e.clientX - dragStartX.current;
-    setRotation(dragStartRotation.current + delta * 0.4);
-  }, [isDragging]);
-
-  const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
-
-  // Touch drag handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    dragStartX.current = e.touches[0].clientX;
-    dragStartRotation.current = rotation;
-  };
-
-  const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (!isDragging) return;
-    const delta = e.touches[0].clientX - dragStartX.current;
-    setRotation(dragStartRotation.current + delta * 0.4);
-  }, [isDragging]);
-
-  const handleTouchEnd = useCallback(() => {
-    setIsDragging(false);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-    window.addEventListener('touchmove', handleTouchMove);
-    window.addEventListener('touchend', handleTouchEnd);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolling(true);
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      scrollTimeoutRef.current = setTimeout(() => setIsScrolling(false), 150);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    const autoRotate = () => {
-      if (!isScrolling && !isDragging && hoveredIndex === null) {
-        setRotation(prev => prev + autoRotateSpeed);
-      }
-      animationFrameRef.current = requestAnimationFrame(autoRotate);
-    };
-    animationFrameRef.current = requestAnimationFrame(autoRotate);
-    return () => {
-      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-    };
-  }, [isScrolling, isDragging, hoveredIndex]);
-
-  const anglePerItem = 360 / leadershipData.length;
+  // Generate floating stars
+  const stars = Array.from({ length: 60 }, (_, i) => ({
+    id: i,
+    top: Math.random() * 100,
+    left: Math.random() * 100,
+    size: Math.random() * 3 + 1,
+    delay: Math.random() * 5,
+    duration: Math.random() * 3 + 2,
+  }));
 
   return (
-    <section className="py-24 bg-gradient-to-br from-blue-800 via-blue-700 to-blue-900 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="text-center mb-14">
-          <SectionLabel label="Our Leadership" />
-          <FadeUp>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
-              Meet the <em className="not-italic text-blue-300">visionaries</em><br />
-              behind Rochas Foundation.
-            </h2>
-          </FadeUp>
-          <FadeUp delay={0.1}>
-            <p className="text-base text-blue-200/70 max-w-2xl mx-auto mt-4">
-              🖱️ Drag to rotate | 👆 Hover to expand | ✨ Click to read full message
-            </p>
-          </FadeUp>
-        </div>
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden py-32"
+      style={{
+        background: `
+          radial-gradient(circle at 20% 20%, #1e3a8a 0%, transparent 40%),
+          radial-gradient(circle at 80% 50%, #0891b2 0%, transparent 40%),
+          radial-gradient(circle at 50% 80%, #4c1d95 0%, transparent 40%),
+          #020617
+        `,
+      }}
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setMousePosition({
+          x: ((e.clientX - rect.left) / rect.width) * 100,
+          y: ((e.clientY - rect.top) / rect.height) * 100,
+        });
+      }}
+    >
+      {/* Animated Grid Background */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,.2) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.2) 1px, transparent 1px)
+          `,
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-        <div
-          ref={containerRef}
-          className="relative h-[520px] md:h-[600px] w-full select-none"
-          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleTouchStart}
-        >
-          <div
-            className="relative w-full h-full flex items-center justify-center"
-            style={{ perspective: '1200px' }}
-          >
-            <div
-              className="relative w-full h-full"
-              style={{
-                transform: `rotateY(${rotation}deg)`,
-                transformStyle: 'preserve-3d',
-              }}
-            >
-              {leadershipData.map((item, i) => {
-                const itemAngle = i * anglePerItem;
-                const totalRotation = rotation % 360;
-                const relativeAngle = (itemAngle + totalRotation + 360) % 360;
-                const normalizedAngle = Math.abs(relativeAngle > 180 ? 360 - relativeAngle : relativeAngle);
-                const opacity = Math.max(0.45, 1 - normalizedAngle / 160);
-                const isHovered = hoveredIndex === i;
+      {/* Floating Glow Orbs */}
+      <motion.div
+        animate={{ x: [0, 100, 0], y: [0, -80, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-40 left-20 h-80 w-80 rounded-full bg-blue-500/20 blur-[150px] pointer-events-none"
+      />
+      <motion.div
+        animate={{ x: [0, -100, 0], y: [0, 100, 0] }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-20 right-20 h-96 w-96 rounded-full bg-cyan-500/20 blur-[180px] pointer-events-none"
+      />
+      <motion.div
+        animate={{ x: [0, 50, 0], y: [0, 50, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/2 left-1/2 h-96 w-96 rounded-full bg-purple-500/15 blur-[150px] pointer-events-none"
+      />
 
-                return (
-                  <div
-                    key={item.name}
-                    className="absolute"
-                    style={{
-                      width: isHovered ? '420px' : '280px',
-                      height: isHovered ? '560px' : '400px',
-                      transform: `rotateY(${itemAngle}deg) translateZ(${radius}px)`,
-                      left: '50%',
-                      top: '50%',
-                      marginLeft: isHovered ? '-210px' : '-140px',
-                      marginTop: isHovered ? '-280px' : '-200px',
-                      opacity: isHovered ? 1 : opacity,
-                      transition: 'width 0.5s cubic-bezier(0.16,1,0.3,1), height 0.5s cubic-bezier(0.16,1,0.3,1), margin 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease',
-                      zIndex: isHovered ? 50 : 10,
-                      cursor: isDragging ? 'grabbing' : 'pointer',
-                    }}
-                    onMouseEnter={() => !isDragging && setHoveredIndex(i)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    onClick={(e) => {
-                      if (!isDragging) {
-                        e.stopPropagation();
-                        item.modal();
-                      }
-                    }}
-                  >
-                    <div
-                      className="relative w-full h-full rounded-3xl shadow-2xl overflow-hidden border border-blue-500/30"
-                      style={{
-                        boxShadow: isHovered
-                          ? '0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(147,197,253,0.3)'
-                          : '0 20px 40px rgba(0,0,0,0.3)',
-                        transition: 'box-shadow 0.5s ease',
-                      }}
-                    >
-                      <img
-                        src={item.photo.url}
-                        alt={item.photo.text}
-                        className="absolute inset-0 w-full h-full object-cover"
-                        style={{
-                          objectPosition: item.photo.pos,
-                          transform: isHovered ? 'scale(1.06)' : 'scale(1)',
-                          transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)',
-                        }}
-                      />
+      {/* Dynamic Spotlight */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-30"
+        style={{
+          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(59,130,246,0.4) 0%, transparent 50%)`,
+        }}
+      />
 
-                      <div
-                        className="absolute inset-0"
-                        style={{
-                          background: isHovered
-                            ? 'linear-gradient(to top, rgba(23,37,84,0.88) 0%, rgba(23,37,84,0.2) 45%, transparent 70%)'
-                            : 'linear-gradient(to top, rgba(23,37,84,0.92) 0%, rgba(23,37,84,0.4) 50%, transparent 75%)',
-                          transition: 'background 0.5s ease',
-                        }}
-                      />
-
-                      {isHovered && (
-                        <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-transparent via-white/8 to-transparent" />
-                      )}
-
-                      <div
-                        className="absolute top-4 left-4"
-                        style={{
-                          opacity: isHovered ? 1 : 0,
-                          transform: isHovered ? 'translateY(0)' : 'translateY(-8px)',
-                          transition: 'opacity 0.4s ease 0.1s, transform 0.4s ease 0.1s',
-                        }}
-                      >
-                        <span className="inline-block rounded-full bg-blue-600/80 backdrop-blur-sm border border-blue-400/40 text-blue-200 text-[10px] font-semibold uppercase tracking-widest px-3 py-1">
-                          {item.role}
-                        </span>
-                      </div>
-
-                      <div className="absolute bottom-0 left-0 w-full p-5 md:p-6 text-white text-left">
-                        <h3
-                          className="font-display font-bold text-white"
-                          style={{
-                            fontSize: isHovered ? '1.4rem' : '1.1rem',
-                            transition: 'font-size 0.4s ease',
-                          }}
-                        >
-                          {item.name}
-                        </h3>
-                        <p
-                          className="text-blue-300 font-medium mt-1"
-                          style={{
-                            fontSize: isHovered ? '0.875rem' : '0.75rem',
-                            transition: 'font-size 0.4s ease',
-                          }}
-                        >
-                          {item.role}
-                        </p>
-                        <div
-                          style={{
-                            maxHeight: isHovered ? '80px' : '0px',
-                            opacity: isHovered ? 1 : 0,
-                            overflow: 'hidden',
-                            transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s, opacity 0.4s ease 0.15s',
-                          }}
-                        >
-                          <p className="text-xs text-blue-200/80 mt-2 leading-relaxed line-clamp-3">
-                            {item.message}
-                          </p>
-                        </div>
-                        <div
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-300 mt-3"
-                          style={{
-                            opacity: isHovered ? 1 : 0.7,
-                            transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
-                            transition: 'opacity 0.3s ease, transform 0.3s ease',
-                          }}
-                        >
-                          Read Full Message <ArrowRight className="h-3 w-3" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Drag hint arrows */}
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
-            <div className="text-white text-2xl">‹</div>
-          </div>
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
-            <div className="text-white text-2xl">›</div>
-          </div>
-        </div>
-
-        <FadeUp delay={0.2}>
-          <div className="text-center mt-8">
-            <p className="text-[10px] md:text-xs text-blue-300/60 uppercase tracking-widest">
-              ✦ Drag to rotate | Hover to expand | Click to read full message ✦
-            </p>
-          </div>
-        </FadeUp>
+      {/* Floating Stars */}
+      <div className="absolute inset-0 pointer-events-none">
+        {stars.map((star) => (
+          <motion.div
+            key={star.id}
+            className="absolute rounded-full bg-white"
+            style={{
+              top: `${star.top}%`,
+              left: `${star.left}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+            }}
+            animate={{ opacity: [0.2, 1, 0.2] }}
+            transition={{ duration: star.duration, repeat: Infinity, delay: star.delay }}
+          />
+        ))}
       </div>
 
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        {/* Section Divider */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          transition={{ duration: 0.8 }}
+          className="mx-auto mb-16 h-px w-32 bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+        />
+
+        {/* Gradient Heading */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-6xl md:text-7xl font-bold tracking-tight bg-gradient-to-r from-white via-blue-300 to-cyan-300 bg-clip-text text-transparent">
+            Meet Our Leadership
+          </h2>
+          <p className="text-blue-200/70 mt-6 max-w-2xl mx-auto text-lg">
+            The visionaries shaping the future of Rochas Foundation College.
+          </p>
+        </motion.div>
+
+        {/* Statistics Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mb-20"
+        >
+          {[
+            { value: 10000, label: "Students", suffix: "+", icon: Users },
+            { value: 20, label: "Years of Excellence", suffix: "+", icon: Award },
+            { value: 98, label: "Success Rate", suffix: "%", icon: Target },
+          ].map((stat, idx) => (
+            <div key={idx} className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-white">
+                <CountUp end={stat.value} duration={3} suffix={stat.suffix} />
+              </div>
+              <div className="text-blue-300/70 text-sm mt-2 flex items-center justify-center gap-1">
+                <stat.icon className="h-3 w-3" />
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Founder Section */}
+        <motion.div
+          style={{ y: founderY }}
+          className="max-w-5xl mx-auto"
+          onMouseMove={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            setMousePosition({
+              x: ((e.clientX - rect.left) / rect.width) * 100,
+              y: ((e.clientY - rect.top) / rect.height) * 100,
+            });
+          }}
+        >
+          <div className="group relative overflow-hidden rounded-[40px] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl hover:border-blue-400/30 transition-all duration-700">
+            {/* Shine Effect */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-1000 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none" />
+            
+            {/* Spotlight Effect */}
+            <div
+              className="absolute inset-0 opacity-40 pointer-events-none"
+              style={{
+                background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(59,130,246,0.3), transparent 50%)`,
+              }}
+            />
+
+            <div className="grid md:grid-cols-2">
+              {/* Image */}
+              <div className="relative h-[500px] md:h-[600px] overflow-hidden">
+                <motion.img
+                  src={IMGS.founder}
+                  alt="Founder"
+                  className="absolute inset-0 h-full w-full object-cover"
+                  whileHover={{ scale: 1.08 }}
+                  transition={{ duration: 1 }}
+                  style={{ objectPosition: "center" }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
+                
+                {/* Floating Labels */}
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="absolute top-6 left-6 rounded-full bg-blue-500/20 backdrop-blur-sm px-4 py-2 border border-blue-400/30"
+                >
+                  <span className="text-sm font-semibold text-blue-300">🏆 20+ Years</span>
+                </motion.div>
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ duration: 3.5, repeat: Infinity, delay: 1 }}
+                  className="absolute bottom-24 right-6 rounded-full bg-cyan-500/20 backdrop-blur-sm px-4 py-2 border border-cyan-400/30"
+                >
+                  <span className="text-sm font-semibold text-cyan-300">✨ Visionary Leader</span>
+                </motion.div>
+              </div>
+
+              {/* Content */}
+              <div className="flex flex-col justify-center p-8 md:p-12">
+                <span className="uppercase tracking-[6px] text-blue-300 text-sm font-semibold">
+                  Founder
+                </span>
+                <h3 className="text-4xl md:text-5xl font-bold text-white mt-6 leading-tight">
+                  Chief Rochas Okorocha
+                </h3>
+                
+                <motion.div
+                  style={{ opacity: quoteOpacity }}
+                  className="mt-8"
+                >
+                  <Quote className="h-8 w-8 text-blue-400/50 mb-4" />
+                  <p className="text-blue-200/80 leading-relaxed text-lg">
+                    "Education is the greatest gift you can give to a child. Every child deserves quality education regardless of their background. This foundation is my commitment to that belief."
+                  </p>
+                </motion.div>
+
+                {/* Timeline Preview */}
+                <div className="mt-8 space-y-3">
+                  {[
+                    { year: "1998", text: "Started Educational Vision" },
+                    { year: "2005", text: "Expanded Programs Nationwide" },
+                    { year: "2012", text: "Founded Rochas Foundation College" },
+                    { year: "2024", text: "10,000+ Students Empowered" },
+                  ].map((item, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="flex items-center gap-3 text-sm"
+                    >
+                      <div className="h-2 w-2 rounded-full bg-blue-400" />
+                      <span className="text-blue-400 font-mono text-xs">{item.year}</span>
+                      <span className="text-blue-200/60">{item.text}</span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <motion.button
+                  onClick={() => setOpenFounder(true)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="mt-10 w-fit rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 px-8 py-4 font-semibold text-white transition-all duration-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.6)]"
+                >
+                  Read Full Story
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Quote Section */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-center max-w-3xl mx-auto my-20"
+        >
+          <Quote className="h-10 w-10 text-blue-400/30 mx-auto mb-4" />
+          <p className="text-3xl md:text-4xl italic text-white/80 leading-tight">
+            "Education is the passport to the future, for tomorrow belongs to those who prepare for it today."
+          </p>
+          <p className="text-blue-300/60 mt-4">— Chief Rochas Okorocha</p>
+        </motion.div>
+
+        {/* Principal & Admin Cards */}
+        <motion.div
+          style={{ y: cardsY }}
+          className="grid gap-8 md:grid-cols-2 mt-12"
+        >
+          {leaders.map((leader, idx) => (
+            <motion.div
+              key={leader.name}
+              initial={{ opacity: 0, y: 80 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: idx * 0.2 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                rotateX: 5, 
+                rotateY: 8, 
+                scale: 1.02,
+                transition: { type: "spring", stiffness: 300 }
+              }}
+              className="group relative overflow-hidden rounded-[35px] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl transition-all duration-700 hover:-translate-y-3 hover:border-blue-400/30 hover:shadow-[0_30px_80px_rgba(59,130,246,0.25)]"
+              onMouseEnter={() => setHoveredCard(idx)}
+              onMouseLeave={() => setHoveredCard(null)}
+            >
+              <div className="h-[350px] overflow-hidden">
+                <motion.img
+                  src={leader.image}
+                  alt={leader.name}
+                  className="h-full w-full object-cover"
+                  animate={{ scale: hoveredCard === idx ? 1.1 : 1 }}
+                  transition={{ duration: 0.7 }}
+                />
+              </div>
+              <div className="p-8">
+                <div className="text-sm uppercase tracking-[5px] text-blue-300 font-semibold">
+                  {leader.role}
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mt-4">
+                  {leader.name}
+                </h3>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {leader.achievements.map((achievement, i) => (
+                    <span key={i} className="text-xs bg-white/5 rounded-full px-3 py-1 text-blue-300">
+                      {achievement}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-blue-200/70 mt-6 leading-relaxed">
+                  {leader.message}
+                </p>
+                <motion.button
+                  onClick={leader.action}
+                  whileHover={{ x: 5 }}
+                  className="mt-6 text-blue-300 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all"
+                >
+                  Read More <ArrowRight className="h-4 w-4" />
+                </motion.button>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Infinite Marquee */}
+        <div className="mt-24 overflow-hidden">
+          <div className="flex gap-12 whitespace-nowrap animate-marquee">
+            {["Excellence", "Integrity", "Leadership", "Innovation", "Character", "Service", "Compassion", "Wisdom"].map((word, i) => (
+              <span key={i} className="text-blue-400/40 text-sm uppercase tracking-wider">
+                {word} • 
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Modals */}
       {openFounder && <FounderModal onClose={() => setOpenFounder(false)} />}
       {openPrincipal && <PrincipalModal onClose={() => setOpenPrincipal(false)} />}
       {openAdmin && <AdminModal onClose={() => setOpenAdmin(false)} />}
     </section>
   );
 }
-
-
 
 /* ══════════════════════════════════════════════════ PRINCIPAL SECTION */
 function Principal() {
@@ -2447,7 +2519,7 @@ export default function Home() {
       <Hero />
       <Ticker />
       <Principal />
-      <LeadershipCircle />
+      <LeadershipShowcase />  {/* Changed from LeadershipCircle */}
       <WhyChoose />
       <Stats />
       <Events />

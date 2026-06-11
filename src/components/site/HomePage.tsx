@@ -1559,45 +1559,93 @@ function LeadershipCircle() {
   const [openPrincipal, setOpenPrincipal] = useState(false);
   const [openAdmin, setOpenAdmin] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [rotation, setRotation] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartX = useRef<number>(0);
+  const dragStartRotation = useRef<number>(0);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const radius = 300;
+  const autoRotateSpeed = 0.25;
 
   const leadershipData = [
     {
       name: "Chief Rochas Okorocha",
       role: "Founder",
-      photo: { url: IMGS.founder, text: "Founder of Rochas Foundation", pos: "center" },
+      photo: { url: IMGS.founder, text: "Founder of Rochas Foundation", pos: "center top" },
       message: "Education is the greatest gift you can give to a child. Every child deserves quality education regardless of their background.",
       modal: () => setOpenFounder(true)
     },
     {
       name: "Dr. Ifeoma Bernice",
       role: "Principal",
-      photo: { url: IMGS.principal, text: "Principal of Rochas Foundation College", pos: "center" },
+      photo: { url: IMGS.principal, text: "Principal of Rochas Foundation College", pos: "center top" },
       message: "We don't just teach subjects. We cultivate purpose. Every student leaves here ready to change the world.",
       modal: () => setOpenPrincipal(true)
     },
     {
-      name: "Mr. Emeka Okafor",
+      name: "Mr. Iwueke Kelechi",
       role: "Administrator",
-      photo: { url: IMGS.admin, text: "School Administrator", pos: "center" },
+      photo: { url: IMGS.admin, text: "School Administrator", pos: "center top" },
       message: "Creating an environment where both students and staff can thrive is my daily mission. Service to our students is service to our future.",
       modal: () => setOpenAdmin(true)
     },
   ];
 
-  const [rotation, setRotation] = useState(0); // 0 = Founder faces front
-  const [isScrolling, setIsScrolling] = useState(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const radius = 300;
-  const autoRotateSpeed = 0.12; // faster
+  // Mouse drag handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    dragStartX.current = e.clientX;
+    dragStartRotation.current = rotation;
+    e.preventDefault();
+  };
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDragging) return;
+    const delta = e.clientX - dragStartX.current;
+    setRotation(dragStartRotation.current + delta * 0.4);
+  }, [isDragging]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  // Touch drag handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    dragStartX.current = e.touches[0].clientX;
+    dragStartRotation.current = rotation;
+  };
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    if (!isDragging) return;
+    const delta = e.touches[0].clientX - dragStartX.current;
+    setRotation(dragStartRotation.current + delta * 0.4);
+  }, [isDragging]);
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchend', handleTouchEnd);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolling(true);
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollProgress = scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
-      setRotation(scrollProgress * 360);
       scrollTimeoutRef.current = setTimeout(() => setIsScrolling(false), 150);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -1609,7 +1657,7 @@ function LeadershipCircle() {
 
   useEffect(() => {
     const autoRotate = () => {
-      if (!isScrolling && hoveredIndex === null) {
+      if (!isScrolling && !isDragging && hoveredIndex === null) {
         setRotation(prev => prev + autoRotateSpeed);
       }
       animationFrameRef.current = requestAnimationFrame(autoRotate);
@@ -1618,7 +1666,7 @@ function LeadershipCircle() {
     return () => {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     };
-  }, [isScrolling, hoveredIndex, autoRotateSpeed]);
+  }, [isScrolling, isDragging, hoveredIndex]);
 
   const anglePerItem = 360 / leadershipData.length;
 
@@ -1635,12 +1683,18 @@ function LeadershipCircle() {
           </FadeUp>
           <FadeUp delay={0.1}>
             <p className="text-base text-blue-200/70 max-w-2xl mx-auto mt-4">
-              🖱️ Hover to expand | 📜 Scroll to rotate | ✨ Click to read full message
+              🖱️ Drag to rotate | 👆 Hover to expand | ✨ Click to read full message
             </p>
           </FadeUp>
         </div>
 
-        <div className="relative h-[520px] md:h-[600px] w-full">
+        <div
+          ref={containerRef}
+          className="relative h-[520px] md:h-[600px] w-full select-none"
+          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
+        >
           <div
             className="relative w-full h-full flex items-center justify-center"
             style={{ perspective: '1200px' }}
@@ -1650,7 +1704,6 @@ function LeadershipCircle() {
               style={{
                 transform: `rotateY(${rotation}deg)`,
                 transformStyle: 'preserve-3d',
-                transition: hoveredIndex !== null ? 'none' : undefined,
               }}
             >
               {leadershipData.map((item, i) => {
@@ -1664,7 +1717,7 @@ function LeadershipCircle() {
                 return (
                   <div
                     key={item.name}
-                    className="absolute cursor-pointer group"
+                    className="absolute"
                     style={{
                       width: isHovered ? '420px' : '280px',
                       height: isHovered ? '560px' : '400px',
@@ -1676,13 +1729,19 @@ function LeadershipCircle() {
                       opacity: isHovered ? 1 : opacity,
                       transition: 'width 0.5s cubic-bezier(0.16,1,0.3,1), height 0.5s cubic-bezier(0.16,1,0.3,1), margin 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease',
                       zIndex: isHovered ? 50 : 10,
+                      cursor: isDragging ? 'grabbing' : 'pointer',
                     }}
-                    onMouseEnter={() => setHoveredIndex(i)}
+                    onMouseEnter={() => !isDragging && setHoveredIndex(i)}
                     onMouseLeave={() => setHoveredIndex(null)}
-                    onClick={item.modal}
+                    onClick={(e) => {
+                      if (!isDragging) {
+                        e.stopPropagation();
+                        item.modal();
+                      }
+                    }}
                   >
                     <div
-                      className="relative w-full h-full rounded-3xl shadow-2xl overflow-hidden border border-blue-500/30 bg-blue-700/20 backdrop-blur-sm"
+                      className="relative w-full h-full rounded-3xl shadow-2xl overflow-hidden border border-blue-500/30"
                       style={{
                         boxShadow: isHovered
                           ? '0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(147,197,253,0.3)'
@@ -1690,37 +1749,31 @@ function LeadershipCircle() {
                         transition: 'box-shadow 0.5s ease',
                       }}
                     >
-                      {/* Full image — expands on hover */}
                       <img
                         src={item.photo.url}
                         alt={item.photo.text}
                         className="absolute inset-0 w-full h-full object-cover"
                         style={{
-                          objectPosition: item.photo.pos || 'center top',
-                          transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                          objectPosition: item.photo.pos,
+                          transform: isHovered ? 'scale(1.06)' : 'scale(1)',
                           transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)',
                         }}
                       />
 
-                      {/* Gradient overlay — lighter on hover to show more of the image */}
                       <div
                         className="absolute inset-0"
                         style={{
                           background: isHovered
-                            ? 'linear-gradient(to top, rgba(30,58,138,0.85) 0%, rgba(30,58,138,0.2) 45%, transparent 70%)'
-                            : 'linear-gradient(to top, rgba(30,58,138,0.9) 0%, rgba(30,58,138,0.4) 50%, transparent 75%)',
+                            ? 'linear-gradient(to top, rgba(23,37,84,0.88) 0%, rgba(23,37,84,0.2) 45%, transparent 70%)'
+                            : 'linear-gradient(to top, rgba(23,37,84,0.92) 0%, rgba(23,37,84,0.4) 50%, transparent 75%)',
                           transition: 'background 0.5s ease',
                         }}
                       />
 
-                      {/* Shimmer on hover */}
                       {isHovered && (
-                        <div className="absolute inset-0 pointer-events-none">
-                          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/8 to-transparent" />
-                        </div>
+                        <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-transparent via-white/8 to-transparent" />
                       )}
 
-                      {/* Role badge — top left on hover */}
                       <div
                         className="absolute top-4 left-4"
                         style={{
@@ -1734,7 +1787,6 @@ function LeadershipCircle() {
                         </span>
                       </div>
 
-                      {/* Bottom info */}
                       <div className="absolute bottom-0 left-0 w-full p-5 md:p-6 text-white text-left">
                         <h3
                           className="font-display font-bold text-white"
@@ -1754,8 +1806,6 @@ function LeadershipCircle() {
                         >
                           {item.role}
                         </p>
-
-                        {/* Message — only visible on hover */}
                         <div
                           style={{
                             maxHeight: isHovered ? '80px' : '0px',
@@ -1768,7 +1818,6 @@ function LeadershipCircle() {
                             {item.message}
                           </p>
                         </div>
-
                         <div
                           className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-300 mt-3"
                           style={{
@@ -1786,12 +1835,20 @@ function LeadershipCircle() {
               })}
             </div>
           </div>
+
+          {/* Drag hint arrows */}
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
+            <div className="text-white text-2xl">‹</div>
+          </div>
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
+            <div className="text-white text-2xl">›</div>
+          </div>
         </div>
 
         <FadeUp delay={0.2}>
           <div className="text-center mt-8">
             <p className="text-[10px] md:text-xs text-blue-300/60 uppercase tracking-widest">
-              ✦ Hover to expand | Scroll to rotate | Click to read full message ✦
+              ✦ Drag to rotate | Hover to expand | Click to read full message ✦
             </p>
           </div>
         </FadeUp>
@@ -1803,6 +1860,9 @@ function LeadershipCircle() {
     </section>
   );
 }
+
+
+
 /* ══════════════════════════════════════════════════ PRINCIPAL SECTION */
 function Principal() {
   const [open, setOpen] = useState(false);

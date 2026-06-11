@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 export const Route = createFileRoute("/academics")({
   head: () => ({
     meta: [
-      { title: "Academics — Northbridge International Academy" },
+      { title: "Academics — Rochas Foundation College" },
       { name: "description", content: "IB, IGCSE and AP programs. Curriculum, departments, exam system and downloadable resources." },
       { property: "og:title", content: "Academics at Northbridge" },
       { property: "og:description", content: "IB, IGCSE and AP programs. Curriculum, departments, exam system." },

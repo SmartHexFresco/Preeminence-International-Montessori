@@ -1557,11 +1557,6 @@ function AdminModal({ onClose }) {
 /* ══════════════════════════════════════════════════
    LEADERSHIP SHOWCASE 5.0 - Premium Version
 ══════════════════════════════════════════════════ */
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
-import CountUp from "react-countup";
-import { Quote, Award, Calendar, Users, Target, Sparkles } from "lucide-react";
-
 function LeadershipShowcase() {
   const [openFounder, setOpenFounder] = useState(false);
   const [openPrincipal, setOpenPrincipal] = useState(false);
@@ -1569,16 +1564,12 @@ function LeadershipShowcase() {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
-  
-  const founderY = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const quoteOpacity = useTransform(scrollYProgress, [0.2, 0.4], [0, 1]);
-  const cardsY = useTransform(scrollYProgress, [0.3, 0.6], [100, 0]);
-  
+  const founderY = useTransform(scrollYProgress, [0, 1], [20, -20]);
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
-  const [hoveredCard, setHoveredCard] = useState(null);
-  
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
   const leaders = [
     {
       name: "Dr. Ifeoma Bernice",
@@ -1589,37 +1580,19 @@ function LeadershipShowcase() {
       action: () => setOpenPrincipal(true),
     },
     {
-      name: "Mr. Emeka Okafor",
+      name: "Iwueke Kelechi",
       role: "Administrator",
       image: IMGS.admin,
       message: "Creating an environment where both students and staff can thrive is my daily mission. Service to our students is service to our future.",
-      achievements: ["MBA - Lagos Business School", "15+ Years Leadership", "Excellence in Administration Award"],
+      achievements: ["MBA - Lagos Business School", "15+ Years Leadership", "Excellence Award"],
       action: () => setOpenAdmin(true),
     },
   ];
 
-  // Generate floating stars
-  const stars = Array.from({ length: 60 }, (_, i) => ({
-    id: i,
-    top: Math.random() * 100,
-    left: Math.random() * 100,
-    size: Math.random() * 3 + 1,
-    delay: Math.random() * 5,
-    duration: Math.random() * 3 + 2,
-  }));
-
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden py-32"
-      style={{
-        background: `
-          radial-gradient(circle at 20% 20%, #1e3a8a 0%, transparent 40%),
-          radial-gradient(circle at 80% 50%, #0891b2 0%, transparent 40%),
-          radial-gradient(circle at 50% 80%, #4c1d95 0%, transparent 40%),
-          #020617
-        `,
-      }}
+      className="relative overflow-hidden py-28 bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900"
       onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         setMousePosition({
@@ -1628,312 +1601,240 @@ function LeadershipShowcase() {
         });
       }}
     >
-      {/* Animated Grid Background */}
+      {/* Grid background */}
       <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,.2) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,.2) 1px, transparent 1px)
-          `,
+          backgroundImage: `linear-gradient(rgba(147,197,253,.3) 1px, transparent 1px), linear-gradient(90deg, rgba(147,197,253,.3) 1px, transparent 1px)`,
           backgroundSize: "60px 60px",
         }}
       />
 
-      {/* Floating Glow Orbs */}
-      <motion.div
-        animate={{ x: [0, 100, 0], y: [0, -80, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-40 left-20 h-80 w-80 rounded-full bg-blue-500/20 blur-[150px] pointer-events-none"
-      />
-      <motion.div
-        animate={{ x: [0, -100, 0], y: [0, 100, 0] }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-20 right-20 h-96 w-96 rounded-full bg-cyan-500/20 blur-[180px] pointer-events-none"
-      />
-      <motion.div
-        animate={{ x: [0, 50, 0], y: [0, 50, 0] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/2 left-1/2 h-96 w-96 rounded-full bg-purple-500/15 blur-[150px] pointer-events-none"
-      />
+      {/* Glow orbs */}
+      <div className="absolute top-40 left-20 h-72 w-72 rounded-full bg-blue-500/15 blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-20 right-20 h-80 w-80 rounded-full bg-blue-400/10 blur-[120px] pointer-events-none" />
 
-      {/* Dynamic Spotlight */}
+      {/* Mouse spotlight */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-30"
+        className="absolute inset-0 pointer-events-none opacity-20"
         style={{
-          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(59,130,246,0.4) 0%, transparent 50%)`,
+          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(147,197,253,0.25) 0%, transparent 50%)`,
         }}
       />
 
-      {/* Floating Stars */}
-      <div className="absolute inset-0 pointer-events-none">
-        {stars.map((star) => (
-          <motion.div
-            key={star.id}
-            className="absolute rounded-full bg-white"
-            style={{
-              top: `${star.top}%`,
-              left: `${star.left}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-            }}
-            animate={{ opacity: [0.2, 1, 0.2] }}
-            transition={{ duration: star.duration, repeat: Infinity, delay: star.delay }}
-          />
-        ))}
-      </div>
-
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-        {/* Section Divider */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          transition={{ duration: 0.8 }}
-          className="mx-auto mb-16 h-px w-32 bg-gradient-to-r from-transparent via-blue-500 to-transparent"
-        />
 
-        {/* Gradient Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-6xl md:text-7xl font-bold tracking-tight bg-gradient-to-r from-white via-blue-300 to-cyan-300 bg-clip-text text-transparent">
-            Meet Our Leadership
-          </h2>
-          <p className="text-blue-200/70 mt-6 max-w-2xl mx-auto text-lg">
-            The visionaries shaping the future of Rochas Foundation College.
-          </p>
-        </motion.div>
+        {/* Header */}
+        <div className="text-center mb-16">
+          <FadeFrom dir="left" className="flex items-center gap-3 mb-4 justify-center">
+            <DrawLine className="h-px w-8 bg-blue-300" />
+            <p className="text-[10px] uppercase tracking-widest font-semibold text-blue-300">Our Leadership</p>
+            <DrawLine className="h-px w-8 bg-blue-300" />
+          </FadeFrom>
+          <FadeUp>
+            <h2 className="font-display text-5xl md:text-6xl font-bold text-white leading-tight">
+              Meet the <em className="not-italic text-blue-300">visionaries</em><br />
+              behind Rochas Foundation.
+            </h2>
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <p className="text-blue-200/60 mt-5 max-w-2xl mx-auto text-base leading-relaxed">
+              The dedicated leaders shaping the future of every student at Rochas Foundation College.
+            </p>
+          </FadeUp>
+        </div>
 
-        {/* Statistics Row */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mb-20"
-        >
-          {[
-            { value: 10000, label: "Students", suffix: "+", icon: Users },
-            { value: 20, label: "Years of Excellence", suffix: "+", icon: Award },
-            { value: 98, label: "Success Rate", suffix: "%", icon: Target },
-          ].map((stat, idx) => (
-            <div key={idx} className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white">
-                <CountUp end={stat.value} duration={3} suffix={stat.suffix} />
+        {/* Stats */}
+        <FadeUp delay={0.15}>
+          <div className="grid grid-cols-3 gap-6 max-w-xl mx-auto mb-20">
+            {[
+              { value: "10k+", label: "Students Empowered" },
+              { value: "20+", label: "Years of Excellence" },
+              { value: "98%", label: "Success Rate" },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="font-display text-4xl font-bold text-white">{stat.value}</div>
+                <div className="text-blue-300/60 text-xs mt-1 uppercase tracking-wider">{stat.label}</div>
               </div>
-              <div className="text-blue-300/70 text-sm mt-2 flex items-center justify-center gap-1">
-                <stat.icon className="h-3 w-3" />
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </motion.div>
+            ))}
+          </div>
+        </FadeUp>
 
-        {/* Founder Section */}
-        <motion.div
-          style={{ y: founderY }}
-          className="max-w-5xl mx-auto"
-          onMouseMove={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            setMousePosition({
-              x: ((e.clientX - rect.left) / rect.width) * 100,
-              y: ((e.clientY - rect.top) / rect.height) * 100,
-            });
-          }}
-        >
-          <div className="group relative overflow-hidden rounded-[40px] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl hover:border-blue-400/30 transition-all duration-700">
-            {/* Shine Effect */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-1000 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none" />
-            
-            {/* Spotlight Effect */}
-            <div
-              className="absolute inset-0 opacity-40 pointer-events-none"
-              style={{
-                background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(59,130,246,0.3), transparent 50%)`,
-              }}
-            />
+        {/* Founder Hero Card */}
+        <motion.div style={{ y: founderY }} className="max-w-5xl mx-auto mb-16">
+          <FadeUp>
+            <div className="group relative overflow-hidden rounded-3xl border border-blue-600/30 bg-blue-800/40 backdrop-blur-sm transition-all duration-700 hover:border-blue-400/40 hover:shadow-[0_24px_60px_rgba(37,99,235,0.25)]">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
 
-            <div className="grid md:grid-cols-2">
-              {/* Image */}
-              <div className="relative h-[500px] md:h-[600px] overflow-hidden">
-                <motion.img
-                  src={IMGS.founder}
-                  alt="Founder"
-                  className="absolute inset-0 h-full w-full object-cover"
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ duration: 1 }}
-                  style={{ objectPosition: "center" }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
-                
-                {/* Floating Labels */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="absolute top-6 left-6 rounded-full bg-blue-500/20 backdrop-blur-sm px-4 py-2 border border-blue-400/30"
-                >
-                  <span className="text-sm font-semibold text-blue-300">🏆 20+ Years</span>
-                </motion.div>
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 3.5, repeat: Infinity, delay: 1 }}
-                  className="absolute bottom-24 right-6 rounded-full bg-cyan-500/20 backdrop-blur-sm px-4 py-2 border border-cyan-400/30"
-                >
-                  <span className="text-sm font-semibold text-cyan-300">✨ Visionary Leader</span>
-                </motion.div>
-              </div>
+              <div className="grid md:grid-cols-2">
 
-              {/* Content */}
-              <div className="flex flex-col justify-center p-8 md:p-12">
-                <span className="uppercase tracking-[6px] text-blue-300 text-sm font-semibold">
-                  Founder
-                </span>
-                <h3 className="text-4xl md:text-5xl font-bold text-white mt-6 leading-tight">
-                  Chief Rochas Okorocha
-                </h3>
-                
-                <motion.div
-                  style={{ opacity: quoteOpacity }}
-                  className="mt-8"
-                >
-                  <Quote className="h-8 w-8 text-blue-400/50 mb-4" />
-                  <p className="text-blue-200/80 leading-relaxed text-lg">
-                    "Education is the greatest gift you can give to a child. Every child deserves quality education regardless of their background. This foundation is my commitment to that belief."
-                  </p>
-                </motion.div>
-
-                {/* Timeline Preview */}
-                <div className="mt-8 space-y-3">
-                  {[
-                    { year: "1998", text: "Started Educational Vision" },
-                    { year: "2005", text: "Expanded Programs Nationwide" },
-                    { year: "2012", text: "Founded Rochas Foundation College" },
-                    { year: "2024", text: "10,000+ Students Empowered" },
-                  ].map((item, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.1 }}
-                      className="flex items-center gap-3 text-sm"
-                    >
-                      <div className="h-2 w-2 rounded-full bg-blue-400" />
-                      <span className="text-blue-400 font-mono text-xs">{item.year}</span>
-                      <span className="text-blue-200/60">{item.text}</span>
-                    </motion.div>
-                  ))}
+                {/* Image */}
+                <div className="relative h-[460px] overflow-hidden">
+                  <img
+                    src={IMGS.founder}
+                    alt="Chief Rochas Okorocha"
+                    className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-800/40" />
+                  <motion.div
+                    animate={{ y: [0, -7, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-6 left-6 rounded-full bg-blue-700/60 backdrop-blur-sm px-4 py-2 border border-blue-400/30"
+                  >
+                    <span className="text-xs font-semibold text-blue-200">🏆 Founder & Visionary</span>
+                  </motion.div>
+                  <div className="absolute bottom-6 left-6">
+                    <p className="text-[10px] uppercase tracking-widest text-blue-300/70 font-medium mb-1">Founder</p>
+                    <p className="font-display font-bold text-white text-xl">Chief Rochas Okorocha</p>
+                  </div>
                 </div>
 
-                <motion.button
-                  onClick={() => setOpenFounder(true)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="mt-10 w-fit rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 px-8 py-4 font-semibold text-white transition-all duration-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.6)]"
-                >
-                  Read Full Story
-                </motion.button>
+                {/* Content */}
+                <div className="flex flex-col justify-center p-8 md:p-12">
+                  <span className="uppercase tracking-[5px] text-blue-300 text-xs font-semibold mb-4">Founder</span>
+                  <h3 className="font-display text-3xl md:text-4xl font-bold text-white leading-tight">
+                    Chief Rochas Okorocha
+                  </h3>
+
+                  <div className="mt-6">
+                    <Quote className="h-7 w-7 text-blue-400/40 mb-3" />
+                    <p className="text-blue-200/75 leading-relaxed text-base">
+                      "Education is the greatest gift you can give to a child. Every child deserves quality education regardless of their background. This foundation is my commitment to that belief."
+                    </p>
+                  </div>
+
+                  {/* Timeline */}
+                  <div className="mt-8 space-y-3">
+                    {[
+                      { year: "1998", text: "Started Educational Vision" },
+                      { year: "2005", text: "Expanded Programs Nationwide" },
+                      { year: "2012", text: "Founded Rochas Foundation College" },
+                      { year: "2024", text: "10,000+ Students Empowered" },
+                    ].map((item, idx) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, x: -16 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.08, duration: 0.4 }}
+                        viewport={{ once: true }}
+                        className="flex items-center gap-3 text-sm"
+                      >
+                        <div className="h-1.5 w-1.5 rounded-full bg-blue-400 flex-shrink-0" />
+                        <span className="text-blue-400 font-mono text-xs w-10 flex-shrink-0">{item.year}</span>
+                        <span className="text-blue-200/60">{item.text}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => setOpenFounder(true)}
+                    className="mt-10 w-fit inline-flex items-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white px-7 py-3.5 text-sm font-semibold transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.4)]"
+                  >
+                    Read Full Story <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          </FadeUp>
         </motion.div>
 
-        {/* Quote Section */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-center max-w-3xl mx-auto my-20"
-        >
-          <Quote className="h-10 w-10 text-blue-400/30 mx-auto mb-4" />
-          <p className="text-3xl md:text-4xl italic text-white/80 leading-tight">
-            "Education is the passport to the future, for tomorrow belongs to those who prepare for it today."
-          </p>
-          <p className="text-blue-300/60 mt-4">— Chief Rochas Okorocha</p>
-        </motion.div>
+        {/* Quote Banner */}
+        <FadeUp delay={0.1}>
+          <div className="text-center max-w-3xl mx-auto my-16 px-4">
+            <div className="h-px w-16 bg-blue-500/40 mx-auto mb-8" />
+            <p className="text-2xl md:text-3xl italic text-white/70 leading-relaxed font-display">
+              "Education is the passport to the future, for tomorrow belongs to those who prepare for it today."
+            </p>
+            <p className="text-blue-300/50 mt-4 text-sm">— Chief Rochas Okorocha</p>
+            <div className="h-px w-16 bg-blue-500/40 mx-auto mt-8" />
+          </div>
+        </FadeUp>
 
         {/* Principal & Admin Cards */}
-        <motion.div
-          style={{ y: cardsY }}
-          className="grid gap-8 md:grid-cols-2 mt-12"
-        >
+        <div className="grid gap-8 md:grid-cols-2 mt-4">
           {leaders.map((leader, idx) => (
             <motion.div
               key={leader.name}
-              initial={{ opacity: 0, y: 80 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: idx * 0.2 }}
+              transition={{ duration: 0.55, delay: idx * 0.15 }}
               viewport={{ once: true }}
-              whileHover={{ 
-                rotateX: 5, 
-                rotateY: 8, 
-                scale: 1.02,
-                transition: { type: "spring", stiffness: 300 }
-              }}
-              className="group relative overflow-hidden rounded-[35px] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl transition-all duration-700 hover:-translate-y-3 hover:border-blue-400/30 hover:shadow-[0_30px_80px_rgba(59,130,246,0.25)]"
+              className="group relative overflow-hidden rounded-3xl border border-blue-600/30 bg-blue-800/40 backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-blue-400/40 hover:shadow-[0_24px_60px_rgba(37,99,235,0.25)]"
               onMouseEnter={() => setHoveredCard(idx)}
               onMouseLeave={() => setHoveredCard(null)}
             >
-              <div className="h-[350px] overflow-hidden">
-                <motion.img
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
+
+              {/* Image */}
+              <div className="h-[320px] overflow-hidden relative">
+                <img
                   src={leader.image}
                   alt={leader.name}
-                  className="h-full w-full object-cover"
-                  animate={{ scale: hoveredCard === idx ? 1.1 : 1 }}
-                  transition={{ duration: 0.7 }}
+                  className="h-full w-full object-cover object-center transition-transform duration-700 ease-out"
+                  style={{ transform: hoveredCard === idx ? 'scale(1.06)' : 'scale(1)' }}
                 />
-              </div>
-              <div className="p-8">
-                <div className="text-sm uppercase tracking-[5px] text-blue-300 font-semibold">
-                  {leader.role}
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-5">
+                  <span className="inline-block rounded-full bg-blue-600/70 backdrop-blur-sm border border-blue-400/30 text-blue-200 text-[10px] font-semibold uppercase tracking-widest px-3 py-1">
+                    {leader.role}
+                  </span>
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-white mt-4">
-                  {leader.name}
-                </h3>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {leader.achievements.map((achievement, i) => (
-                    <span key={i} className="text-xs bg-white/5 rounded-full px-3 py-1 text-blue-300">
-                      {achievement}
+              </div>
+
+              {/* Content */}
+              <div className="p-7">
+                <h3 className="font-display text-2xl font-bold text-white">{leader.name}</h3>
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {leader.achievements.map((a, i) => (
+                    <span key={i} className="text-[11px] bg-blue-700/40 border border-blue-600/30 rounded-full px-3 py-1 text-blue-300">
+                      {a}
                     </span>
                   ))}
                 </div>
-                <p className="text-blue-200/70 mt-6 leading-relaxed">
-                  {leader.message}
-                </p>
-                <motion.button
+                <p className="text-blue-200/65 mt-5 leading-relaxed text-sm">{leader.message}</p>
+                <button
                   onClick={leader.action}
-                  whileHover={{ x: 5 }}
-                  className="mt-6 text-blue-300 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all"
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-blue-300 hover:text-white hover:gap-3 transition-all duration-300"
                 >
-                  Read More <ArrowRight className="h-4 w-4" />
-                </motion.button>
+                  Read Full Message <ArrowRight className="h-4 w-4" />
+                </button>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Infinite Marquee */}
-        <div className="mt-24 overflow-hidden">
-          <div className="flex gap-12 whitespace-nowrap animate-marquee">
-            {["Excellence", "Integrity", "Leadership", "Innovation", "Character", "Service", "Compassion", "Wisdom"].map((word, i) => (
-              <span key={i} className="text-blue-400/40 text-sm uppercase tracking-wider">
-                {word} • 
-              </span>
-            ))}
+        {/* Marquee */}
+        <div className="mt-20 overflow-hidden">
+          <div
+            className="flex gap-12 whitespace-nowrap text-blue-400/30 text-sm uppercase tracking-wider"
+            style={{ animation: "ticker 30s linear infinite" }}
+          >
+            {[...Array(3)].flatMap(() =>
+              ["Excellence", "Integrity", "Leadership", "Innovation", "Character", "Service", "Compassion", "Wisdom"].map((word, i) => (
+                <span key={`${word}-${i}`}>{word} &bull;</span>
+              ))
+            )}
           </div>
         </div>
+
       </div>
 
-      {/* Modals */}
       {openFounder && <FounderModal onClose={() => setOpenFounder(false)} />}
       {openPrincipal && <PrincipalModal onClose={() => setOpenPrincipal(false)} />}
       {openAdmin && <AdminModal onClose={() => setOpenAdmin(false)} />}
     </section>
   );
 }
+
+
+
+
+
+
+
+
+
 
 /* ══════════════════════════════════════════════════ PRINCIPAL SECTION */
 function Principal() {

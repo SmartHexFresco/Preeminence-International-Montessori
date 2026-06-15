@@ -473,8 +473,8 @@ export function Navbar() {
       <header
         className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-blue-950 border-b border-blue-800/60"
-            : "bg-blue-950 border-b border-blue-800/30"
+            ? "bg-blue-700 border-b border-blue-600/60"
+            : "bg-blue-700 border-b border-blue-500/30"
         }`}
       >
         <div className="mx-auto max-w-7xl px-6">
@@ -487,8 +487,8 @@ export function Navbar() {
               className="flex items-center gap-2.5 group flex-shrink-0"
             >
               <div className="relative">
-                <div className="absolute inset-0 rounded-xl bg-blue-400/10 blur-sm group-hover:bg-blue-400/20 transition" />
-                <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                <div className="absolute inset-0 rounded-xl bg-blue-600/10 blur-sm group-hover:bg-blue-400/20 transition" />
+                <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center">
                   <GraduationCap className="h-5 w-5 text-white" />
                 </div>
               </div>

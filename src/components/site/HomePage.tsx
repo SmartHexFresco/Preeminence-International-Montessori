@@ -1970,7 +1970,7 @@ function WhyChoose() {
     { icon: Bus,        title: "Smart Transport",        desc: "GPS-tracked, climate-controlled fleet covering 32 routes with real-time parent notifications.",  stat: "32 Routes",    accent: "text-cyan-300",   iconBg: "bg-cyan-700/50",   border: "border-cyan-600/40"   },
   ];
   return (
-    <section className="py-24 bg-gradient-to-b from-blue-900 to-blue-800 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-800 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 relative">
         <div className="text-center mb-14">
           <SectionLabel label="Why Rochas Foundation" />
@@ -2036,7 +2036,7 @@ function Stats() {
     { v: 100, s: "%", l: "Certified Faculty",      d: "75% hold a Masters or PhD degree", img: IMGS.library },
   ];
   return (
-    <section className="py-24 bg-gradient-to-b from-blue-800 to-blue-700">
+    <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-700">
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center mb-14">
           <SectionLabel label="By The Numbers" />
@@ -2109,7 +2109,7 @@ function Events() {
   ];
   const filtered = filter === "All" ? events : events.filter(e => e.c === filter);
   return (
-    <section className="py-24 bg-gradient-to-b from-blue-900 to-blue-800">
+    <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-800">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid lg:grid-cols-3 gap-8 items-end mb-10">
           <div className="lg:col-span-2">
@@ -2120,19 +2120,19 @@ function Events() {
               </h2>
             </FadeUp>
           </div>
-          <FadeFrom dir="right">
-            <div className="rounded-2xl bg-blue-800/60 border border-blue-600/40 p-6">
+          {/* <FadeFrom dir="right">
+            <div className="rounded-2xl bg-blue-700/60 border border-blue-600/40 p-6">
               <p className="text-[10px] uppercase tracking-widest text-blue-300/70 font-medium mb-2">Next Major Event</p>
               <p className="font-display font-bold text-white text-lg mb-4">Open House · June 14</p>
               <Countdown target={new Date(Date.now() + 1000 * 60 * 60 * 24 * 12)} />
             </div>
-          </FadeFrom>
+          </FadeFrom> */}
         </div>
         <FadeUp delay={0.1} className="flex items-center flex-wrap gap-3 mb-8">
           <div className="relative flex-1 min-w-[200px] max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-400/60" />
             <input placeholder="Search events…"
-              className="w-full rounded-xl bg-blue-800/50 border border-blue-600/40 pl-9 pr-3 py-2.5 text-sm text-blue-100 placeholder:text-blue-400/50 outline-none focus:border-blue-400/60 transition" />
+              className="w-full rounded-xl bg-blue-700/50 border border-blue-600/40 pl-9 pr-3 py-2.5 text-sm text-blue-100 placeholder:text-blue-400/50 outline-none focus:border-blue-400/60 transition" />
           </div>
           <div className="flex gap-2 flex-wrap">
             {cats.map(c => (
@@ -2235,7 +2235,7 @@ function Academics() {
     { title:"ICT & Digital Literacy",          badge:"Future-Ready",desc:"Cyber-security, ethical AI, data science and game development. Every student graduates fluent in computational thinking.",                                  bullets:["1:1 device programme","Capture-the-flag league","Esports varsity team","Ethics-of-AI seminar"],                                     img:IMGS.lab2,     icon:Cpu           },
   ];
   return (
-    <section className="py-24 bg-gradient-to-b from-blue-900 to-blue-800">
+    <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-800">
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center mb-12">
           <SectionLabel label="Academics" />
@@ -2248,7 +2248,7 @@ function Academics() {
         <FadeUp delay={0.1} className="flex flex-wrap justify-center gap-2 mb-10">
           {tabs.map((t, i) => (
             <button key={t} onClick={() => setActive(i)}
-              className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${active===i?"bg-blue-600 text-white":"bg-blue-800/50 border border-blue-600/40 text-blue-300/70 hover:text-blue-200 hover:border-blue-500/40"}`}>
+              className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${active===i?"bg-blue-600 text-white":"bg-blue-700/50 border border-blue-600/40 text-blue-300/70 hover:text-blue-200 hover:border-blue-500/40"}`}>
               {t}
             </button>
           ))}
@@ -2257,7 +2257,7 @@ function Academics() {
           <motion.div key={active}
             initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.35 }}
-            className="grid lg:grid-cols-2 gap-10 items-center bg-blue-800/30 border border-blue-700/40 rounded-3xl p-8">
+            className="grid lg:grid-cols-2 gap-10 items-center bg-blue-700/30 border border-blue-600/40 rounded-3xl p-8">
             <div>
               <span className="inline-block rounded-full bg-blue-700/40 border border-blue-600/40 text-blue-300 text-xs font-medium px-3 py-1 tracking-wider uppercase mb-5">{data[active].badge}</span>
               <h3 className="font-display font-bold text-2xl md:text-3xl text-white mb-4 leading-snug">{data[active].title}</h3>
@@ -2298,7 +2298,7 @@ function Testimonials() {
     { name:"Dr. Priya Sharma",  role:"Parent · Surgeon",             quote:"The teacher mentorship is unlike anywhere I've seen. My daughter has weekly 1:1 time with her advisor — and it shows.", img:IMGS.library },
   ];
   return (
-    <section className="py-24 bg-gradient-to-b from-blue-800 to-blue-700">
+    <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-700">
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center mb-14">
           <SectionLabel label="Voices of Rochas Foundation" />
@@ -2398,9 +2398,9 @@ function VirtualTour() {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
   const bgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
   return (
-    <section ref={sectionRef} className="py-24 bg-gradient-to-b from-blue-800 to-blue-700">
+    <section ref={sectionRef} className="py-24 bg-gradient-to-b from-blue-700 to-blue-700">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="relative rounded-3xl overflow-hidden bg-blue-800/40 border border-blue-700/40 p-10 md:p-16">
+        <div className="relative rounded-3xl overflow-hidden bg-blue-700/40 border border-blue-700/40 p-10 md:p-16">
           <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage:"linear-gradient(#93c5fd 1px,transparent 1px),linear-gradient(90deg,#93c5fd 1px,transparent 1px)", backgroundSize:"50px 50px" }} />
           <div className="relative grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -2447,7 +2447,7 @@ function Newsletter() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, margin: '-60px 0px', amount: 0.3 });
   return (
-    <section className="py-24 bg-gradient-to-b from-blue-900 to-blue-800">
+    <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-600">
       <div className="mx-auto max-w-2xl px-6">
         <motion.div ref={ref}
           initial={{ opacity: 0, scale: 0.94, y: 32 }}

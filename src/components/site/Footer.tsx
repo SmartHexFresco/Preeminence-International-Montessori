@@ -270,7 +270,7 @@ export function Footer() {
   return (
     <footer className="relative bg-blue-950 text-white overflow-hidden">
       {/* Top decorative line */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-700/40 to-transparent" />
 
       {/* Subtle grid bg */}
       <div
@@ -283,11 +283,11 @@ export function Footer() {
       />
 
       {/* Glow blobs */}
-      <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-blue-800/10 blur-3xl pointer-events-none" />
+      <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-blue-700/60 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-blue-600/60 blur-3xl pointer-events-none" />
 
       {/* ── CTA banner ── */}
-      <div className="relative border-b border-blue-800/40">
+      <div className="relative border-b border-blue-600/60">
         <div className="mx-auto max-w-7xl px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="font-display text-2xl md:text-3xl font-bold text-white">

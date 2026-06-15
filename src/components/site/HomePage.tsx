@@ -1600,7 +1600,7 @@ function LeadershipShowcase() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden py-32 bg-[#1a4fd6]"
+      className="relative overflow-hidden py-32 bg-[#1d2cd1]"
       onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         setMousePosition({

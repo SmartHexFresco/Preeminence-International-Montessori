@@ -101,7 +101,7 @@ function DrawLine({ className = "", delay = 0 }) {
 function SectionLabel({ label, light = true }) {
   return (
     <FadeFrom dir="left" className="flex items-center gap-3 mb-4">
-      <DrawLine className={`h-px w-8 ${light ? "bg-blue-400" : "bg-blue-600"}`} />
+      <DrawLine className={`h-px w-8 ${light ? "bg-blue-700" : "bg-blue-600"}`} />
       <p className={`text-[10px] uppercase tracking-widest font-semibold ${light ? "text-blue-400" : "text-blue-700"}`}>
         {label}
       </p>
@@ -124,11 +124,11 @@ function PageHero() {
   const opacity  = useTransform(smooth, [0, 0.6], [1, 0]);
 
   return (
-    <section ref={ref} className="relative overflow-hidden pb-24 min-h-[500px] flex items-center bg-blue-950">
+    <section ref={ref} className="relative overflow-hidden pb-24 min-h-[500px] flex items-center bg-blue-700">
       <motion.div style={{ y: yBg, scale: scaleBg }} className="absolute inset-0 origin-center">
         <img src={HERO_IMG} alt="Admissions" className="absolute inset-0 h-full w-full object-cover" />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-950/95 via-blue-950/85 to-blue-900/70" />
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-700/95 via-blue-700/85 to-blue-700/70" />
       <div className="absolute inset-0 opacity-[0.04]" style={{
         backgroundImage: "linear-gradient(#93c5fd 1px,transparent 1px),linear-gradient(90deg,#93c5fd 1px,transparent 1px)",
         backgroundSize: "56px 56px",
@@ -136,7 +136,7 @@ function PageHero() {
       <motion.div style={{ y: yContent, opacity }}
         className="relative mx-auto max-w-7xl px-6 text-center w-full pt-24">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full border border-blue-600/40 bg-blue-700/20 px-4 py-1.5 mb-6">
+          className="inline-flex items-center gap-2 rounded-full border border-blue-700/60 bg-blue-700/60 px-4 py-1.5 mb-6">
           <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
           <span className="text-[11px] font-medium tracking-widest uppercase text-blue-300/80">Admissions</span>
         </motion.div>
@@ -182,8 +182,8 @@ function Steps() {
         <StaggerList className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {steps.map((s) => (
             <motion.div key={s.t} variants={staggerItem}
-              className="relative rounded-2xl bg-blue-900/40 border border-blue-800/40 p-6 hover:-translate-y-1 hover:border-blue-600/50 transition-all duration-300 group overflow-hidden">
-              <div className="absolute top-4 right-4 font-display font-bold text-5xl text-blue-400/10 select-none group-hover:text-blue-400/20 transition-colors">
+              className="relative rounded-2xl bg-blue-600/60 border border-blue-700/60 p-6 hover:-translate-y-1 hover:border-blue-600/50 transition-all duration-300 group overflow-hidden">
+              <div className="absolute top-4 right-4 font-display font-bold text-5xl text-blue-600/60 select-none group-hover:text-blue-600/60 transition-colors">
                 {s.num}
               </div>
               <div className="h-8 w-8 rounded-lg bg-blue-700/60 border border-blue-600/40 flex items-center justify-center mb-4">
@@ -211,7 +211,7 @@ function Fees() {
   ];
 
   return (
-    <section className="py-24 bg-slate-900">
+    <section className="py-24 bg-slate-600">
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-center mb-14">
           <SectionLabel label="Tuition & Fees" light={true} />
@@ -226,9 +226,9 @@ function Fees() {
         </div>
 
         <FadeUp delay={0.05}>
-          <div className="rounded-2xl bg-blue-900/40 border border-blue-800/40 overflow-hidden">
+          <div className="rounded-2xl bg-blue-700/60 border border-blue-600/60 overflow-hidden">
             {/* Header */}
-            <div className="grid grid-cols-3 gap-4 px-6 py-4 bg-blue-900/60 border-b border-blue-800/40">
+            <div className="grid grid-cols-3 gap-4 px-6 py-4 bg-blue-600/60 border-b border-blue-700/40">
               {["Grade Level", "Annual Tuition", "Enrollment Fee"].map((h) => (
                 <div key={h} className="text-[10px] uppercase tracking-widest font-semibold text-blue-400/70">{h}</div>
               ))}
@@ -237,7 +237,7 @@ function Fees() {
             <StaggerList stagger={0.1}>
               {fees.map((f) => (
                 <motion.div key={f.g} variants={staggerItem}
-                  className="grid grid-cols-3 gap-4 px-6 py-5 border-b border-blue-800/30 last:border-0 hover:bg-blue-800/20 transition-colors items-center">
+                  className="grid grid-cols-3 gap-4 px-6 py-5 border-b border-blue-600/30 last:border-0 hover:bg-blue-600/60 transition-colors items-center">
                   <div className="font-semibold text-white text-sm">{f.g}</div>
                   <div className="font-display font-bold text-2xl text-blue-300">{f.a}</div>
                   <div className="text-blue-200/50 text-sm">{f.e}</div>
@@ -285,7 +285,7 @@ function FAQ() {
   ];
 
   return (
-    <section className="py-24 bg-blue-950">
+    <section className="py-24 bg-blue-700">
       <div className="mx-auto max-w-3xl px-6">
         <div className="text-center mb-14">
           <SectionLabel label="FAQ" light={true} />
@@ -343,7 +343,7 @@ function InquirySection() {
   ];
 
   return (
-    <section className="py-24 bg-slate-900">
+    <section className="py-24 bg-slate-700">
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-center mb-14">
           <SectionLabel label="Get Started" light={true} />
@@ -357,7 +357,7 @@ function InquirySection() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Inquiry form */}
           <FadeFrom dir="left">
-            <div className="rounded-2xl bg-blue-900/40 border border-blue-800/40 p-7 h-full">
+            <div className="rounded-2xl bg-blue-600/60 border border-blue-600/60 p-7 h-full">
               <h3 className="font-display font-bold text-xl text-white mb-5">Inquiry form</h3>
               {submitted ? (
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}

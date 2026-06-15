@@ -268,9 +268,9 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-blue-950 text-white overflow-hidden">
+    <footer className="relative bg-blue-600 text-white overflow-hidden">
       {/* Top decorative line */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-700/40 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-800/60 to-transparent" />
 
       {/* Subtle grid bg */}
       <div

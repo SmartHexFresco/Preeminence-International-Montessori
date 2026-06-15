@@ -2347,7 +2347,7 @@ function Gallery() {
     { src:IMGS.students, label:"Student Life"    },
   ];
   return (
-    <section className="py-24 bg-gradient-to-b from-blue-900 to-blue-800">
+    <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-800">
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center mb-14">
           <SectionLabel label="Life at Rochas Foundation" />
@@ -2367,7 +2367,7 @@ function Gallery() {
               <div className={`${i===0?"aspect-[16/10]":"aspect-square"} overflow-hidden`}>
                 <img src={photo.src} alt={photo.label}
                   className="h-full w-full object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/75 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-700/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
                 <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition duration-300">
                   <p className="text-[10px] text-blue-300 uppercase tracking-wider font-medium">View</p>
                   <p className="text-white font-semibold text-sm">{photo.label}</p>

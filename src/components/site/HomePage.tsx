@@ -1,5 +1,4 @@
 
-
 // import { useEffect, useRef, useState, useCallback } from "react";
 // import {
 //   motion, useScroll, useTransform, useSpring, useInView, AnimatePresence,
@@ -115,8 +114,8 @@
 // function SectionLabel({ label, light = true }) {
 //   return (
 //     <FadeFrom dir="left" className="flex items-center gap-3 mb-4">
-//       <DrawLine className={`h-px w-8 ${light ? "bg-blue-300" : "bg-blue-400"}`} />
-//       <p className={`text-[10px] uppercase tracking-widest font-semibold ${light ? "text-blue-300" : "text-blue-400"}`}>
+//       <DrawLine className={`h-px w-8 ${light ? "bg-blue-400" : "bg-blue-600"}`} />
+//       <p className={`text-[10px] uppercase tracking-widest font-semibold ${light ? "text-blue-400" : "text-blue-600"}`}>
 //         {label}
 //       </p>
 //     </FadeFrom>
@@ -454,7 +453,6 @@
 //   );
 // }
 
-// /* ══════════════════════════════════════════════════ LEADERSHIP CIRCLE */
 // /* ══════════════════════════════════════════════════
 //    LEADERSHIP SHOWCASE 5.0 - Premium Version
 // ══════════════════════════════════════════════════ */
@@ -501,7 +499,7 @@
 //   return (
 //     <section
 //       ref={sectionRef}
-//       className="relative overflow-hidden py-32 bg-[#1d2cd1]"
+//       className="relative overflow-hidden py-32 bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900"
 //       onMouseMove={(e) => {
 //         const rect = e.currentTarget.getBoundingClientRect();
 //         setMousePosition({
@@ -603,7 +601,7 @@
 //                 key={stat.label}
 //                 animate={{ y: [0, -8, 0] }}
 //                 transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
-//                 className="text-center rounded-2xl bg-blue-900/30 border border-blue-700/30 backdrop-blur-sm px-4 py-5"
+//                 className="text-center rounded-2xl bg-blue-800/40 border border-blue-600/30 backdrop-blur-sm px-4 py-5"
 //               >
 //                 <div className="font-display text-4xl font-bold text-white">
 //                   {stat.end.toLocaleString()}{stat.suffix}
@@ -614,10 +612,10 @@
 //           </div>
 //         </FadeUp>
 
-//         {/* Founder Hero Card */}
+//         {/* Founder Hero Card - Perfectly Centered */}
 //         <motion.div style={{ y: founderY }} className="max-w-5xl mx-auto mb-8">
 //           <FadeUp>
-//             <div className="group relative overflow-hidden rounded-3xl border border-blue-500/20 bg-white/5 backdrop-blur-md transition-all duration-700 hover:border-blue-400/40 hover:shadow-[0_30px_80px_rgba(37,99,235,0.3)]">
+//             <div className="group relative overflow-hidden rounded-3xl border border-blue-500/20 bg-blue-800/30 backdrop-blur-md transition-all duration-700 hover:border-blue-400/40 hover:shadow-[0_30px_80px_rgba(37,99,235,0.3)]">
 //               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
 //               <div
 //                 className="absolute inset-0 opacity-30 pointer-events-none"
@@ -627,30 +625,30 @@
 //               />
 
 //               <div className="grid md:grid-cols-2">
-//                 {/* Image */}
-//                 <div className="relative h-[480px] overflow-hidden">
+//                 {/* Image - Perfectly Centered */}
+//                 <div className="relative h-[500px] overflow-hidden flex items-center justify-center">
 //                   <img
 //                     src={IMGS.founder}
 //                     alt="Chief Rochas Okorocha"
-//                     className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105"
+//                     className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105"
 //                   />
-//                   <div className="absolute inset-0 bg-gradient-to-t from-[#020d1f] via-transparent to-transparent" />
-//                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#020d1f]/50" />
+//                   <div className="absolute inset-0 bg-gradient-to-t from-blue-900 via-blue-900/40 to-transparent" />
+//                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-900/30" />
 //                   <motion.div
 //                     animate={{ y: [0, -8, 0] }}
 //                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-//                     className="absolute top-6 left-6 rounded-full bg-blue-600/30 backdrop-blur-sm px-4 py-2 border border-blue-400/30"
+//                     className="absolute top-6 left-6 rounded-full bg-blue-600/40 backdrop-blur-sm px-4 py-2 border border-blue-400/30 z-10"
 //                   >
 //                     <span className="text-xs font-semibold text-blue-200">🏆 Founder & Visionary</span>
 //                   </motion.div>
-//                   <div className="absolute bottom-6 left-6">
-//                     <p className="text-[10px] uppercase tracking-widest text-blue-400/70 font-medium mb-1">Founder</p>
+//                   <div className="absolute bottom-6 left-6 z-10">
+//                     <p className="text-[10px] uppercase tracking-widest text-blue-300/70 font-medium mb-1">Founder</p>
 //                     <p className="font-display font-bold text-white text-xl">Chief Rochas Okorocha</p>
 //                   </div>
 //                 </div>
 
 //                 {/* Content */}
-//                 <div className="flex flex-col justify-center p-8 md:p-12">
+//                 <div className="flex flex-col justify-center p-8 md:p-12 bg-blue-900/20">
 //                   <span className="uppercase tracking-[5px] text-blue-400 text-xs font-semibold mb-4">Founder</span>
 //                   <h3 className="font-display text-3xl md:text-4xl font-bold text-white leading-tight">
 //                     Chief Rochas Okorocha
@@ -723,7 +721,7 @@
 //           </div>
 //         </FadeUp>
 
-//         {/* Principal & Admin Cards */}
+//         {/* Principal & Admin Cards - Perfectly Centered Images */}
 //         <div className="grid gap-8 md:grid-cols-2 mt-4">
 //           {leaders.map((leader, idx) => (
 //             <motion.div
@@ -735,22 +733,22 @@
 //               whileHover={{ rotateX: 4, rotateY: 8, scale: 1.02 }}
 //               style={{ transformStyle: "preserve-3d" }}
 //               transition={{ type: "spring", stiffness: 300, damping: 20 } as any}
-//               className="group relative overflow-hidden rounded-3xl border border-blue-500/20 bg-white/5 backdrop-blur-md cursor-pointer hover:border-blue-400/40 hover:shadow-[0_30px_80px_rgba(37,99,235,0.3)] transition-all duration-500"
+//               className="group relative overflow-hidden rounded-3xl border border-blue-500/20 bg-blue-800/30 backdrop-blur-md cursor-pointer hover:border-blue-400/40 hover:shadow-[0_30px_80px_rgba(37,99,235,0.3)] transition-all duration-500"
 //               onMouseEnter={() => setHoveredCard(idx)}
 //               onMouseLeave={() => setHoveredCard(null)}
 //             >
 //               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
 
-//               {/* Image */}
-//               <div className="h-[320px] overflow-hidden relative">
+//               {/* Image - Perfectly Centered */}
+//               <div className="h-[340px] overflow-hidden relative flex items-center justify-center">
 //                 <img
 //                   src={leader.image}
 //                   alt={leader.name}
-//                   className="h-full w-full object-cover object-center transition-transform duration-700 ease-out"
+//                   className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out"
 //                   style={{ transform: hoveredCard === idx ? 'scale(1.07)' : 'scale(1)' }}
 //                 />
-//                 <div className="absolute inset-0 bg-gradient-to-t from-[#020d1f] via-transparent to-transparent" />
-//                 <div className="absolute bottom-4 left-5">
+//                 <div className="absolute inset-0 bg-gradient-to-t from-blue-900 via-blue-900/40 to-transparent" />
+//                 <div className="absolute bottom-4 left-5 z-10">
 //                   <span className="inline-block rounded-full bg-blue-600/50 backdrop-blur-sm border border-blue-400/30 text-blue-200 text-[10px] font-semibold uppercase tracking-widest px-3 py-1">
 //                     {leader.role}
 //                   </span>
@@ -802,54 +800,45 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-// /* ══════════════════════════════════════════════════ PRINCIPAL SECTION */
+// /* ══════════════════════════════════════════════════ PRINCIPAL SECTION - White */
 // function Principal() {
 //   const [open, setOpen] = useState(false);
 //   const sectionRef = useRef(null);
 //   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
 //   const imgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 //   return (
-//     <section ref={sectionRef} className="py-24 bg-gradient-to-b from-blue-800 to-blue-700 overflow-hidden">
+//     <section ref={sectionRef} className="py-24 bg-white overflow-hidden">
 //       <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-16 items-center">
 //         <FadeFrom dir="left" className="relative flex justify-center">
-//           <div className="absolute top-5 left-5 right-[-20px] bottom-[-20px] rounded-3xl border border-blue-500/30 pointer-events-none" />
+//           <div className="absolute top-5 left-5 right-[-20px] bottom-[-20px] rounded-3xl border border-blue-200 pointer-events-none" />
 //           <div className="relative w-full max-w-[400px] aspect-[3/4] rounded-3xl overflow-hidden">
 //             <motion.img src={IMGS.principal} alt="Dr. Ifeoma Bernice"
 //               style={{ y: imgY }}
 //               className="h-[115%] w-full object-cover absolute inset-0 -top-[7.5%]" />
-//             <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-transparent to-transparent" />
-//             <div className="absolute bottom-5 left-5 right-5 bg-blue-800/80 backdrop-blur-sm border border-blue-600/40 rounded-2xl p-4">
-//               <p className="text-[10px] uppercase tracking-widest text-blue-300 font-medium mb-1">Head of School</p>
-//               <p className="font-display font-bold text-white text-lg">Dr. Ifeoma Bernice</p>
-//               <p className="text-xs text-blue-300/60 mt-0.5">PhD — Harvard Graduate School of Education</p>
+//             <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent" />
+//             <div className="absolute bottom-5 left-5 right-5 bg-white/90 backdrop-blur-sm border border-blue-200 rounded-2xl p-4 shadow-lg">
+//               <p className="text-[10px] uppercase tracking-widest text-blue-600 font-medium mb-1">Head of School</p>
+//               <p className="font-display font-bold text-slate-800 text-lg">Dr. Ifeoma Bernice</p>
+//               <p className="text-xs text-slate-500 mt-0.5">PhD — Harvard Graduate School of Education</p>
 //             </div>
 //           </div>
 //         </FadeFrom>
 //         <div>
-//           <SectionLabel label="A Message From Our Principal" />
+//           <SectionLabel label="A Message From Our Principal" light={false} />
 //           <FadeUp delay={0.05}>
-//             <h2 className="font-display text-4xl md:text-5xl font-bold text-white leading-tight mb-2">"We don't just teach subjects.</h2>
+//             <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-800 leading-tight mb-2">"We don't just teach subjects.</h2>
 //           </FadeUp>
 //           <FadeUp delay={0.12}>
-//             <h2 className="font-display text-4xl md:text-5xl font-bold text-blue-300 italic leading-tight mb-6">We cultivate purpose."</h2>
+//             <h2 className="font-display text-4xl md:text-5xl font-bold text-blue-600 italic leading-tight mb-6">We cultivate purpose."</h2>
 //           </FadeUp>
 //           <FadeUp delay={0.18}>
-//             <DrawLine className="h-px w-12 bg-blue-400 mb-6" delay={0.3} />
-//             <p className="text-base text-blue-200/70 leading-relaxed mb-8">
+//             <DrawLine className="h-px w-12 bg-blue-500 mb-6" delay={0.3} />
+//             <p className="text-base text-slate-600 leading-relaxed mb-8">
 //               Rochas Foundation College is a place where students are challenged to think bigger, act bolder and lead
 //               with empathy. Every classroom is a launchpad. Every teacher, a mentor. Every student, a future architect of change.
 //             </p>
 //             <button onClick={() => setOpen(true)}
-//               className="inline-flex items-center gap-2 rounded-xl border border-blue-500/60 text-blue-300 hover:bg-blue-700/50 hover:text-white px-6 py-3 text-sm font-semibold transition-all">
+//               className="inline-flex items-center gap-2 rounded-xl border border-blue-500 text-blue-600 hover:bg-blue-50 hover:text-blue-700 px-6 py-3 text-sm font-semibold transition-all">
 //               Read Full Message <ArrowRight className="h-4 w-4" />
 //             </button>
 //           </FadeUp>
@@ -860,24 +849,24 @@
 //   );
 // }
 
-// /* ══════════════════════════════════════════════════ WHY CHOOSE */
+// /* ══════════════════════════════════════════════════ WHY CHOOSE - White */
 // function WhyChoose() {
 //   const features = [
-//     { icon: Microscope, title: "STEM Innovation Labs",  desc: "12 cutting-edge labs for robotics, AI, biotech, and aerospace led by scientists-in-residence.", stat: "12 Labs",       accent: "text-blue-300",   iconBg: "bg-blue-700/60",   border: "border-blue-600/40"   },
-//     { icon: Trophy,     title: "Sports Academy",         desc: "16 varsity teams with Olympian-level coaching and world-class facilities.",                     stat: "120+ Trophies", accent: "text-sky-300",    iconBg: "bg-sky-700/50",    border: "border-sky-600/40"    },
-//     { icon: Library,    title: "Digital Library",        desc: "85,000+ volumes, AI-powered research assistants and comprehensive digital archives.",            stat: "85k+ Titles",  accent: "text-indigo-300", iconBg: "bg-indigo-700/50",  border: "border-indigo-600/40" },
-//     { icon: Music,      title: "Performing Arts Centre", desc: "Conservatory-grade music, theater, dance, and film studio with annual public showcases.",        stat: "8 Stages",     accent: "text-purple-300", iconBg: "bg-purple-700/50", border: "border-purple-600/40"  },
-//     { icon: Compass,    title: "Career Counseling",      desc: "1:1 mentoring from Ivy League alumni. 98% of graduates placed at top global universities.",      stat: "98% Placed",   accent: "text-blue-300",   iconBg: "bg-blue-700/60",   border: "border-blue-600/40"   },
-//     { icon: Bus,        title: "Smart Transport",        desc: "GPS-tracked, climate-controlled fleet covering 32 routes with real-time parent notifications.",  stat: "32 Routes",    accent: "text-cyan-300",   iconBg: "bg-cyan-700/50",   border: "border-cyan-600/40"   },
+//     { icon: Microscope, title: "STEM Innovation Labs",  desc: "12 cutting-edge labs for robotics, AI, biotech, and aerospace led by scientists-in-residence.", stat: "12 Labs",       accent: "text-blue-600",   iconBg: "bg-blue-100",   border: "border-blue-200"   },
+//     { icon: Trophy,     title: "Sports Academy",         desc: "16 varsity teams with Olympian-level coaching and world-class facilities.",                     stat: "120+ Trophies", accent: "text-sky-600",    iconBg: "bg-sky-100",    border: "border-sky-200"    },
+//     { icon: Library,    title: "Digital Library",        desc: "85,000+ volumes, AI-powered research assistants and comprehensive digital archives.",            stat: "85k+ Titles",  accent: "text-indigo-600", iconBg: "bg-indigo-100",  border: "border-indigo-200" },
+//     { icon: Music,      title: "Performing Arts Centre", desc: "Conservatory-grade music, theater, dance, and film studio with annual public showcases.",        stat: "8 Stages",     accent: "text-purple-600", iconBg: "bg-purple-100",  border: "border-purple-200"  },
+//     { icon: Compass,    title: "Career Counseling",      desc: "1:1 mentoring from Ivy League alumni. 98% of graduates placed at top global universities.",      stat: "98% Placed",   accent: "text-blue-600",   iconBg: "bg-blue-100",   border: "border-blue-200"   },
+//     { icon: Bus,        title: "Smart Transport",        desc: "GPS-tracked, climate-controlled fleet covering 32 routes with real-time parent notifications.",  stat: "32 Routes",    accent: "text-cyan-600",   iconBg: "bg-cyan-100",   border: "border-cyan-200"   },
 //   ];
 //   return (
-//     <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-800 relative overflow-hidden">
+//     <section className="py-24 bg-white relative overflow-hidden">
 //       <div className="mx-auto max-w-7xl px-6 relative">
 //         <div className="text-center mb-14">
-//           <SectionLabel label="Why Rochas Foundation" />
+//           <SectionLabel label="Why Rochas Foundation" light={false} />
 //           <FadeUp>
-//             <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
-//               Built for the world your<br /><em className="not-italic text-blue-300">children will inherit.</em>
+//             <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-800">
+//               Built for the world your<br /><em className="not-italic text-blue-600">children will inherit.</em>
 //             </h2>
 //           </FadeUp>
 //         </div>
@@ -886,15 +875,15 @@
 //             const Icon = f.icon;
 //             return (
 //               <motion.div key={f.title} variants={staggerItem}
-//                 className={`group relative rounded-2xl bg-blue-800/40 border ${f.border} p-6 hover:-translate-y-1 transition-all duration-300`}>
+//                 className={`group relative rounded-2xl bg-white border ${f.border} p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}>
 //                 <div className={`h-11 w-11 rounded-xl ${f.iconBg} flex items-center justify-center mb-5`}>
 //                   <Icon className={`h-5 w-5 ${f.accent}`} />
 //                 </div>
-//                 <h3 className="font-display font-bold text-xl text-white mb-2">{f.title}</h3>
-//                 <p className="text-sm text-blue-200/55 leading-relaxed">{f.desc}</p>
-//                 <div className="mt-5 pt-4 border-t border-blue-700/50 flex items-center justify-between">
+//                 <h3 className="font-display font-bold text-xl text-slate-800 mb-2">{f.title}</h3>
+//                 <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
+//                 <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
 //                   <span className={`text-xs font-medium uppercase tracking-wider ${f.accent}`}>{f.stat}</span>
-//                   <ArrowUpRight className={`h-4 w-4 text-blue-500 group-hover:${f.accent} transition-colors`} />
+//                   <ArrowUpRight className={`h-4 w-4 text-slate-300 group-hover:${f.accent} transition-colors`} />
 //                 </div>
 //               </motion.div>
 //             );
@@ -905,7 +894,7 @@
 //   );
 // }
 
-// /* ══════════════════════════════════════════════════ STATS */
+// /* ══════════════════════════════════════════════════ STATS - Blue */
 // function AnimCounter({ to, suffix = "" }) {
 //   const [n, setN] = useState(0);
 //   const ref = useRef(null);
@@ -937,10 +926,10 @@
 //     { v: 100, s: "%", l: "Certified Faculty",      d: "75% hold a Masters or PhD degree", img: IMGS.library },
 //   ];
 //   return (
-//     <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-700">
+//     <section className="py-24 bg-gradient-to-b from-blue-800 to-blue-700">
 //       <div className="mx-auto max-w-7xl px-6">
 //         <div className="text-center mb-14">
-//           <SectionLabel label="By The Numbers" />
+//           <SectionLabel label="By The Numbers" light={true} />
 //           <FadeUp>
 //             <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
 //               A community that <em className="not-italic text-blue-300">performs.</em>
@@ -971,7 +960,7 @@
 //   );
 // }
 
-// /* ══════════════════════════════════════════════════ EVENTS */
+// /* ══════════════════════════════════════════════════ EVENTS - White */
 // function Countdown({ target }) {
 //   const [t, setT] = useState(() => Math.max(0, target.getTime() - Date.now()));
 //   useEffect(() => {
@@ -982,9 +971,9 @@
 //   return (
 //     <div className="flex gap-2">
 //       {[{v:d,l:"Days"},{v:h,l:"Hrs"},{v:m,l:"Min"},{v:sc,l:"Sec"}].map((u) => (
-//         <div key={u.l} className="rounded-xl bg-blue-800/70 border border-blue-600/40 px-3 py-2 min-w-[54px] text-center">
-//           <div className="font-display font-bold text-2xl text-blue-300 leading-none">{String(u.v).padStart(2,"0")}</div>
-//           <div className="text-[9px] uppercase tracking-widest text-blue-400/60 mt-1">{u.l}</div>
+//         <div key={u.l} className="rounded-xl bg-slate-100 border border-slate-200 px-3 py-2 min-w-[54px] text-center">
+//           <div className="font-display font-bold text-2xl text-blue-600 leading-none">{String(u.v).padStart(2,"0")}</div>
+//           <div className="text-[9px] uppercase tracking-widest text-slate-500 mt-1">{u.l}</div>
 //         </div>
 //       ))}
 //     </div>
@@ -995,10 +984,10 @@
 //   const [filter, setFilter] = useState("All");
 //   const cats = ["All","Academic","Sports","Arts","Community"];
 //   const catStyle = {
-//     Academic:  { bar:"bg-blue-400",    badge:"bg-blue-700/60 text-blue-300 border-blue-600/40"       },
-//     Sports:    { bar:"bg-sky-400",     badge:"bg-sky-700/60 text-sky-300 border-sky-600/40"          },
-//     Arts:      { bar:"bg-purple-400",  badge:"bg-purple-700/60 text-purple-300 border-purple-600/40" },
-//     Community: { bar:"bg-emerald-400", badge:"bg-emerald-700/60 text-emerald-300 border-emerald-600/40"},
+//     Academic:  { bar:"bg-blue-500",    badge:"bg-blue-100 text-blue-700 border-blue-200"       },
+//     Sports:    { bar:"bg-sky-500",     badge:"bg-sky-100 text-sky-700 border-sky-200"          },
+//     Arts:      { bar:"bg-purple-500",  badge:"bg-purple-100 text-purple-700 border-purple-200" },
+//     Community: { bar:"bg-emerald-500", badge:"bg-emerald-100 text-emerald-700 border-emerald-200"},
 //   };
 //   const events = [
 //     { d:"MAY 18", t:"Spring Arts Showcase",      c:"Arts",      img:IMGS.arts,     desc:"Annual celebration of student creativity across all disciplines." },
@@ -1010,35 +999,35 @@
 //   ];
 //   const filtered = filter === "All" ? events : events.filter(e => e.c === filter);
 //   return (
-//     <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-800">
+//     <section className="py-24 bg-white">
 //       <div className="mx-auto max-w-7xl px-6">
 //         <div className="grid lg:grid-cols-3 gap-8 items-end mb-10">
 //           <div className="lg:col-span-2">
-//             <SectionLabel label="News & Events" />
+//             <SectionLabel label="News & Events" light={false} />
 //             <FadeUp>
-//               <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
-//                 What's happening<br /><em className="not-italic text-blue-300">on campus.</em>
+//               <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-800">
+//                 What's happening<br /><em className="not-italic text-blue-600">on campus.</em>
 //               </h2>
 //             </FadeUp>
 //           </div>
-//           {/* <FadeFrom dir="right">
-//             <div className="rounded-2xl bg-blue-700/60 border border-blue-600/40 p-6">
-//               <p className="text-[10px] uppercase tracking-widest text-blue-300/70 font-medium mb-2">Next Major Event</p>
-//               <p className="font-display font-bold text-white text-lg mb-4">Open House · June 14</p>
+//           <FadeFrom dir="right">
+//             <div className="rounded-2xl bg-slate-50 border border-slate-200 p-6">
+//               <p className="text-[10px] uppercase tracking-widest text-slate-500 font-medium mb-2">Next Major Event</p>
+//               <p className="font-display font-bold text-slate-800 text-lg mb-4">Open House · June 14</p>
 //               <Countdown target={new Date(Date.now() + 1000 * 60 * 60 * 24 * 12)} />
 //             </div>
-//           </FadeFrom> */}
+//           </FadeFrom>
 //         </div>
 //         <FadeUp delay={0.1} className="flex items-center flex-wrap gap-3 mb-8">
 //           <div className="relative flex-1 min-w-[200px] max-w-sm">
-//             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-400/60" />
+//             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
 //             <input placeholder="Search events…"
-//               className="w-full rounded-xl bg-blue-700/50 border border-blue-600/40 pl-9 pr-3 py-2.5 text-sm text-blue-100 placeholder:text-blue-400/50 outline-none focus:border-blue-400/60 transition" />
+//               className="w-full rounded-xl bg-slate-50 border border-slate-200 pl-9 pr-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 outline-none focus:border-blue-400 transition" />
 //           </div>
 //           <div className="flex gap-2 flex-wrap">
 //             {cats.map(c => (
 //               <button key={c} onClick={() => setFilter(c)}
-//                 className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${filter===c?"bg-blue-500 text-white":"bg-blue-800/50 border border-blue-600/40 text-blue-300/70 hover:text-blue-200 hover:border-blue-500/50"}`}>
+//                 className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${filter===c?"bg-blue-600 text-white":"bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200"}`}>
 //                 {c}
 //               </button>
 //             ))}
@@ -1052,19 +1041,19 @@
 //                 <motion.article key={e.t}
 //                   initial={{ opacity: 0, scale: 0.95, y: 24 }} animate={{ opacity: 1, scale: 1, y: 0 }}
 //                   exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.35, delay: i * 0.05 }}
-//                   className="group rounded-2xl overflow-hidden bg-blue-800/40 border border-blue-700/40 hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+//                   className="group rounded-2xl overflow-hidden bg-white border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
 //                   <div className="aspect-[16/9] relative overflow-hidden">
 //                     <img src={e.img} alt={e.t}
-//                       className="h-full w-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-95 transition-all duration-500" />
-//                     <div className="absolute inset-0 bg-gradient-to-t from-blue-900/70 to-transparent" />
+//                       className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" />
+//                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
 //                     <div className="absolute top-3 left-3 rounded-lg bg-blue-600 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">{e.d}</div>
 //                     <span className={`absolute top-3 right-3 rounded-full border text-[10px] font-medium px-2.5 py-0.5 ${cs.badge}`}>{e.c}</span>
 //                   </div>
 //                   <div className="p-5">
 //                     <div className={`h-px w-8 ${cs.bar} mb-3`} />
-//                     <h3 className="font-display font-bold text-lg text-white group-hover:text-blue-300 transition-colors mb-2">{e.t}</h3>
-//                     <p className="text-sm text-blue-300/55 leading-relaxed mb-4">{e.desc}</p>
-//                     <button className="inline-flex items-center gap-1 text-xs font-semibold text-blue-400 hover:text-blue-300 hover:gap-2 transition-all">
+//                     <h3 className="font-display font-bold text-lg text-slate-800 group-hover:text-blue-600 transition-colors mb-2">{e.t}</h3>
+//                     <p className="text-sm text-slate-500 leading-relaxed mb-4">{e.desc}</p>
+//                     <button className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 hover:gap-2 transition-all">
 //                       View Details <ChevronRight className="h-3.5 w-3.5" />
 //                     </button>
 //                   </div>
@@ -1078,7 +1067,7 @@
 //   );
 // }
 
-// /* ══════════════════════════════════════════════════ PORTAL */
+// /* ══════════════════════════════════════════════════ PORTAL - Blue */
 // function Portal() {
 //   const items = [
 //     { icon: User,            label: "Student Portal",  sub: "Grades & assignments", accent:"text-blue-300",   bg:"bg-blue-700/50",   border:"border-blue-600/40"   },
@@ -1094,7 +1083,7 @@
 //     <section className="py-24 bg-gradient-to-b from-blue-800 to-blue-700">
 //       <div className="mx-auto max-w-7xl px-6">
 //         <div className="text-center mb-14">
-//           <SectionLabel label="Quick Access" />
+//           <SectionLabel label="Quick Access" light={true} />
 //           <FadeUp>
 //             <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
 //               Your school. <em className="not-italic text-blue-300">One dashboard.</em>
@@ -1124,7 +1113,7 @@
 //   );
 // }
 
-// /* ══════════════════════════════════════════════════ ACADEMICS */
+// /* ══════════════════════════════════════════════════ ACADEMICS - White */
 // function Academics() {
 //   const [active, setActive] = useState(0);
 //   const tabs = ["Junior School","Senior School","STEM","Arts","ICT"];
@@ -1136,20 +1125,20 @@
 //     { title:"ICT & Digital Literacy",          badge:"Future-Ready",desc:"Cyber-security, ethical AI, data science and game development. Every student graduates fluent in computational thinking.",                                  bullets:["1:1 device programme","Capture-the-flag league","Esports varsity team","Ethics-of-AI seminar"],                                     img:IMGS.lab2,     icon:Cpu           },
 //   ];
 //   return (
-//     <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-800">
+//     <section className="py-24 bg-white">
 //       <div className="mx-auto max-w-7xl px-6">
 //         <div className="text-center mb-12">
-//           <SectionLabel label="Academics" />
+//           <SectionLabel label="Academics" light={false} />
 //           <FadeUp>
-//             <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
-//               A curriculum <em className="not-italic text-blue-300">without ceilings.</em>
+//             <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-800">
+//               A curriculum <em className="not-italic text-blue-600">without ceilings.</em>
 //             </h2>
 //           </FadeUp>
 //         </div>
 //         <FadeUp delay={0.1} className="flex flex-wrap justify-center gap-2 mb-10">
 //           {tabs.map((t, i) => (
 //             <button key={t} onClick={() => setActive(i)}
-//               className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${active===i?"bg-blue-600 text-white":"bg-blue-700/50 border border-blue-600/40 text-blue-300/70 hover:text-blue-200 hover:border-blue-500/40"}`}>
+//               className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${active===i?"bg-blue-600 text-white":"bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200"}`}>
 //               {t}
 //             </button>
 //           ))}
@@ -1158,16 +1147,16 @@
 //           <motion.div key={active}
 //             initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
 //             transition={{ duration: 0.35 }}
-//             className="grid lg:grid-cols-2 gap-10 items-center bg-blue-700/30 border border-blue-600/40 rounded-3xl p-8">
+//             className="grid lg:grid-cols-2 gap-10 items-center bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
 //             <div>
-//               <span className="inline-block rounded-full bg-blue-700/40 border border-blue-600/40 text-blue-300 text-xs font-medium px-3 py-1 tracking-wider uppercase mb-5">{data[active].badge}</span>
-//               <h3 className="font-display font-bold text-2xl md:text-3xl text-white mb-4 leading-snug">{data[active].title}</h3>
-//               <p className="text-sm text-blue-200/60 leading-relaxed mb-6">{data[active].desc}</p>
+//               <span className="inline-block rounded-full bg-blue-100 border border-blue-200 text-blue-700 text-xs font-medium px-3 py-1 tracking-wider uppercase mb-5">{data[active].badge}</span>
+//               <h3 className="font-display font-bold text-2xl md:text-3xl text-slate-800 mb-4 leading-snug">{data[active].title}</h3>
+//               <p className="text-sm text-slate-600 leading-relaxed mb-6">{data[active].desc}</p>
 //               <ul className="space-y-3 mb-8">
 //                 {data[active].bullets.map((b, bi) => (
 //                   <motion.li key={b} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: bi * 0.07 }}
-//                     className="flex items-start gap-3 text-sm text-blue-200/65">
-//                     <CheckCircle2 className="h-4 w-4 text-blue-400 flex-shrink-0 mt-0.5" />{b}
+//                     className="flex items-start gap-3 text-sm text-slate-600">
+//                     <CheckCircle2 className="h-4 w-4 text-blue-500 flex-shrink-0 mt-0.5" />{b}
 //                   </motion.li>
 //                 ))}
 //               </ul>
@@ -1176,10 +1165,10 @@
 //               </button>
 //             </div>
 //             <div className="aspect-[4/3] rounded-2xl overflow-hidden relative">
-//               <img src={data[active].img} alt={data[active].title} className="h-full w-full object-cover opacity-80" />
-//               <div className="absolute inset-0 bg-gradient-to-t from-blue-900/60 to-transparent" />
-//               <div className="absolute bottom-5 left-5 bg-blue-700/80 backdrop-blur-sm border border-blue-600/40 rounded-xl p-3">
-//                 {(() => { const I = data[active].icon; return <I className="h-6 w-6 text-blue-200" />; })()}
+//               <img src={data[active].img} alt={data[active].title} className="h-full w-full object-cover" />
+//               <div className="absolute inset-0 bg-gradient-to-t from-white/60 to-transparent" />
+//               <div className="absolute bottom-5 left-5 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl p-3 shadow-lg">
+//                 {(() => { const I = data[active].icon; return <I className="h-6 w-6 text-blue-600" />; })()}
 //               </div>
 //             </div>
 //           </motion.div>
@@ -1189,7 +1178,7 @@
 //   );
 // }
 
-// /* ══════════════════════════════════════════════════ TESTIMONIALS */
+// /* ══════════════════════════════════════════════════ TESTIMONIALS - Blue */
 // function Testimonials() {
 //   const [active, setActive] = useState(0);
 //   const items = [
@@ -1199,10 +1188,10 @@
 //     { name:"Dr. Priya Sharma",  role:"Parent · Surgeon",             quote:"The teacher mentorship is unlike anywhere I've seen. My daughter has weekly 1:1 time with her advisor — and it shows.", img:IMGS.library },
 //   ];
 //   return (
-//     <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-700">
+//     <section className="py-24 bg-gradient-to-b from-blue-800 to-blue-700">
 //       <div className="mx-auto max-w-7xl px-6">
 //         <div className="text-center mb-14">
-//           <SectionLabel label="Voices of Rochas Foundation" />
+//           <SectionLabel label="Voices of Rochas Foundation" light={true} />
 //           <FadeUp>
 //             <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
 //               Loved by students.<br /><em className="not-italic text-blue-300">Trusted by families.</em>
@@ -1236,7 +1225,7 @@
 //   );
 // }
 
-// /* ══════════════════════════════════════════════════ GALLERY */
+// /* ══════════════════════════════════════════════════ GALLERY - White */
 // function Gallery() {
 //   const [open, setOpen] = useState(null);
 //   const photos = [
@@ -1248,13 +1237,13 @@
 //     { src:IMGS.students, label:"Student Life"    },
 //   ];
 //   return (
-//     <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-800">
+//     <section className="py-24 bg-white">
 //       <div className="mx-auto max-w-7xl px-6">
 //         <div className="text-center mb-14">
-//           <SectionLabel label="Life at Rochas Foundation" />
+//           <SectionLabel label="Life at Rochas Foundation" light={false} />
 //           <FadeUp>
-//             <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
-//               Inside <em className="not-italic text-blue-300">our world.</em>
+//             <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-800">
+//               Inside <em className="not-italic text-blue-600">our world.</em>
 //             </h2>
 //           </FadeUp>
 //         </div>
@@ -1264,13 +1253,13 @@
 //               hidden:  { opacity: 0, scale: 0.9 },
 //               visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: [0.22,1,0.36,1] } },
 //             }} onClick={() => setOpen(photo.src)}
-//               className={`group relative overflow-hidden rounded-2xl border border-blue-700/30 ${i===0?"md:col-span-2 md:row-span-2":""}`}>
+//               className={`group relative overflow-hidden rounded-2xl border border-slate-200 ${i===0?"md:col-span-2 md:row-span-2":""}`}>
 //               <div className={`${i===0?"aspect-[16/10]":"aspect-square"} overflow-hidden`}>
 //                 <img src={photo.src} alt={photo.label}
-//                   className="h-full w-full object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500" />
-//                 <div className="absolute inset-0 bg-gradient-to-t from-blue-700/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
+//                   className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" />
+//                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
 //                 <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition duration-300">
-//                   <p className="text-[10px] text-blue-300 uppercase tracking-wider font-medium">View</p>
+//                   <p className="text-[10px] text-blue-400 uppercase tracking-wider font-medium">View</p>
 //                   <p className="text-white font-semibold text-sm">{photo.label}</p>
 //                 </div>
 //               </div>
@@ -1282,7 +1271,7 @@
 //         {open && (
 //           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
 //             onClick={() => setOpen(null)}
-//             className="fixed inset-0 z-[200] bg-blue-900/96 backdrop-blur-sm flex items-center justify-center p-4">
+//             className="fixed inset-0 z-[200] bg-slate-900/95 backdrop-blur-sm flex items-center justify-center p-4">
 //             <motion.img initial={{ scale: 0.88, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.88, opacity: 0 }}
 //               transition={{ ease: [0.22,1,0.36,1], duration: 0.4 }}
 //               src={open} alt="" className="max-h-[90vh] max-w-full rounded-2xl" />
@@ -1293,19 +1282,19 @@
 //   );
 // }
 
-// /* ══════════════════════════════════════════════════ VIRTUAL TOUR */
+// /* ══════════════════════════════════════════════════ VIRTUAL TOUR - Blue */
 // function VirtualTour() {
 //   const sectionRef = useRef(null);
 //   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
 //   const bgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 //   return (
-//     <section ref={sectionRef} className="py-24 bg-gradient-to-b from-blue-700 to-blue-700">
+//     <section ref={sectionRef} className="py-24 bg-gradient-to-b from-blue-800 to-blue-700">
 //       <div className="mx-auto max-w-7xl px-6">
-//         <div className="relative rounded-3xl overflow-hidden bg-blue-700/40 border border-blue-700/40 p-10 md:p-16">
+//         <div className="relative rounded-3xl overflow-hidden bg-blue-700/40 border border-blue-600/40 p-10 md:p-16">
 //           <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage:"linear-gradient(#93c5fd 1px,transparent 1px),linear-gradient(90deg,#93c5fd 1px,transparent 1px)", backgroundSize:"50px 50px" }} />
 //           <div className="relative grid lg:grid-cols-2 gap-12 items-center">
 //             <div>
-//               <SectionLabel label="360° Experience" />
+//               <SectionLabel label="360° Experience" light={true} />
 //               <FadeUp>
 //                 <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-5">
 //                   Step inside<br /><em className="not-italic text-blue-300">Rochas Foundation.</em>
@@ -1341,14 +1330,14 @@
 //   );
 // }
 
-// /* ══════════════════════════════════════════════════ NEWSLETTER */
+// /* ══════════════════════════════════════════════════ NEWSLETTER - Blue */
 // function Newsletter() {
 //   const [done, setDone] = useState(false);
 //   const [email, setEmail] = useState("");
 //   const ref = useRef(null);
 //   const inView = useInView(ref, { once: false, margin: '-60px 0px', amount: 0.3 });
 //   return (
-//     <section className="py-24 bg-gradient-to-b from-blue-700 to-blue-600">
+//     <section className="py-24 bg-gradient-to-b from-blue-800 to-blue-700">
 //       <div className="mx-auto max-w-2xl px-6">
 //         <motion.div ref={ref}
 //           initial={{ opacity: 0, scale: 0.94, y: 32 }}
@@ -1395,7 +1384,7 @@
 //       <Hero />
 //       <Ticker />
 //       <Principal />
-//       <LeadershipShowcase />  {/* Changed from LeadershipCircle */}
+//       <LeadershipShowcase />
 //       <WhyChoose />
 //       <Stats />
 //       <Events />
@@ -1408,105 +1397,6 @@
 //     </>
 //   );
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1734,11 +1624,39 @@ const IMGS = {
   students:  "/images/students.jpg",
   grad:      "/images/grad.jpg",
   lab2:      "/images/lab2.jpg",
+  texture:   "/images/texture.jpg",
 };
 
 const CUSTOM_HERO_IMAGE = "";
 const HERO_BG = CUSTOM_HERO_IMAGE || IMGS.hero;
 const NAV_H = 64;
+
+/* ══════════════════════════════════════════════════
+   GLOBAL STYLES — smooth scroll (respecting reduced motion)
+══════════════════════════════════════════════════ */
+function GlobalStyles() {
+  return (
+    <style>{`
+      html {
+        scroll-behavior: smooth;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+      }
+      /* Portrait framing helper — keeps faces centered & visible
+         regardless of container aspect ratio. Adjust object-position
+         per-image if a particular photo needs different framing. */
+      .portrait-fill {
+        object-fit: cover;
+        object-position: 50% 22%;
+      }
+      .portrait-fill-tight {
+        object-fit: cover;
+        object-position: 50% 18%;
+      }
+    `}</style>
+  );
+}
 
 /* ══════════════════════════════════════════════════
    SHARED SCROLL ANIMATION PRIMITIVES
@@ -2010,7 +1928,7 @@ function FounderModal({ onClose }) {
             </button>
             <div className="relative flex items-center gap-4">
               <div className="h-16 w-16 rounded-2xl overflow-hidden ring-2 ring-blue-400/50 flex-shrink-0">
-                <img src={IMGS.founder} alt="Chief Rochas Okorocha" className="h-full w-full object-cover" />
+                <img src={IMGS.founder} alt="Chief Rochas Okorocha" className="h-full w-full portrait-fill" />
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-blue-300/80 font-medium mb-1">founder</p>
@@ -2070,7 +1988,7 @@ function PrincipalModal({ onClose }) {
             </button>
             <div className="relative flex items-center gap-4">
               <div className="h-16 w-16 rounded-2xl overflow-hidden ring-2 ring-blue-400/50 flex-shrink-0">
-                <img src={IMGS.principal} alt="Dr. Ifeoma Bernice" className="h-full w-full object-cover" />
+                <img src={IMGS.principal} alt="Dr. Ifeoma Bernice" className="h-full w-full portrait-fill" />
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-blue-300/80 font-medium mb-1">principal</p>
@@ -2131,7 +2049,7 @@ function AdminModal({ onClose }) {
             </button>
             <div className="relative flex items-center gap-4">
               <div className="h-16 w-16 rounded-2xl overflow-hidden ring-2 ring-blue-400/50 flex-shrink-0">
-                <img src={IMGS.admin} alt="Mr. Emeka Okafor" className="h-full w-full object-cover" />
+                <img src={IMGS.admin} alt="Mr. Emeka Okafor" className="h-full w-full portrait-fill" />
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-blue-300/80 font-medium mb-1">administrator</p>
@@ -2163,6 +2081,9 @@ function AdminModal({ onClose }) {
 
 /* ══════════════════════════════════════════════════
    LEADERSHIP SHOWCASE 5.0 - Premium Version
+   (image framing fixed: faces are now reliably centered
+   using a fixed-height, vertically-centered wrapper with
+   tuned object-position on every portrait)
 ══════════════════════════════════════════════════ */
 function LeadershipShowcase() {
   const [openFounder, setOpenFounder] = useState(false);
@@ -2175,7 +2096,7 @@ function LeadershipShowcase() {
   });
   const founderY = useTransform(scrollYProgress, [0, 1], [20, -20]);
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [hoveredCard, setHoveredCard] = useState(null);
 
   const stars = Array.from({ length: 80 }, (_, i) => ({
     id: i,
@@ -2333,15 +2254,15 @@ function LeadershipShowcase() {
               />
 
               <div className="grid md:grid-cols-2">
-                {/* Image - Perfectly Centered */}
-                <div className="relative h-[500px] overflow-hidden flex items-center justify-center">
+                {/* Image — fixed height wrapper, face kept in upper-middle band */}
+                <div className="relative h-[500px] overflow-hidden bg-blue-950">
                   <img
                     src={IMGS.founder}
                     alt="Chief Rochas Okorocha"
-                    className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105"
+                    className="absolute inset-0 h-full w-full portrait-fill transition-transform duration-1000 ease-out group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900 via-blue-900/40 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-900/30" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900 via-blue-900/35 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-900/25" />
                   <motion.div
                     animate={{ y: [0, -8, 0] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -2429,33 +2350,32 @@ function LeadershipShowcase() {
           </div>
         </FadeUp>
 
-        {/* Principal & Admin Cards - Perfectly Centered Images */}
+        {/* Principal & Admin Cards — fixed height image wrapper, face centered */}
         <div className="grid gap-8 md:grid-cols-2 mt-4">
           {leaders.map((leader, idx) => (
             <motion.div
               key={leader.name}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: idx * 0.15 }}
               viewport={{ once: true }}
               whileHover={{ rotateX: 4, rotateY: 8, scale: 1.02 }}
               style={{ transformStyle: "preserve-3d" }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 } as any}
+              transition={{ duration: 0.55, delay: idx * 0.15 }}
               className="group relative overflow-hidden rounded-3xl border border-blue-500/20 bg-blue-800/30 backdrop-blur-md cursor-pointer hover:border-blue-400/40 hover:shadow-[0_30px_80px_rgba(37,99,235,0.3)] transition-all duration-500"
               onMouseEnter={() => setHoveredCard(idx)}
               onMouseLeave={() => setHoveredCard(null)}
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
 
-              {/* Image - Perfectly Centered */}
-              <div className="h-[340px] overflow-hidden relative flex items-center justify-center">
+              {/* Image — fixed height, face kept centered via object-position */}
+              <div className="h-[340px] overflow-hidden relative bg-blue-950">
                 <img
                   src={leader.image}
                   alt={leader.name}
-                  className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out"
+                  className="absolute inset-0 h-full w-full portrait-fill transition-transform duration-700 ease-out"
                   style={{ transform: hoveredCard === idx ? 'scale(1.07)' : 'scale(1)' }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900 via-blue-900/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900 via-blue-900/35 to-transparent" />
                 <div className="absolute bottom-4 left-5 z-10">
                   <span className="inline-block rounded-full bg-blue-600/50 backdrop-blur-sm border border-blue-400/30 text-blue-200 text-[10px] font-semibold uppercase tracking-widest px-3 py-1">
                     {leader.role}
@@ -2513,16 +2433,16 @@ function Principal() {
   const [open, setOpen] = useState(false);
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
-  const imgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const imgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
   return (
     <section ref={sectionRef} className="py-24 bg-white overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-16 items-center">
         <FadeFrom dir="left" className="relative flex justify-center">
           <div className="absolute top-5 left-5 right-[-20px] bottom-[-20px] rounded-3xl border border-blue-200 pointer-events-none" />
-          <div className="relative w-full max-w-[400px] aspect-[3/4] rounded-3xl overflow-hidden">
+          <div className="relative w-full max-w-[400px] aspect-[3/4] rounded-3xl overflow-hidden bg-slate-100">
             <motion.img src={IMGS.principal} alt="Dr. Ifeoma Bernice"
               style={{ y: imgY }}
-              className="h-[115%] w-full object-cover absolute inset-0 -top-[7.5%]" />
+              className="absolute inset-0 h-[112%] w-full portrait-fill -top-[6%]" />
             <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent" />
             <div className="absolute bottom-5 left-5 right-5 bg-white/90 backdrop-blur-sm border border-blue-200 rounded-2xl p-4 shadow-lg">
               <p className="text-[10px] uppercase tracking-widest text-blue-600 font-medium mb-1">Head of School</p>
@@ -2557,7 +2477,7 @@ function Principal() {
   );
 }
 
-/* ══════════════════════════════════════════════════ WHY CHOOSE - White */
+/* ══════════════════════════════════════════════════ WHY CHOOSE - subtle background texture */
 function WhyChoose() {
   const features = [
     { icon: Microscope, title: "STEM Innovation Labs",  desc: "12 cutting-edge labs for robotics, AI, biotech, and aerospace led by scientists-in-residence.", stat: "12 Labs",       accent: "text-blue-600",   iconBg: "bg-blue-100",   border: "border-blue-200"   },
@@ -2568,7 +2488,14 @@ function WhyChoose() {
     { icon: Bus,        title: "Smart Transport",        desc: "GPS-tracked, climate-controlled fleet covering 32 routes with real-time parent notifications.",  stat: "32 Routes",    accent: "text-cyan-600",   iconBg: "bg-cyan-100",   border: "border-cyan-200"   },
   ];
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-24 bg-slate-50 relative overflow-hidden">
+      {/* subtle dotted background texture */}
+      <div className="absolute inset-0 opacity-[0.4] pointer-events-none" style={{
+        backgroundImage: "radial-gradient(circle, #cbd5e1 1px, transparent 1px)",
+        backgroundSize: "28px 28px",
+      }} />
+      <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-blue-100/60 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-sky-100/60 blur-3xl pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 relative">
         <div className="text-center mb-14">
           <SectionLabel label="Why Rochas Foundation" light={false} />
@@ -2668,7 +2595,7 @@ function Stats() {
   );
 }
 
-/* ══════════════════════════════════════════════════ EVENTS - White */
+/* ══════════════════════════════════════════════════ EVENTS - with backdrop image */
 function Countdown({ target }) {
   const [t, setT] = useState(() => Math.max(0, target.getTime() - Date.now()));
   useEffect(() => {
@@ -2707,8 +2634,13 @@ function Events() {
   ];
   const filtered = filter === "All" ? events : events.filter(e => e.c === filter);
   return (
-    <section className="py-24 bg-white">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="py-24 bg-white relative overflow-hidden">
+      {/* faint campus backdrop image, kept subtle so content stays readable */}
+      <div className="absolute inset-0 pointer-events-none">
+        <img src={IMGS.campus} alt="" className="h-full w-full object-cover opacity-[0.04]" />
+        <div className="absolute inset-0 bg-white/60" />
+      </div>
+      <div className="mx-auto max-w-7xl px-6 relative">
         <div className="grid lg:grid-cols-3 gap-8 items-end mb-10">
           <div className="lg:col-span-2">
             <SectionLabel label="News & Events" light={false} />
@@ -2821,7 +2753,7 @@ function Portal() {
   );
 }
 
-/* ══════════════════════════════════════════════════ ACADEMICS - White */
+/* ══════════════════════════════════════════════════ ACADEMICS - with soft background pattern */
 function Academics() {
   const [active, setActive] = useState(0);
   const tabs = ["Junior School","Senior School","STEM","Arts","ICT"];
@@ -2833,8 +2765,13 @@ function Academics() {
     { title:"ICT & Digital Literacy",          badge:"Future-Ready",desc:"Cyber-security, ethical AI, data science and game development. Every student graduates fluent in computational thinking.",                                  bullets:["1:1 device programme","Capture-the-flag league","Esports varsity team","Ethics-of-AI seminar"],                                     img:IMGS.lab2,     icon:Cpu           },
   ];
   return (
-    <section className="py-24 bg-white">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="py-24 bg-blue-50/40 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.5] pointer-events-none" style={{
+        backgroundImage: "linear-gradient(#dbeafe 1px,transparent 1px),linear-gradient(90deg,#dbeafe 1px,transparent 1px)",
+        backgroundSize: "44px 44px",
+      }} />
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent pointer-events-none" />
+      <div className="mx-auto max-w-7xl px-6 relative">
         <div className="text-center mb-12">
           <SectionLabel label="Academics" light={false} />
           <FadeUp>
@@ -2846,7 +2783,7 @@ function Academics() {
         <FadeUp delay={0.1} className="flex flex-wrap justify-center gap-2 mb-10">
           {tabs.map((t, i) => (
             <button key={t} onClick={() => setActive(i)}
-              className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${active===i?"bg-blue-600 text-white":"bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200"}`}>
+              className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${active===i?"bg-blue-600 text-white":"bg-white border border-slate-200 text-slate-600 hover:bg-slate-100"}`}>
               {t}
             </button>
           ))}
@@ -2918,7 +2855,7 @@ function Testimonials() {
               <p className={`font-display text-lg leading-snug italic mb-5 ${active===i?"text-white":"text-blue-100/80"}`}>"{item.quote}"</p>
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full overflow-hidden flex-shrink-0 border border-blue-600/50">
-                  <img src={item.img} alt={item.name} className="h-full w-full object-cover opacity-80" />
+                  <img src={item.img} alt={item.name} className="h-full w-full portrait-fill opacity-80" />
                 </div>
                 <div>
                   <div className={`text-sm font-semibold ${active===i?"text-white":"text-blue-100/80"}`}>{item.name}</div>
@@ -3089,6 +3026,7 @@ function Newsletter() {
 export default function Home() {
   return (
     <>
+      <GlobalStyles />
       <Hero />
       <Ticker />
       <Principal />

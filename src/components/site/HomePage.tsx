@@ -1596,7 +1596,6 @@
 
 
 
-
 import { useEffect, useRef, useState, useCallback } from "react";
 import {
   motion, useScroll, useTransform, useSpring, useInView, AnimatePresence,
@@ -1783,10 +1782,6 @@ function Hero() {
         <div className="h-full w-full bg-gradient-to-r from-blue-900/96 via-blue-900/82 to-blue-800/55" />
         <div className="absolute inset-0 bg-gradient-to-t from-blue-900/70 via-transparent to-transparent" />
       </motion.div>
-      <div className="absolute inset-0 opacity-[0.035]" style={{
-        backgroundImage: "linear-gradient(#93c5fd 1px,transparent 1px),linear-gradient(90deg,#93c5fd 1px,transparent 1px)",
-        backgroundSize: "56px 56px",
-      }} />
       <motion.div style={{ y: yContent, opacity: opacityContent }}
         className="relative mx-auto max-w-7xl px-6 w-full grid lg:grid-cols-2 gap-14 items-center py-20">
         <div>
@@ -1922,7 +1917,6 @@ function FounderModal({ onClose }) {
           onClick={e => e.stopPropagation()}
           className="bg-gradient-to-br from-blue-800 to-blue-900 border border-blue-600/40 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
           <div className="relative bg-gradient-to-br from-blue-700 to-blue-900 rounded-t-3xl p-8 pb-14 overflow-hidden">
-            <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage:"linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)", backgroundSize:"40px 40px" }} />
             <button onClick={onClose} className="absolute top-4 right-4 h-9 w-9 rounded-full bg-white/8 hover:bg-white/16 flex items-center justify-center text-white/70 hover:text-white transition">
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
             </button>
@@ -1982,7 +1976,6 @@ function PrincipalModal({ onClose }) {
           onClick={e => e.stopPropagation()}
           className="bg-gradient-to-br from-blue-800 to-blue-900 border border-blue-600/40 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
           <div className="relative bg-gradient-to-br from-blue-700 to-blue-900 rounded-t-3xl p-8 pb-14 overflow-hidden">
-            <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage:"linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)", backgroundSize:"40px 40px" }} />
             <button onClick={onClose} className="absolute top-4 right-4 h-9 w-9 rounded-full bg-white/8 hover:bg-white/16 flex items-center justify-center text-white/70 hover:text-white transition">
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
             </button>
@@ -2043,7 +2036,6 @@ function AdminModal({ onClose }) {
           onClick={e => e.stopPropagation()}
           className="bg-gradient-to-br from-blue-800 to-blue-900 border border-blue-600/40 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
           <div className="relative bg-gradient-to-br from-blue-700 to-blue-900 rounded-t-3xl p-8 pb-14 overflow-hidden">
-            <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage:"linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)", backgroundSize:"40px 40px" }} />
             <button onClick={onClose} className="absolute top-4 right-4 h-9 w-9 rounded-full bg-white/8 hover:bg-white/16 flex items-center justify-center text-white/70 hover:text-white transition">
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
             </button>
@@ -2156,15 +2148,6 @@ function LeadershipShowcase() {
         />
       </div>
 
-      {/* Grid */}
-      <div
-        className="absolute inset-0 opacity-[0.035] pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(rgba(147,197,253,.25) 1px, transparent 1px), linear-gradient(90deg, rgba(147,197,253,.25) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-        }}
-      />
-
       {/* Stars */}
       <div className="absolute inset-0 pointer-events-none">
         {stars.map((star) => (
@@ -2261,18 +2244,17 @@ function LeadershipShowcase() {
                     alt="Chief Rochas Okorocha"
                     className="absolute inset-0 h-full w-full portrait-fill transition-transform duration-1000 ease-out group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900 via-blue-900/35 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-900/25" />
+                  <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-blue-950/85 to-transparent" />
                   <motion.div
                     animate={{ y: [0, -8, 0] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-6 left-6 rounded-full bg-blue-600/40 backdrop-blur-sm px-4 py-2 border border-blue-400/30 z-10"
+                    className="absolute top-6 left-6 rounded-full bg-blue-950/55 backdrop-blur-sm px-4 py-2 border border-blue-400/30 z-10"
                   >
-                    <span className="text-xs font-semibold text-blue-200">🏆 Founder & Visionary</span>
+                    <span className="text-xs font-semibold text-blue-100">🏆 Founder & Visionary</span>
                   </motion.div>
                   <div className="absolute bottom-6 left-6 z-10">
-                    <p className="text-[10px] uppercase tracking-widest text-blue-300/70 font-medium mb-1">Founder</p>
-                    <p className="font-display font-bold text-white text-xl">Chief Rochas Okorocha</p>
+                    <p className="text-[10px] uppercase tracking-widest text-blue-200/80 font-medium mb-1">Founder</p>
+                    <p className="font-display font-bold text-white text-xl" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>Chief Rochas Okorocha</p>
                   </div>
                 </div>
 
@@ -2375,9 +2357,9 @@ function LeadershipShowcase() {
                   className="absolute inset-0 h-full w-full portrait-fill transition-transform duration-700 ease-out"
                   style={{ transform: hoveredCard === idx ? 'scale(1.07)' : 'scale(1)' }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900 via-blue-900/35 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-blue-950/90 to-transparent" />
                 <div className="absolute bottom-4 left-5 z-10">
-                  <span className="inline-block rounded-full bg-blue-600/50 backdrop-blur-sm border border-blue-400/30 text-blue-200 text-[10px] font-semibold uppercase tracking-widest px-3 py-1">
+                  <span className="inline-block rounded-full bg-blue-950/55 backdrop-blur-sm border border-blue-400/30 text-blue-100 text-[10px] font-semibold uppercase tracking-widest px-3 py-1">
                     {leader.role}
                   </span>
                 </div>
@@ -2444,7 +2426,7 @@ function Principal() {
               style={{ y: imgY }}
               className="absolute inset-0 h-[112%] w-full portrait-fill -top-[6%]" />
             <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent" />
-            <div className="absolute bottom-5 left-5 right-5 bg-white/90 backdrop-blur-sm border border-blue-200 rounded-2xl p-4 shadow-lg">
+            <div className="absolute bottom-5 left-5 right-5 bg-white/95 backdrop-blur-sm border border-blue-200 rounded-2xl p-4">
               <p className="text-[10px] uppercase tracking-widest text-blue-600 font-medium mb-1">Head of School</p>
               <p className="font-display font-bold text-slate-800 text-lg">Dr. Ifeoma Bernice</p>
               <p className="text-xs text-slate-500 mt-0.5">PhD — Harvard Graduate School of Education</p>
@@ -2489,11 +2471,6 @@ function WhyChoose() {
   ];
   return (
     <section className="py-24 bg-slate-50 relative overflow-hidden">
-      {/* subtle dotted background texture */}
-      <div className="absolute inset-0 opacity-[0.4] pointer-events-none" style={{
-        backgroundImage: "radial-gradient(circle, #cbd5e1 1px, transparent 1px)",
-        backgroundSize: "28px 28px",
-      }} />
       <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-blue-100/60 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-sky-100/60 blur-3xl pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 relative">
@@ -2510,7 +2487,7 @@ function WhyChoose() {
             const Icon = f.icon;
             return (
               <motion.div key={f.title} variants={staggerItem}
-                className={`group relative rounded-2xl bg-white border ${f.border} p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}>
+                className={`group relative rounded-2xl bg-white border ${f.border} p-6 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300`}>
                 <div className={`h-11 w-11 rounded-xl ${f.iconBg} flex items-center justify-center mb-5`}>
                   <Icon className={`h-5 w-5 ${f.accent}`} />
                 </div>
@@ -2681,7 +2658,7 @@ function Events() {
                 <motion.article key={e.t}
                   initial={{ opacity: 0, scale: 0.95, y: 24 }} animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.35, delay: i * 0.05 }}
-                  className="group rounded-2xl overflow-hidden bg-white border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                  className="group rounded-2xl overflow-hidden bg-white border border-slate-200 hover:border-blue-300 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
                   <div className="aspect-[16/9] relative overflow-hidden">
                     <img src={e.img} alt={e.t}
                       className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" />
@@ -2766,10 +2743,6 @@ function Academics() {
   ];
   return (
     <section className="py-24 bg-blue-50/40 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.5] pointer-events-none" style={{
-        backgroundImage: "linear-gradient(#dbeafe 1px,transparent 1px),linear-gradient(90deg,#dbeafe 1px,transparent 1px)",
-        backgroundSize: "44px 44px",
-      }} />
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 relative">
         <div className="text-center mb-12">
@@ -2792,7 +2765,7 @@ function Academics() {
           <motion.div key={active}
             initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.35 }}
-            className="grid lg:grid-cols-2 gap-10 items-center bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+            className="grid lg:grid-cols-2 gap-10 items-center bg-white border border-slate-200 rounded-3xl p-8">
             <div>
               <span className="inline-block rounded-full bg-blue-100 border border-blue-200 text-blue-700 text-xs font-medium px-3 py-1 tracking-wider uppercase mb-5">{data[active].badge}</span>
               <h3 className="font-display font-bold text-2xl md:text-3xl text-slate-800 mb-4 leading-snug">{data[active].title}</h3>
@@ -2812,7 +2785,7 @@ function Academics() {
             <div className="aspect-[4/3] rounded-2xl overflow-hidden relative">
               <img src={data[active].img} alt={data[active].title} className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-white/60 to-transparent" />
-              <div className="absolute bottom-5 left-5 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl p-3 shadow-lg">
+              <div className="absolute bottom-5 left-5 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl p-3">
                 {(() => { const I = data[active].icon; return <I className="h-6 w-6 text-blue-600" />; })()}
               </div>
             </div>
@@ -2936,7 +2909,6 @@ function VirtualTour() {
     <section ref={sectionRef} className="py-24 bg-gradient-to-b from-blue-800 to-blue-700">
       <div className="mx-auto max-w-7xl px-6">
         <div className="relative rounded-3xl overflow-hidden bg-blue-700/40 border border-blue-600/40 p-10 md:p-16">
-          <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage:"linear-gradient(#93c5fd 1px,transparent 1px),linear-gradient(90deg,#93c5fd 1px,transparent 1px)", backgroundSize:"50px 50px" }} />
           <div className="relative grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <SectionLabel label="360° Experience" light={true} />

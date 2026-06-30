@@ -153,7 +153,7 @@ function PageHero() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
           className="inline-flex items-center gap-2 rounded-full border border-blue-700/60 bg-blue-600/60 px-4 py-1.5 mb-6">
           <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-          <span className="text-[11px] font-medium tracking-widest uppercase text-blue-300/80">About Us</span>
+          <span className="text-[11px] font-medium tracking-widest uppercase text-white">About Us</span>
         </motion.div>
         <motion.h1 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
           className="font-display text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-[1.05] mb-6">
@@ -161,7 +161,7 @@ function PageHero() {
           <em className="not-italic text-blue-400">Africa Through Charity</em>
         </motion.h1>
         <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-base md:text-lg text-blue-200/60 max-w-2xl mx-auto leading-relaxed">
+          className="text-base md:text-lg text-white max-w-2xl mx-auto leading-relaxed">
           Founded in 2000 with a simple belief: every intelligent child deserves access to free, 
           quality education — regardless of tribe, religion, or class.
         </motion.p>
@@ -212,26 +212,26 @@ function FoundationStory() {
                 <Calendar className="h-5 w-5 text-blue-600" />
                 <span className="text-sm font-semibold text-blue-700">Founded in 2000</span>
               </div>
-              <p className="text-base text-gray-600 leading-relaxed mb-6">
+              <p className="text-base text-gray-800 leading-relaxed mb-6">
                 The Rochas Foundation is a non-governmental, non-political, and non-religious 
                 organization established to ensure that intelligent children from less privileged 
                 homes have access to free and qualitative education.
               </p>
-              <p className="text-base text-gray-600 leading-relaxed mb-6">
+              <p className="text-base text-gray-800 leading-relaxed mb-6">
                 What began as a vision to make education free and accessible to every less 
                 privileged African child has grown into a network of colleges spanning across Nigeria.
               </p>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="rounded-xl bg-white border border-blue-100 p-4 text-center">
                   <div className="text-2xl font-bold text-blue-700">21,000+</div>
-                  <div className="text-xs text-gray-500">Children Educated</div>
+                  <div className="text-xs text-gray-700">Children Educated</div>
                 </div>
                 <div className="rounded-xl bg-white border border-blue-100 p-4 text-center">
                   <div className="text-2xl font-bold text-blue-700">3,000+</div>
                   <div className="text-xs text-gray-500">Graduates & Undergraduates</div>
                 </div>
               </div>
-              <blockquote className="border-l-4 border-blue-600 pl-4 italic text-gray-600 text-sm mb-6">
+              <blockquote className="border-l-4 border-blue-600 pl-4 italic text-gray-700 text-sm mb-6">
                 "Building a new Africa through charity — providing educational shelter for 
                 the less privileged all over the world."
               </blockquote>
@@ -340,11 +340,11 @@ function CollegeNetwork() {
           <SectionLabel label="Our Campuses" light={true} />
           <FadeUp>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
-              A Growing <em className="not-italic text-blue-400">Network</em>
+              A Growing <em className="not-italic text-white">Network</em>
             </h2>
           </FadeUp>
           <FadeUp delay={0.1}>
-            <p className="text-blue-200/60 max-w-xl mx-auto mt-4">
+            <p className="text-amber-100/70 max-w-xl mx-auto mt-4">
               From Owerri in 2001 to Enugu today — our colleges span across Nigeria, 
               providing free education to thousands.
             </p>
@@ -357,15 +357,15 @@ function CollegeNetwork() {
               className="rounded-2xl bg-blue-800/40 border border-blue-600/60 p-6 text-center hover:border-blue-400/80 hover:-translate-y-1 transition-all">
               <Building2 className="h-8 w-8 text-blue-300/60 mx-auto mb-2" />
               <h3 className="font-semibold text-white text-sm">{city}</h3>
-              <p className="text-xs text-blue-300/50">Campus</p>
+              <p className="text-xs text-amber-300/50">Campus</p>
             </motion.div>
           ))}
         </StaggerList>
 
         <FadeUp className="text-center mt-10">
           <div className="inline-flex items-center gap-3 rounded-2xl bg-blue-800/60 border border-blue-600/60 px-6 py-3">
-            <School className="h-5 w-5 text-blue-300/60" />
-            <span className="text-sm text-blue-200/70">
+            <School className="h-5 w-5 text-white" />
+            <span className="text-sm text-white">
               <strong className="text-white">9+</strong> colleges across Nigeria
             </span>
           </div>

@@ -6,7 +6,7 @@ import {
   Award, Heart, Lightbulb, Globe2, Users, Target,
   Trophy, ArrowRight, CheckCircle2, GraduationCap, 
   School, MapPin, BookOpen, Sparkles, Building2,
-  Users2, Calendar, Award as AwardIcon
+  Users2, Calendar, AwardIcon, Eye
 } from "lucide-react";
 
 export const Route = createFileRoute("/about")({

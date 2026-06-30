@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from "framer-motion";
 import { Layout } from "@/components/site/Layout";
 import {
@@ -39,7 +39,37 @@ const IMGS = {
    SHARED SCROLL ANIMATION PRIMITIVES
 ══════════════════════════════════════════════════ */
 
-function FadeUp({ children, delay = 0, className = "", amount = 0.25 }) {
+// Type definitions for animation components
+interface FadeUpProps {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}
+
+interface FadeFromProps {
+  children: React.ReactNode;
+  dir?: "left" | "right" | "up" | "down";
+  delay?: number;
+  className?: string;
+}
+
+interface StaggerListProps {
+  children: React.ReactNode;
+  className?: string;
+  stagger?: number;
+}
+
+interface DrawLineProps {
+  className?: string;
+  delay?: number;
+}
+
+interface SectionLabelProps {
+  label: string;
+  light?: boolean;
+}
+
+function FadeUp({ children, delay = 0, className = "" }: FadeUpProps) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, margin: "-100px 0px", amount: 0.05 });
   return (
@@ -56,7 +86,7 @@ function FadeUp({ children, delay = 0, className = "", amount = 0.25 }) {
   );
 }
 
-function FadeFrom({ children, dir = "left", delay = 0, className = "" }) {
+function FadeFrom({ children, dir = "left", delay = 0, className = "" }: FadeFromProps) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, margin: "-100px 0px", amount: 0.05 });
   const xVal = dir === "left" ? -40 : dir === "right" ? 40 : 0;
@@ -75,7 +105,7 @@ function FadeFrom({ children, dir = "left", delay = 0, className = "" }) {
   );
 }
 
-function StaggerList({ children, className = "", stagger = 0.07, amount = 0.15 }) {
+function StaggerList({ children, className = "", stagger = 0.07 }: StaggerListProps) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, margin: "-100px 0px", amount: 0.05 });
   return (
@@ -99,7 +129,7 @@ const staggerItem = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] } },
 };
 
-function DrawLine({ className = "", delay = 0 }) {
+function DrawLine({ className = "", delay = 0 }: DrawLineProps) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, margin: "-40px 0px", amount: 0.3 });
   return (
@@ -114,7 +144,7 @@ function DrawLine({ className = "", delay = 0 }) {
   );
 }
 
-function SectionLabel({ label, light = false }) {
+function SectionLabel({ label, light = false }: SectionLabelProps) {
   return (
     <FadeFrom dir="left" className="flex items-center gap-3 mb-4">
       <DrawLine className={`h-px w-8 ${light ? "bg-blue-400" : "bg-blue-600"}`} />
@@ -124,6 +154,7 @@ function SectionLabel({ label, light = false }) {
     </FadeFrom>
   );
 }
+
 
 /* ══════════════════════════════════════════════
    PAGE HERO — parallax bg + staggered text

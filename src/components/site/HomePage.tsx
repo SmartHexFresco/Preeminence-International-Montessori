@@ -2552,9 +2552,10 @@ function Stats() {
           {stats.map((s) => (
             <motion.div key={s.l} variants={staggerItem}
               className="group relative rounded-2xl overflow-hidden border border-blue-600/40 bg-blue-800/30">
-              <div className="aspect-[3/2] overflow-hidden">
-                <img src={s.img} alt={s.l}
-                  className="h-full w-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500" />
+              <div className="aspect-[3/2] overflow-hidden relative">
+              <img src={s.img} alt={s.l}
+               className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" />
+               <div className="absolute inset-0 bg-gradient-to-t from-blue-900/70 via-blue-900/10 to-transparent" />
               </div>
               <div className="p-5">
                 <div className="font-display text-5xl font-bold text-white leading-none mb-1">

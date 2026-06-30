@@ -2784,7 +2784,6 @@ function Academics() {
             </div>
             <div className="aspect-[4/3] rounded-2xl overflow-hidden relative">
               <img src={data[active].img} alt={data[active].title} className="h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-white/60 to-transparent" />
               <div className="absolute bottom-5 left-5 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl p-3">
                 {(() => { const I = data[active].icon; return <I className="h-6 w-6 text-blue-600" />; })()}
               </div>

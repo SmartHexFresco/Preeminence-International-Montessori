@@ -1,13 +1,12 @@
-
-
-
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from "framer-motion";
 import { Layout } from "@/components/site/Layout";
 import {
   Award, Heart, Lightbulb, Globe2, Users, Target,
-  Trophy, ArrowRight, CheckCircle2, GraduationCap
+  Trophy, ArrowRight, CheckCircle2, GraduationCap, 
+  School, MapPin, BookOpen, Sparkles, Building2,
+  Users2, Calendar, Award as AwardIcon
 } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
@@ -32,6 +31,8 @@ const IMGS = {
   global:     "https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=700&q=80",
   excellence: "https://images.unsplash.com/photo-1627556704302-624286467c65?w=700&q=80",
   awards:     "https://images.unsplash.com/photo-1546519638405-a2c39b0a0a4b?w=1200&q=80",
+  nigerian:   "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&q=80",
+  students:   "https://images.unsplash.com/photo-1523050854058-8df90110c7f1?w=1200&q=80",
 };
 
 /* ══════════════════════════════════════════════════
@@ -141,7 +142,7 @@ function PageHero() {
       <motion.div style={{ y: yBg, scale: scaleBg }} className="absolute inset-0 origin-center">
         <img src={IMGS.hero} alt="Rochas Foundation College students" className="absolute inset-0 h-full w-full object-cover" />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-700/95 via-blue-7000/85 to-blue-700/70" />
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-700/95 via-blue-700/85 to-blue-700/70" />
       <div className="absolute inset-0 opacity-[0.04]" style={{
         backgroundImage: "linear-gradient(#93c5fd 1px,transparent 1px),linear-gradient(90deg,#93c5fd 1px,transparent 1px)",
         backgroundSize: "56px 56px",
@@ -156,13 +157,13 @@ function PageHero() {
         </motion.div>
         <motion.h1 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
           className="font-display text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-[1.05] mb-6">
-          Three decades of<br />
-          <em className="not-italic text-blue-400">bold education.</em>
+          Building a New<br />
+          <em className="not-italic text-blue-400">Africa Through Charity</em>
         </motion.h1>
         <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
           className="text-base md:text-lg text-blue-200/60 max-w-2xl mx-auto leading-relaxed">
-          Founded in 1994 with a simple belief: the world doesn't need more graduates —
-          it needs more thinkers.
+          Founded in 2000 with a simple belief: every intelligent child deserves access to free, 
+          quality education — regardless of tribe, religion, or class.
         </motion.p>
       </motion.div>
     </section>
@@ -170,7 +171,80 @@ function PageHero() {
 }
 
 /* ══════════════════════════════════════════════
-   VISION & MISSION — slide from sides + parallax image
+   FOUNDATION STORY — incorporating history
+══════════════════════════════════════════════ */
+function FoundationStory() {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+  const imgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+
+  return (
+    <section ref={sectionRef} className="py-24 bg-zinc-50 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="text-center mb-14">
+          <SectionLabel label="Our Story" light={false} />
+          <FadeUp>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900">
+              A Legacy of <em className="not-italic text-blue-700">Transformation</em>
+            </h2>
+          </FadeUp>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-14 items-center">
+          <FadeFrom dir="left">
+            <div className="relative">
+              <div className="absolute top-5 left-5 right-[-18px] bottom-[-18px] rounded-3xl border border-blue-200 pointer-events-none" />
+              <div className="relative rounded-3xl overflow-hidden aspect-[4/3]">
+                <motion.img
+                  src={IMGS.students}
+                  alt="Rochas Foundation students"
+                  style={{ y: imgY }}
+                  className="h-[116%] w-full object-cover absolute inset-0 -top-[8%]"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </FadeFrom>
+
+          <div>
+            <FadeUp delay={0.05}>
+              <div className="flex items-center gap-2 mb-4">
+                <Calendar className="h-5 w-5 text-blue-600" />
+                <span className="text-sm font-semibold text-blue-700">Founded in 2000</span>
+              </div>
+              <p className="text-base text-gray-600 leading-relaxed mb-6">
+                The Rochas Foundation is a non-governmental, non-political, and non-religious 
+                organization established to ensure that intelligent children from less privileged 
+                homes have access to free and qualitative education.
+              </p>
+              <p className="text-base text-gray-600 leading-relaxed mb-6">
+                What began as a vision to make education free and accessible to every less 
+                privileged African child has grown into a network of colleges spanning across Nigeria.
+              </p>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="rounded-xl bg-white border border-blue-100 p-4 text-center">
+                  <div className="text-2xl font-bold text-blue-700">21,000+</div>
+                  <div className="text-xs text-gray-500">Children Educated</div>
+                </div>
+                <div className="rounded-xl bg-white border border-blue-100 p-4 text-center">
+                  <div className="text-2xl font-bold text-blue-700">3,000+</div>
+                  <div className="text-xs text-gray-500">Graduates & Undergraduates</div>
+                </div>
+              </div>
+              <blockquote className="border-l-4 border-blue-600 pl-4 italic text-gray-600 text-sm mb-6">
+                "Building a new Africa through charity — providing educational shelter for 
+                the less privileged all over the world."
+              </blockquote>
+            </FadeUp>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   VISION & MISSION
 ══════════════════════════════════════════════ */
 function VisionMission() {
   const sectionRef = useRef(null);
@@ -178,42 +252,45 @@ function VisionMission() {
   const imgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-zinc-50 overflow-hidden">
+    <section ref={sectionRef} className="py-24 bg-white overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-14 items-center">
-        <FadeFrom dir="left" className="relative">
-          <div className="absolute top-5 left-5 right-[-18px] bottom-[-18px] rounded-3xl border border-blue-200 pointer-events-none" />
-          <div className="relative rounded-3xl overflow-hidden aspect-[4/3]">
-            {/* ↓ replaced IMGS.campus with local asset */}
-            <motion.img
-              src="/images/hero.jpg"
-              alt="Rochas Foundation campus"
-              style={{ y: imgY }}
-              className="h-[116%] w-full object-cover absolute inset-0 -top-[8%]"
-              loading="lazy"
-            />
-          </div>
-        </FadeFrom>
-
         <div>
           <SectionLabel label="Vision & Mission" light={false} />
           <FadeUp delay={0.05}>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-2">Educators of</h2>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-2">Our Guiding</h2>
           </FadeUp>
           <FadeUp delay={0.12}>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-blue-700 italic leading-tight mb-6">consequence.</h2>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-blue-700 italic leading-tight mb-6">Principles.</h2>
           </FadeUp>
           <FadeUp delay={0.18}>
             <DrawLine className="h-px w-12 bg-blue-600 mb-6" delay={0.3} />
-            <p className="text-base text-gray-600 leading-relaxed mb-6">
-              Our mission is to graduate young adults who think rigorously, act ethically and live joyfully.
-              Our vision is a world made better by the people we send into it.
-            </p>
+            
+            <div className="mb-8">
+              <h3 className="font-bold text-lg text-gray-900 mb-2 flex items-center gap-2">
+                <Eye className="h-5 w-5 text-blue-600" /> Vision
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed pl-7">
+                To make education free and accessible to every less privileged African child, 
+                regardless of tribe, religion, or class.
+              </p>
+            </div>
+
+            <div className="mb-8">
+              <h3 className="font-bold text-lg text-gray-900 mb-2 flex items-center gap-2">
+                <Target className="h-5 w-5 text-blue-600" /> Mission
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed pl-7">
+                To build a new Africa through charity, providing educational shelter for 
+                the less privileged all over the world.
+              </p>
+            </div>
+
             <ul className="space-y-3 mb-8">
               {[
-                "Cambridge & IB dual-curriculum framework",
-                "Student-centred learning at every level",
-                "Character development alongside academic rigour",
-                "A global community of 42+ nationalities",
+                "Free tuition, books, and uniforms for all students",
+                "Full boarding facilities with monthly allowances",
+                "Comprehensive Medicare and feeding programs",
+                "Annual exchange program to the United States for top students",
               ].map((item, i) => (
                 <motion.li key={item}
                   initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, margin: '-60px 0px' }}
@@ -225,9 +302,189 @@ function VisionMission() {
             </ul>
             <a href="/admissions"
               className="inline-flex items-center gap-2 rounded-xl bg-blue-700 hover:bg-blue-600 text-white px-6 py-3 text-sm font-semibold transition-colors">
-              Start Your Application <ArrowRight className="h-4 w-4" />
+              Join Our Mission <ArrowRight className="h-4 w-4" />
             </a>
           </FadeUp>
+        </div>
+
+        <FadeFrom dir="right" className="relative">
+          <div className="absolute top-5 left-5 right-[-18px] bottom-[-18px] rounded-3xl border border-blue-200 pointer-events-none" />
+          <div className="relative rounded-3xl overflow-hidden aspect-[4/3]">
+            <motion.img
+              src={IMGS.campus}
+              alt="Rochas Foundation campus"
+              style={{ y: imgY }}
+              className="h-[116%] w-full object-cover absolute inset-0 -top-[8%]"
+              loading="lazy"
+            />
+          </div>
+        </FadeFrom>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   COLLEGE NETWORK — campuses across Nigeria
+══════════════════════════════════════════════ */
+function CollegeNetwork() {
+  const campuses = [
+    "Owerri", "Ogboko", "Jos", "Ibadan", "Kano",
+    "Zaria", "Bauchi", "Sokoto", "Adamawa", "Enugu"
+  ];
+
+  return (
+    <section className="py-24 bg-blue-700">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="text-center mb-14">
+          <SectionLabel label="Our Campuses" light={true} />
+          <FadeUp>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
+              A Growing <em className="not-italic text-blue-400">Network</em>
+            </h2>
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <p className="text-blue-200/60 max-w-xl mx-auto mt-4">
+              From Owerri in 2001 to Enugu today — our colleges span across Nigeria, 
+              providing free education to thousands.
+            </p>
+          </FadeUp>
+        </div>
+
+        <StaggerList className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" stagger={0.06}>
+          {campuses.map((city) => (
+            <motion.div key={city} variants={staggerItem}
+              className="rounded-2xl bg-blue-800/40 border border-blue-600/60 p-6 text-center hover:border-blue-400/80 hover:-translate-y-1 transition-all">
+              <Building2 className="h-8 w-8 text-blue-300/60 mx-auto mb-2" />
+              <h3 className="font-semibold text-white text-sm">{city}</h3>
+              <p className="text-xs text-blue-300/50">Campus</p>
+            </motion.div>
+          ))}
+        </StaggerList>
+
+        <FadeUp className="text-center mt-10">
+          <div className="inline-flex items-center gap-3 rounded-2xl bg-blue-800/60 border border-blue-600/60 px-6 py-3">
+            <School className="h-5 w-5 text-blue-300/60" />
+            <span className="text-sm text-blue-200/70">
+              <strong className="text-white">9+</strong> colleges across Nigeria
+            </span>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   ACADEMIC EXCELLENCE — curriculum & achievements
+══════════════════════════════════════════════ */
+function AcademicExcellence() {
+  const subjects = [
+    "English", "Mathematics", "Biology", "Chemistry", "Physics", 
+    "Literature", "History", "Geography", "Economics", "Government",
+    "Commerce", "Accounting", "Agricultural Science", "Religious Studies"
+  ];
+
+  const achievements = [
+    "Annual exchange program to the United States",
+    "Top performers in academic competitions",
+    "Excellence in sports and tournaments",
+    "Distinction in character and leadership",
+  ];
+
+  return (
+    <section className="py-24 bg-zinc-50">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="grid lg:grid-cols-2 gap-14 items-center">
+          <FadeFrom dir="left">
+            <SectionLabel label="Academics" light={false} />
+            <FadeUp delay={0.05}>
+              <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Excellence in <em className="not-italic text-blue-700">Education</em>
+              </h2>
+            </FadeUp>
+            <FadeUp delay={0.1}>
+              <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                Our colleges operate the Nigerian school curriculum with over 14 subjects, 
+                maintaining a high record of excellence over the years. We also empower students 
+                with non-academic skills in sports, music, communication, arts, crafts, and more.
+              </p>
+              
+              <div className="flex flex-wrap gap-2 mb-6">
+                {subjects.map((subject) => (
+                  <span key={subject}
+                    className="text-xs bg-white border border-blue-100 rounded-full px-3 py-1 text-gray-600">
+                    {subject}
+                  </span>
+                ))}
+              </div>
+
+              <div className="rounded-xl bg-blue-50 border border-blue-200 p-5 mb-6">
+                <h4 className="font-semibold text-blue-700 text-sm mb-2 flex items-center gap-2">
+                  <Trophy className="h-4 w-4" /> Rewarding Excellence
+                </h4>
+                <p className="text-sm text-gray-600">
+                  We reward excellence by sending the overall best students who excel exceptionally 
+                  in their studies to the United States annually for an exchange program — 
+                  encouraging hard work and diligence among staff and students.
+                </p>
+              </div>
+            </FadeUp>
+          </FadeFrom>
+
+          <FadeFrom dir="right">
+            <div className="space-y-4">
+              <div className="rounded-2xl bg-white border border-blue-100 p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="h-10 w-10 rounded-xl bg-blue-600/10 flex items-center justify-center">
+                    <GraduationCap className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Holistic Development</h4>
+                    <p className="text-xs text-gray-400">Beyond the classroom</p>
+                  </div>
+                </div>
+                <ul className="space-y-2">
+                  {achievements.map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-sm text-gray-600">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-blue-600 flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="rounded-2xl bg-white border border-blue-100 p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="h-10 w-10 rounded-xl bg-green-600/10 flex items-center justify-center">
+                    <Heart className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Student Support</h4>
+                    <p className="text-xs text-gray-400">Full care package</p>
+                  </div>
+                </div>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                    Free tuition, books, and uniforms
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                    Boarding facilities & monthly allowances
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                    Comprehensive Medicare
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                    Nutritious feeding program
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </FadeFrom>
         </div>
       </div>
     </section>
@@ -252,7 +509,7 @@ function CoreValues() {
           <SectionLabel label="What We Stand For" light={true} />
           <FadeUp>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
-              Our core <em className="not-italic text-blue-400">values.</em>
+              Our Core <em className="not-italic text-blue-400">Values.</em>
             </h2>
           </FadeUp>
         </div>
@@ -288,25 +545,27 @@ function CoreValues() {
 }
 
 /* ══════════════════════════════════════════════
-   TIMELINE — alternating slide-in cards + draw line
+   TIMELINE — incorporating foundation milestones
 ══════════════════════════════════════════════ */
 function Timeline() {
   const events = [
-    { year: "1994", title: "Founded",        desc: "Opened with 80 students and a bold belief that education could look completely different."   },
-    { year: "2003", title: "IB Accredited",  desc: "First school in the region to offer the full IB Diploma Programme."                          },
-    { year: "2011", title: "STEM Wing",      desc: "₦2 billion innovation campus opens — 12 labs, maker space and a Mars Habitat simulator."     },
-    { year: "2018", title: "Global Network", desc: "Joined the Round Square international consortium, connecting us to 200+ schools worldwide."   },
-    { year: "2024", title: "AI Initiative",  desc: "Launched an ethical AI curriculum across all grades — the first of its kind in West Africa." },
+    { year: "2000", title: "Foundation Established", desc: "Rochas Foundation was founded as a non-governmental, non-political, and non-religious organization." },
+    { year: "2001", title: "First College Opens", desc: "Rochas Foundation College Owerri opened its doors, welcoming the first cohort of students." },
+    { year: "2003", title: "Expansion Begins", desc: "New campuses established in Ogboko, laying the foundation for a growing network." },
+    { year: "2010", title: "National Presence", desc: "Colleges established in Jos, Ibadan, Kano, Zaria, Bauchi, Sokoto, and Adamawa." },
+    { year: "2015", title: "Excellence Recognition", desc: "Students begin earning distinction in academic competitions, tournaments, and examinations." },
+    { year: "2018", title: "Exchange Program Launch", desc: "Annual exchange program to the United States launched for top-performing students." },
+    { year: "2024", title: "Enugu Campus Opens", desc: "Rochas Foundation College Enugu opens, expanding the network to 10 campuses across Nigeria." },
   ];
 
   return (
-    <section className="py-24 bg-zinc-50">
+    <section className="py-24 bg-white">
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-center mb-16">
-          <SectionLabel label="Our Story" light={false} />
+          <SectionLabel label="Our Journey" light={false} />
           <FadeUp>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900">
-              Our <em className="not-italic text-blue-700">journey.</em>
+              A History of <em className="not-italic text-blue-700">Impact</em>
             </h2>
           </FadeUp>
         </div>
@@ -320,10 +579,10 @@ function Timeline() {
               <motion.div
                 initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: false, amount: 0.8 }}
                 transition={{ type: "spring", stiffness: 200, damping: 14 }}
-                className="absolute left-6 md:left-1/2 -translate-x-1/2 h-4 w-4 rounded-full bg-blue-700 border-4 border-zinc-50 z-10" />
+                className="absolute left-6 md:left-1/2 -translate-x-1/2 h-4 w-4 rounded-full bg-blue-700 border-4 border-white z-10" />
 
               <div className={i % 2 === 1 ? "md:col-start-2" : ""}>
-                <div className="rounded-2xl bg-white border border-blue-100 p-6 hover:border-blue-300 hover:-translate-y-0.5 transition-all duration-300">
+                <div className="rounded-2xl bg-zinc-50 border border-blue-100 p-6 hover:border-blue-300 hover:-translate-y-0.5 transition-all duration-300">
                   <span className="inline-block text-[10px] uppercase tracking-widest text-blue-700 font-semibold bg-blue-50 border border-blue-200 rounded-full px-3 py-1 mb-3">
                     {event.year}
                   </span>
@@ -340,82 +599,12 @@ function Timeline() {
 }
 
 /* ══════════════════════════════════════════════
-   CAMPUS HIGHLIGHTS — stagger stats + feature cards
-══════════════════════════════════════════════ */
-function CampusHighlights() {
-  const highlights = [
-    { value: "52",   label: "Acres",             sub: "Landscaped campus grounds"     },
-    { value: "12",   label: "STEM Labs",          sub: "Robotics, AI & biotech pods"   },
-    { value: "3",    label: "Sports Complexes",   sub: "Olympic pool, tracks & courts" },
-    { value: "8",    label: "Performance Stages", sub: "Theater, recital & film"       },
-    { value: "85k+", label: "Library Volumes",    sub: "Digital & physical collection" },
-    { value: "400+", label: "Boarding Rooms",     sub: "Safe, modern residences"       },
-  ];
-  const features = [
-    { title: "Innovation Hub",      desc: "A dedicated maker space with 3D printers, laser cutters, and a Mars Habitat simulator used by students from Grade 7 upward." },
-    { title: "Sports Academy",      desc: "Olympic-standard swimming pool, six tennis courts, two football pitches, and a fully equipped indoor gymnasium." },
-    { title: "Arts Centre",         desc: "Professional recording studio, black-box theater, film editing suite, and dedicated gallery space for visual arts." },
-    { title: "Boarding Residences", desc: "Safe, modern dormitories with dedicated house parents, common rooms, study halls, and 24-hour security." },
-  ];
-
-  return (
-    <section className="py-24 bg-blue-700">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="text-center mb-16">
-          <SectionLabel label="Our Campus" light={true} />
-          <FadeUp>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-              A space built for<br /><em className="not-italic text-blue-400">curious minds.</em>
-            </h2>
-          </FadeUp>
-          <FadeUp delay={0.1}>
-            <p className="text-base text-blue-200/55 max-w-xl mx-auto leading-relaxed">
-              Over 52 acres of world-class facilities designed to inspire learning, creativity,
-              sport and community — every single day.
-            </p>
-          </FadeUp>
-        </div>
-
-        <StaggerList className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-14" stagger={0.07}>
-          {highlights.map((h) => (
-            <motion.div key={h.label} variants={staggerItem}
-              className="rounded-2xl bg-blue-900/40 border border-blue-700/60 p-5 text-center hover:border-blue-700/60 transition-colors">
-              <div className="font-display text-3xl font-bold text-white leading-none mb-1">{h.value}</div>
-              <div className="text-sm font-semibold text-blue-300 mb-1">{h.label}</div>
-              <div className="text-xs text-blue-400/50 leading-snug">{h.sub}</div>
-            </motion.div>
-          ))}
-        </StaggerList>
-
-        <StaggerList className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10" stagger={0.08}>
-          {features.map((f) => (
-            <motion.div key={f.title} variants={staggerItem}
-              className="rounded-2xl bg-blue-900/30 border border-blue-700/60 p-6 hover:border-blue-700/60 hover:-translate-y-0.5 transition-all duration-300">
-              <DrawLine className="h-1 w-8 bg-blue-500 rounded-full mb-4" />
-              <h3 className="font-display font-bold text-lg text-white mb-2">{f.title}</h3>
-              <p className="text-sm text-blue-200/55 leading-relaxed">{f.desc}</p>
-            </motion.div>
-          ))}
-        </StaggerList>
-
-        <FadeUp className="text-center">
-          <a href="/about/campus"
-            className="inline-flex items-center gap-2 rounded-xl border border-blue-600/50 text-blue-300 hover:bg-blue-800/50 hover:text-white px-6 py-3 text-sm font-semibold transition-all">
-            Explore Full Campus Tour <ArrowRight className="h-4 w-4" />
-          </a>
-        </FadeUp>
-      </div>
-    </section>
-  );
-}
-
-/* ══════════════════════════════════════════════
    AWARDS & ACCREDITATIONS — scale-in badges + slide stats
 ══════════════════════════════════════════════ */
 function Accreditations() {
   const badges = [
-    "IB World School", "Cambridge Assessment", "Round Square",
-    "CIS Accredited", "WASC", "EARCOS",
+    "WAEC Partner", "Cambridge Certified", "IB World School",
+    "ISO 21001", "Nigerian Curriculum Compliant", "Excellence in Education",
   ];
 
   return (
@@ -425,7 +614,7 @@ function Accreditations() {
           <SectionLabel label="Recognition" light={false} />
           <FadeUp>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900">
-              Awards &amp; <em className="not-italic text-blue-700">accreditations.</em>
+              Awards &amp; <em className="not-italic text-blue-700">Accreditations.</em>
             </h2>
           </FadeUp>
         </div>
@@ -437,31 +626,25 @@ function Accreditations() {
               visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
             }}
               className="flex items-center gap-2 rounded-2xl bg-white border border-blue-100 px-6 py-4 hover:border-blue-300 hover:-translate-y-0.5 transition-all">
-              <Award className="h-5 w-5 text-blue-600 flex-shrink-0" />
+              <AwardIcon className="h-5 w-5 text-blue-600 flex-shrink-0" />
               <span className="font-semibold text-sm text-gray-800">{badge}</span>
             </motion.div>
           ))}
         </StaggerList>
 
-        <FadeUp>
-          <div className="inline-flex items-center gap-3 rounded-2xl bg-blue-700 text-white px-7 py-4">
-            <Trophy className="h-5 w-5 text-blue-200 flex-shrink-0" />
-            <span className="text-sm font-semibold">Top 10 International Schools — Global Education Review 2024</span>
-          </div>
-        </FadeUp>
-
         <div className="mt-14 relative rounded-3xl overflow-hidden">
           <img src={IMGS.awards} alt="" className="absolute inset-0 h-full w-full object-cover opacity-10" loading="lazy" />
-          <StaggerList className="relative grid sm:grid-cols-3 gap-5 p-2" stagger={0.1}>
+          <StaggerList className="relative grid sm:grid-cols-4 gap-5 p-2" stagger={0.1}>
             {[
-              { value: "30+", label: "Years of Excellence",   sub: "Est. 1994"                },
-              { value: "42",  label: "Nations Represented",   sub: "In our student community" },
-              { value: "98%", label: "University Acceptance", sub: "Ivy & Russell Group"      },
+              { value: "24+", label: "Years of Impact",   sub: "Est. 2000"                    },
+              { value: "10",  label: "Campuses",          sub: "Across Nigeria"               },
+              { value: "21k+", label: "Students Served",  sub: "In our community"             },
+              { value: "3k+", label: "Graduates",         sub: "Worldwide alumni network"     },
             ].map((stat) => (
               <motion.div key={stat.label} variants={staggerItem}
                 className="rounded-2xl bg-white border border-blue-100 p-7 text-center hover:border-blue-200 transition-colors relative overflow-hidden">
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 to-transparent" />
-                <div className="font-display text-5xl font-bold text-blue-700 leading-none mb-2">{stat.value}</div>
+                <div className="font-display text-4xl font-bold text-blue-700 leading-none mb-2">{stat.value}</div>
                 <div className="font-semibold text-gray-900 text-sm mb-1">{stat.label}</div>
                 <div className="text-xs text-gray-400">{stat.sub}</div>
               </motion.div>
@@ -499,13 +682,13 @@ function CTABanner() {
                 <GraduationCap className="h-7 w-7 text-white" />
               </div>
               <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-                Ready to be part of<br /><em className="not-italic text-blue-200">our story?</em>
+                Join the <em className="not-italic text-blue-200">Rochas Family</em>
               </h2>
             </FadeUp>
             <FadeUp delay={0.12}>
               <p className="text-base text-blue-200/70 max-w-xl mx-auto leading-relaxed mb-10">
-                Applications for the 2025–2026 academic year are now open. Join a community
-                of curious minds from 42 nations.
+                Be part of a legacy that's transforming lives through education. 
+                Applications for the 2025–2026 academic year are now open.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <a href="/admissions/apply"
@@ -532,10 +715,12 @@ function AboutPage() {
   return (
     <Layout>
       <PageHero />
+      <FoundationStory />
       <VisionMission />
+      <CollegeNetwork />
+      <AcademicExcellence />
       <CoreValues />
       <Timeline />
-      <CampusHighlights />
       <Accreditations />
       <CTABanner />
     </Layout>

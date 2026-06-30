@@ -522,77 +522,28 @@ function CoreValues() {
                 hidden:  { opacity: 0, y: 32, scale: 0.95 },
                 visible: { opacity: 1, y: 0,  scale: 1, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
               }}
-                className={`group rounded-2xl overflow-hidden border ${v.border} hover:-translate-y-1 transition-all duration-300`}>
+                className={`group rounded-2xl overflow-hidden border ${v.border} hover:-translate-y-1 transition-all duration-300 bg-blue-800/30`}>
                 <div className="aspect-[16/9] overflow-hidden relative">
-                  <img src={v.img} alt={v.title}
-                    className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-600/80 via-blue-700/60 to-transparent" />
-                  <div className={`absolute top-4 left-4 h-10 w-10 rounded-xl ${v.iconBg} backdrop-blur-sm flex items-center justify-center`}>
+                  {/* Image - removed the gradient overlay */}
+                  <img 
+                    src={v.img} 
+                    alt={v.title}
+                    className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" 
+                    loading="lazy" 
+                  />
+                  {/* Icon badge - moved to bottom with subtle background */}
+                  <div className={`absolute bottom-4 left-4 h-10 w-10 rounded-xl ${v.iconBg} backdrop-blur-sm flex items-center justify-center border border-white/10`}>
                     <Icon className={`h-5 w-5 ${v.accent}`} />
                   </div>
                 </div>
-                <div className="bg-blue-700/50 p-5">
+                <div className="bg-blue-800/40 backdrop-blur-sm p-5">
                   <h3 className="font-display font-bold text-xl text-white mb-2">{v.title}</h3>
-                  <p className="text-sm text-blue-200/60 leading-relaxed">{v.desc}</p>
+                  <p className="text-sm text-blue-200/70 leading-relaxed">{v.desc}</p>
                 </div>
               </motion.div>
             );
           })}
         </StaggerList>
-      </div>
-    </section>
-  );
-}
-
-/* ══════════════════════════════════════════════
-   TIMELINE — incorporating foundation milestones
-══════════════════════════════════════════════ */
-function Timeline() {
-  const events = [
-    { year: "2000", title: "Foundation Established", desc: "Rochas Foundation was founded as a non-governmental, non-political, and non-religious organization." },
-    { year: "2001", title: "First College Opens", desc: "Rochas Foundation College Owerri opened its doors, welcoming the first cohort of students." },
-    { year: "2003", title: "Expansion Begins", desc: "New campuses established in Ogboko, laying the foundation for a growing network." },
-    { year: "2010", title: "National Presence", desc: "Colleges established in Jos, Ibadan, Kano, Zaria, Bauchi, Sokoto, and Adamawa." },
-    { year: "2015", title: "Excellence Recognition", desc: "Students begin earning distinction in academic competitions, tournaments, and examinations." },
-    { year: "2018", title: "Exchange Program Launch", desc: "Annual exchange program to the United States launched for top-performing students." },
-    { year: "2024", title: "Enugu Campus Opens", desc: "Rochas Foundation College Enugu opens, expanding the network to 10 campuses across Nigeria." },
-  ];
-
-  return (
-    <section className="py-24 bg-white">
-      <div className="mx-auto max-w-5xl px-6">
-        <div className="text-center mb-16">
-          <SectionLabel label="Our Journey" light={false} />
-          <FadeUp>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900">
-              A History of <em className="not-italic text-blue-700">Impact</em>
-            </h2>
-          </FadeUp>
-        </div>
-
-        <div className="relative">
-          <DrawLine className="absolute left-6 md:left-1/2 top-0 h-full w-px bg-blue-200 md:-translate-x-px origin-top" delay={0.1} />
-
-          {events.map((event, i) => (
-            <FadeFrom key={event.year} dir={i % 2 === 0 ? "left" : "right"} delay={i * 0.07}
-              className={`relative mb-10 pl-16 md:pl-0 md:grid md:grid-cols-2 md:gap-12 ${i % 2 === 1 ? "md:direction-rtl" : ""}`}>
-              <motion.div
-                initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: false, amount: 0.8 }}
-                transition={{ type: "spring", stiffness: 200, damping: 14 }}
-                className="absolute left-6 md:left-1/2 -translate-x-1/2 h-4 w-4 rounded-full bg-blue-700 border-4 border-white z-10" />
-
-              <div className={i % 2 === 1 ? "md:col-start-2" : ""}>
-                <div className="rounded-2xl bg-zinc-50 border border-blue-100 p-6 hover:border-blue-300 hover:-translate-y-0.5 transition-all duration-300">
-                  <span className="inline-block text-[10px] uppercase tracking-widest text-blue-700 font-semibold bg-blue-50 border border-blue-200 rounded-full px-3 py-1 mb-3">
-                    {event.year}
-                  </span>
-                  <h3 className="font-display font-bold text-xl text-gray-900 mb-2">{event.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{event.desc}</p>
-                </div>
-              </div>
-            </FadeFrom>
-          ))}
-        </div>
       </div>
     </section>
   );

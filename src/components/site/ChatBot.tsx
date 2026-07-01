@@ -791,8 +791,6 @@
 
 
 
-
-
 import { useState, useRef, useEffect, useCallback } from "react";
 import {
   X, Send, Plus, User, Clock, Sparkles,
@@ -811,15 +809,15 @@ type Message = {
 };
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const WA_NUMBER      = "+234 813 387 8927";
-const WA_DIGITS      = "2348133878927";
-const waLink = (text) =>
+const WA_NUMBER = "+234 813 387 8927";
+const WA_DIGITS = "2348133878927";
+const waLink = (text: string) =>
   `https://wa.me/${WA_DIGITS}?text=${encodeURIComponent(text)}`;
 
-const EDGE   = 12;
-const BTN    = 56;
+const EDGE = 12;
+const BTN = 56;
 const DRAG_T = 6;
-const clamp  = (v, a, b) => Math.min(Math.max(v, a), b);
+const clamp = (v: number, a: number, b: number) => Math.min(Math.max(v, a), b);
 
 const WALLPAPER = {
   backgroundColor: "#0a1a10",
@@ -829,7 +827,7 @@ const WALLPAPER = {
 // ── Bot replies ───────────────────────────────────────────────────────────────
 function getBotReply(msg: string): { text: string; waPrompt: string; options: string[] } {
   const m = msg.toLowerCase();
-  const wa = (topic) =>
+  const wa = (topic: string) =>
     `\n\n📲 Message us on WhatsApp for ${topic}:\n${WA_NUMBER}`;
 
   if (/apply|admission|enroll|join|application|requirement/.test(m)) return {
@@ -889,52 +887,54 @@ function getBotReply(msg: string): { text: string; waPrompt: string; options: st
 
 // ── Quick Actions ─────────────────────────────────────────────────────────────
 const QUICK_ACTIONS = [
-  { icon: GraduationCap, label: "Admissions",  action: "Tell me about admissions" },
-  { icon: DollarSign,    label: "Fees",         action: "What are the tuition fees?" },
-  { icon: Award,         label: "Scholarships", action: "Tell me about scholarships" },
-  { icon: Calendar,      label: "Tours",        action: "Book a campus tour" },
-  { icon: BookOpen,      label: "Programs",     action: "What programs do you offer?" },
+  { icon: GraduationCap, label: "Admissions", action: "Tell me about admissions" },
+  { icon: DollarSign, label: "Fees", action: "What are the tuition fees?" },
+  { icon: Award, label: "Scholarships", action: "Tell me about scholarships" },
+  { icon: Calendar, label: "Tours", action: "Book a campus tour" },
+  { icon: BookOpen, label: "Programs", action: "What programs do you offer?" },
 ];
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export function ChatBot() {
   const INIT_MSG: Message = {
-    id: "1", sender: "bot", timestamp: new Date(),
+    id: "1",
+    sender: "bot",
+    timestamp: new Date(),
     text: "👋 Hello! I'm Rochas Assistant.\n\nAsk me anything about admissions, fees, scholarships, programs, or campus life — I'll give you the details and connect you with our team on WhatsApp for anything else.",
     waPrompt: "Hello! I have an enquiry about Rochas Foundation College.",
     options: ["Admissions", "Fees", "Scholarships", "Tours", "Programs"],
   };
 
-  const [open, setOpen]           = useState(false);
+  const [open, setOpen] = useState(false);
   const [minimized, setMinimized] = useState(false);
-  const [input, setInput]         = useState("");
-  const [typing, setTyping]       = useState(false);
-  const [showQA, setShowQA]       = useState(true);
-  const [messages, setMessages]   = useState<Message[]>([INIT_MSG]);
+  const [input, setInput] = useState("");
+  const [typing, setTyping] = useState(false);
+  const [showQA, setShowQA] = useState(true);
+  const [messages, setMessages] = useState<Message[]>([INIT_MSG]);
 
-  const [pos, setPos]               = useState({ right: 24, bottom: 24 });
-  const [placement, setPlacement]   = useState({ up: true, left: false });
+  const [pos, setPos] = useState({ right: 24, bottom: 24 });
+  const [placement, setPlacement] = useState({ up: true, left: false });
   const [isDragging, setIsDragging] = useState(false);
-  const [hovered, setHovered]       = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   const [viewport, setViewport] = useState(() => ({
-    w: typeof window !== "undefined" ? window.innerWidth  : 1024,
+    w: typeof window !== "undefined" ? window.innerWidth : 1024,
     h: typeof window !== "undefined" ? window.innerHeight : 768,
   }));
   const isMobile = viewport.w < 640;
 
-  const dragRef    = useRef(null);
-  const movedRef   = useRef(false);
-  const fabRef     = useRef(null);
-  const inputRef   = useRef(null);
-  const msgsEndRef = useRef(null);
-  const msgsBoxRef = useRef(null);
+  const dragRef = useRef<{ startX: number; startY: number; startRight: number; startBottom: number } | null>(null);
+  const movedRef = useRef(false);
+  const fabRef = useRef<HTMLButtonElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const msgsEndRef = useRef<HTMLDivElement | null>(null);
+  const msgsBoxRef = useRef<HTMLDivElement | null>(null);
 
   // ── Helpers ───────────────────────────────────────────────────────────────
-  const clampPos = useCallback((p) => {
+  const clampPos = useCallback((p: { right: number; bottom: number }) => {
     const w = viewport.w, h = viewport.h;
     return {
-      right:  clamp(p.right,  EDGE, Math.max(EDGE, w - BTN - EDGE)),
+      right: clamp(p.right, EDGE, Math.max(EDGE, w - BTN - EDGE)),
       bottom: clamp(p.bottom, EDGE, Math.max(EDGE, h - BTN - EDGE)),
     };
   }, [viewport]);
@@ -944,12 +944,12 @@ export function ChatBot() {
     const panelH = Math.min(540, h * 0.85);
     const panelW = Math.min(390, w - 24);
     setPlacement({
-      up:   (h - pos.bottom - BTN) >= panelH || (h - pos.bottom - BTN) > pos.bottom,
+      up: (h - pos.bottom - BTN) >= panelH || (h - pos.bottom - BTN) > pos.bottom,
       left: (w - pos.right - BTN) < panelW,
     });
   }, [pos, viewport]);
 
-  const fmtTime = useCallback((d) =>
+  const fmtTime = useCallback((d: Date) =>
     new Date(d).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }), []);
 
   // ── Body scroll lock ──────────────────────────────────────────────────────
@@ -961,19 +961,31 @@ export function ChatBot() {
     }
   }, [open, minimized]);
 
-  // ── Wheel isolation on message box ────────────────────────────────────────
+  // ── Scroll handling ────────────────────────────────────────────────────────
+  // Fix: Properly handle wheel events to prevent page scrolling
   useEffect(() => {
     const el = msgsBoxRef.current;
     if (!el) return;
-    const handler = (e) => {
-      e.stopPropagation();
+
+    const handleWheel = (e: WheelEvent) => {
       const { scrollTop, scrollHeight, clientHeight } = el;
-      const atTop    = scrollTop <= 0 && e.deltaY < 0;
-      const atBottom = scrollTop + clientHeight >= scrollHeight && e.deltaY > 0;
-      if (atTop || atBottom) e.preventDefault();
+      const atTop = scrollTop <= 0;
+      const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+      // If at top and scrolling up, or at bottom and scrolling down, let it bubble
+      if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
+        // Don't prevent default - allow page to scroll
+        return;
+      }
+
+      // Otherwise, scroll the chat and prevent page scroll
+      e.preventDefault();
+      e.stopPropagation();
+      el.scrollTop += e.deltaY;
     };
-    el.addEventListener("wheel", handler, { passive: false });
-    return () => el.removeEventListener("wheel", handler);
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
   }, []);
 
   // ── Auto-scroll ───────────────────────────────────────────────────────────
@@ -982,7 +994,9 @@ export function ChatBot() {
   }, [messages, typing]);
 
   useEffect(() => {
-    if (open && !minimized) setTimeout(() => inputRef.current?.focus(), 80);
+    if (open && !minimized) {
+      setTimeout(() => inputRef.current?.focus(), 80);
+    }
   }, [open, minimized]);
 
   // Resize / orientation-change / visualViewport listener
@@ -1008,29 +1022,48 @@ export function ChatBot() {
   }, [clampPos]);
 
   useEffect(() => {
-    const onKey = (e) => { if (e.key === "Escape" && open) setOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && open) setOpen(false);
+    };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
   // ── Drag handlers ─────────────────────────────────────────────────────────
-  const onPointerDown = useCallback((e) => {
-    fabRef.current?.setPointerCapture(e.pointerId);
+  const onPointerDown = useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
+    const btn = fabRef.current;
+    if (btn) {
+      btn.setPointerCapture(e.pointerId);
+    }
     movedRef.current = false;
     setIsDragging(true);
-    dragRef.current = { startX: e.clientX, startY: e.clientY, startRight: pos.right, startBottom: pos.bottom };
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startRight: pos.right,
+      startBottom: pos.bottom
+    };
   }, [pos.right, pos.bottom]);
 
-  const onPointerMove = useCallback((e) => {
+  const onPointerMove = useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
     if (!dragRef.current) return;
     const { startX, startY, startRight, startBottom } = dragRef.current;
-    const dx = e.clientX - startX, dy = e.clientY - startY;
-    if (Math.abs(dx) + Math.abs(dy) > DRAG_T) movedRef.current = true;
-    setPos(clampPos({ right: startRight - dx, bottom: startBottom - dy }));
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    if (Math.abs(dx) + Math.abs(dy) > DRAG_T) {
+      movedRef.current = true;
+    }
+    setPos(clampPos({
+      right: startRight - dx,
+      bottom: startBottom - dy
+    }));
   }, [clampPos]);
 
-  const onPointerUp = useCallback((e) => {
-    fabRef.current?.releasePointerCapture(e.pointerId);
+  const onPointerUp = useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
+    const btn = fabRef.current;
+    if (btn) {
+      btn.releasePointerCapture(e.pointerId);
+    }
     setIsDragging(false);
     const moved = movedRef.current;
     dragRef.current = null;
@@ -1043,34 +1076,44 @@ export function ChatBot() {
   }, [open, computePlacement]);
 
   // ── Messaging ─────────────────────────────────────────────────────────────
-  const sendMessage = useCallback((text) => {
+  const sendMessage = useCallback((text?: string) => {
     const trimmed = (typeof text === "string" ? text : input).trim();
     if (!trimmed) return;
-    setMessages((prev) => [...prev, {
-      id: Date.now().toString(), 
+
+    const userMsg: Message = {
+      id: Date.now().toString(),
       sender: "user",
-      text: trimmed, 
+      text: trimmed,
       timestamp: new Date(),
-    }]);
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setTyping(true);
     setShowQA(false);
+
     setTimeout(() => {
       const reply = getBotReply(trimmed);
-      setMessages((prev) => [...prev, {
-        id: (Date.now() + 1).toString(), 
+      const botMsg: Message = {
+        id: (Date.now() + 1).toString(),
         sender: "bot",
-        text: reply.text, 
+        text: reply.text,
         timestamp: new Date(),
-        options: reply.options, 
+        options: reply.options,
         waPrompt: reply.waPrompt,
-      }]);
+      };
+      setMessages((prev) => [...prev, botMsg]);
       setTyping(false);
     }, 800 + Math.random() * 400);
   }, [input]);
 
   const startNew = useCallback(() => {
-    setMessages([{ ...INIT_MSG, id: Date.now().toString(), timestamp: new Date() }]);
+    const newMsg: Message = {
+      ...INIT_MSG,
+      id: Date.now().toString(),
+      timestamp: new Date(),
+    };
+    setMessages([newMsg]);
     setShowQA(true);
     setInput("");
   }, []);
@@ -1081,9 +1124,11 @@ export function ChatBot() {
 
     if (isMobile) {
       return {
-        position: "fixed",
-        left: 8, right: 8, bottom: 8,
-        top: "auto",
+        position: "fixed" as const,
+        left: 8,
+        right: 8,
+        bottom: 8,
+        top: "auto" as const,
         height: "min(96dvh, 640px)",
         maxHeight: "96dvh",
         zIndex: 10000,
@@ -1097,25 +1142,33 @@ export function ChatBot() {
     const spaceBelow = Math.max(0, pos.bottom - 16);
     const openUp = spaceAbove >= Math.min(desiredH, 320) || spaceAbove >= spaceBelow;
 
-    const btnLeft  = w - pos.right - BTN;
+    const btnLeft = w - pos.right - BTN;
     const openLeft = btnLeft + panelW > w - EDGE;
 
     const availableSpace = Math.max(spaceAbove, spaceBelow, 240);
     const finalH = Math.min(desiredH, availableSpace);
 
-    return {
+    const result: React.CSSProperties = {
       position: "fixed",
       width: panelW,
       height: finalH,
       maxHeight: desiredH,
-      ...(openUp
-        ? { bottom: pos.bottom + BTN + 10 }
-        : { top:    Math.max(EDGE, h - pos.bottom + 10) }),
-      ...(openLeft
-        ? { right: pos.right }
-        : { left:  Math.max(EDGE, w - pos.right - BTN) }),
       zIndex: 10000,
     };
+
+    if (openUp) {
+      result.bottom = pos.bottom + BTN + 10;
+    } else {
+      result.top = Math.max(EDGE, h - pos.bottom + 10);
+    }
+
+    if (openLeft) {
+      result.right = pos.right;
+    } else {
+      result.left = Math.max(EDGE, w - pos.right - BTN);
+    }
+
+    return result;
   }, [viewport, pos, isMobile]);
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -1137,7 +1190,7 @@ export function ChatBot() {
         .rfc-dot2  { display:inline-block;width:6px;height:6px;background:#4ade80;border-radius:50%;animation:rfcBounce 1s infinite 150ms; }
         .rfc-dot3  { display:inline-block;width:6px;height:6px;background:#4ade80;border-radius:50%;animation:rfcBounce 1s infinite 300ms; }
         .rfc-ping  { animation:rfcPing 2s infinite; }
-        .rfc-panel { animation:rfcUp .22s ease-out; border-radius:20px; overflow:hidden; box-shadow:0 20px 64px rgba(0,0,0,.65); display:flex; flex-direction:column; }
+        .rfc-panel { animation:rfcUp .22s ease-out; border-radius:20px; overflow:hidden; box-shadow:0 20px 64px rgba(0,0,0,.65); display:flex; flex-direction:column; background:#0a1a10; }
         .rfc-msgs  { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; scrollbar-width:thin; scrollbar-color:#16a34a33 transparent; }
         .rfc-msgs::-webkit-scrollbar { width:4px; }
         .rfc-msgs::-webkit-scrollbar-thumb { background:#16a34a44; border-radius:4px; }
@@ -1153,7 +1206,14 @@ export function ChatBot() {
       `}</style>
 
       {/* ── Floating Button ── */}
-      <div style={{ position:"fixed", right:pos.right, bottom:pos.bottom, zIndex:10001, touchAction:"none", userSelect:"none" }}>
+      <div style={{
+        position: "fixed",
+        right: pos.right,
+        bottom: pos.bottom,
+        zIndex: 10001,
+        touchAction: "none",
+        userSelect: "none"
+      }}>
         <button
           ref={fabRef}
           onPointerDown={onPointerDown}
@@ -1165,28 +1225,70 @@ export function ChatBot() {
           aria-label={open ? "Close chat" : "Open Rochas chat"}
           aria-expanded={open}
           style={{
-            width:BTN, height:BTN, borderRadius:"50%",
-            background:"linear-gradient(135deg,#16a34a,#15803d)",
-            border:"none", color:"#fff",
+            width: BTN,
+            height: BTN,
+            borderRadius: "50%",
+            background: "linear-gradient(135deg,#16a34a,#15803d)",
+            border: "none",
+            color: "#fff",
             cursor: isDragging ? "grabbing" : "grab",
-            display:"flex", alignItems:"center", justifyContent:"center",
-            boxShadow:"0 4px 22px rgba(22,163,74,.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 4px 22px rgba(22,163,74,.5)",
             transform: hovered && !isDragging ? "scale(1.1)" : "scale(1)",
-            transition:"transform .2s, box-shadow .2s",
-            position:"relative",
+            transition: "transform .2s, box-shadow .2s",
+            position: "relative",
           }}
         >
-          {open ? <X size={22}/> : <MessageCircle size={22}/>}
+          {open ? <X size={22} /> : <MessageCircle size={22} />}
           {!open && !isDragging && (
-            <span style={{ position:"absolute", top:-3, right:-3, width:18, height:18, borderRadius:"50%", background:"#ef4444", color:"#fff", fontSize:9, fontWeight:700, display:"flex", alignItems:"center", justifyContent:"center", pointerEvents:"none" }}>1</span>
+            <span style={{
+              position: "absolute",
+              top: -3,
+              right: -3,
+              width: 18,
+              height: 18,
+              borderRadius: "50%",
+              background: "#ef4444",
+              color: "#fff",
+              fontSize: 9,
+              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              pointerEvents: "none"
+            }}>1</span>
           )}
         </button>
 
         {/* Tooltip */}
         {hovered && !open && !isDragging && (
-          <div style={{ position:"absolute", right:BTN+10, top:"50%", transform:"translateY(-50%)", background:"#111827", color:"#fff", fontSize:11, fontWeight:500, padding:"6px 12px", borderRadius:8, whiteSpace:"nowrap", pointerEvents:"none", boxShadow:"0 4px 14px rgba(0,0,0,.45)" }}>
+          <div style={{
+            position: "absolute",
+            right: BTN + 10,
+            top: "50%",
+            transform: "translateY(-50%)",
+            background: "#111827",
+            color: "#fff",
+            fontSize: 11,
+            fontWeight: 500,
+            padding: "6px 12px",
+            borderRadius: 8,
+            whiteSpace: "nowrap",
+            pointerEvents: "none",
+            boxShadow: "0 4px 14px rgba(0,0,0,.45)"
+          }}>
             Chat with Rochas Assistant
-            <div style={{ position:"absolute", left:"100%", top:"50%", transform:"translateY(-50%) rotate(45deg)", width:7, height:7, background:"#111827" }}/>
+            <div style={{
+              position: "absolute",
+              left: "100%",
+              top: "50%",
+              transform: "translateY(-50%) rotate(45deg)",
+              width: 7,
+              height: 7,
+              background: "#111827"
+            }} />
           </div>
         )}
       </div>
@@ -1194,38 +1296,147 @@ export function ChatBot() {
       {/* ── Panel ── */}
       {open && (
         <>
-          <div onClick={() => setOpen(false)} style={{ position:"fixed", inset:0, zIndex:9999, background:"rgba(0,0,0,.5)", backdropFilter:"blur(3px)" }}/>
+          <div
+            onClick={() => setOpen(false)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 9999,
+              background: "rgba(0,0,0,.5)",
+              backdropFilter: "blur(3px)"
+            }}
+          />
 
-          <div className="rfc-panel" role="dialog" aria-label="Rochas Assistant" onClick={(e) => e.stopPropagation()} style={getPanelStyle()}>
+          <div
+            className="rfc-panel"
+            role="dialog"
+            aria-label="Rochas Assistant"
+            onClick={(e) => e.stopPropagation()}
+            style={getPanelStyle()}
+          >
 
             {/* Header */}
-            <div style={{ background:"linear-gradient(135deg,#166534,#14532d)", padding:"12px 14px", display:"flex", alignItems:"center", justifyContent:"space-between", flexShrink:0 }}>
-              <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-                <div style={{ position:"relative" }}>
-                  <div style={{ width:38, height:38, borderRadius:"50%", background:"rgba(255,255,255,.15)", display:"flex", alignItems:"center", justifyContent:"center" }}>
-                    <MessageCircle size={17} color="#fff"/>
+            <div style={{
+              background: "linear-gradient(135deg,#166534,#14532d)",
+              padding: "12px 14px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexShrink: 0
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ position: "relative" }}>
+                  <div style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: "50%",
+                    background: "rgba(255,255,255,.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}>
+                    <MessageCircle size={17} color="#fff" />
                   </div>
-                  <span className="rfc-ping" style={{ position:"absolute", bottom:0, right:0, width:10, height:10, borderRadius:"50%", background:"#4ade80", border:"2px solid #14532d", display:"block" }}/>
+                  <span className="rfc-ping" style={{
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    background: "#4ade80",
+                    border: "2px solid #14532d",
+                    display: "block"
+                  }} />
                 </div>
                 <div>
-                  <div style={{ fontSize:13, fontWeight:600, color:"#fff", display:"flex", alignItems:"center", gap:6 }}>
+                  <div style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "#fff",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6
+                  }}>
                     Rochas Assistant
-                    <span style={{ fontSize:8, background:"rgba(255,255,255,.2)", padding:"2px 6px", borderRadius:10 }}>AI</span>
+                    <span style={{
+                      fontSize: 8,
+                      background: "rgba(255,255,255,.2)",
+                      padding: "2px 6px",
+                      borderRadius: 10
+                    }}>AI</span>
                   </div>
-                  <div style={{ fontSize:9, color:"rgba(187,247,208,.8)", display:"flex", alignItems:"center", gap:3 }}>
-                    <Clock size={9}/> Online · WhatsApp {WA_NUMBER}
+                  <div style={{
+                    fontSize: 9,
+                    color: "rgba(187,247,208,.8)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 3
+                  }}>
+                    <Clock size={9} /> Online · WhatsApp {WA_NUMBER}
                   </div>
                 </div>
               </div>
-              <div style={{ display:"flex", gap:2 }}>
-                <button className="rfc-ctrl" onClick={() => setMinimized(v=>!v)} title={minimized?"Expand":"Minimise"} style={{ width:28, height:28, borderRadius:8, border:"none", background:"transparent", color:"#fff", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"background .15s" }}>
-                  {minimized ? <Maximize2 size={13}/> : <Minimize2 size={13}/>}
+              <div style={{ display: "flex", gap: 2 }}>
+                <button
+                  className="rfc-ctrl"
+                  onClick={() => setMinimized(v => !v)}
+                  title={minimized ? "Expand" : "Minimise"}
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 8,
+                    border: "none",
+                    background: "transparent",
+                    color: "#fff",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    transition: "background .15s"
+                  }}
+                >
+                  {minimized ? <Maximize2 size={13} /> : <Minimize2 size={13} />}
                 </button>
-                <button className="rfc-ctrl" onClick={startNew} title="New chat" style={{ width:28, height:28, borderRadius:8, border:"none", background:"transparent", color:"#fff", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"background .15s" }}>
-                  <Plus size={14}/>
+                <button
+                  className="rfc-ctrl"
+                  onClick={startNew}
+                  title="New chat"
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 8,
+                    border: "none",
+                    background: "transparent",
+                    color: "#fff",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    transition: "background .15s"
+                  }}
+                >
+                  <Plus size={14} />
                 </button>
-                <button className="rfc-ctrl" onClick={() => setOpen(false)} aria-label="Close" style={{ width:28, height:28, borderRadius:8, border:"none", background:"transparent", color:"#fff", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"background .15s" }}>
-                  <X size={14}/>
+                <button
+                  className="rfc-ctrl"
+                  onClick={() => setOpen(false)}
+                  aria-label="Close"
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 8,
+                    border: "none",
+                    background: "transparent",
+                    color: "#fff",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    transition: "background .15s"
+                  }}
+                >
+                  <X size={14} />
                 </button>
               </div>
             </div>
@@ -1233,31 +1444,65 @@ export function ChatBot() {
             {!minimized && (
               <>
                 {/* Messages */}
-                <div ref={msgsBoxRef} className="rfc-msgs" style={{ ...WALLPAPER, padding:"14px 12px" }}>
+                <div
+                  ref={msgsBoxRef}
+                  className="rfc-msgs"
+                  style={{ ...WALLPAPER, padding: "14px 12px" }}
+                >
 
                   {messages.map((msg) => {
                     const isBot = msg.sender === "bot";
                     return (
-                      <div key={msg.id} style={{ display:"flex", alignItems:"flex-start", gap:8, marginBottom:14, flexDirection: isBot ? "row" : "row-reverse" }}>
-                        <div style={{ width:28, height:28, borderRadius:"50%", background: isBot ? "#15803d" : "#16a34a", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:2 }}>
-                          {isBot ? <MessageCircle size={13} color="#fff"/> : <User size={13} color="#fff"/>}
+                      <div key={msg.id} style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: 8,
+                        marginBottom: 14,
+                        flexDirection: isBot ? "row" : "row-reverse"
+                      }}>
+                        <div style={{
+                          width: 28,
+                          height: 28,
+                          borderRadius: "50%",
+                          background: isBot ? "#15803d" : "#16a34a",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          marginTop: 2
+                        }}>
+                          {isBot ? <MessageCircle size={13} color="#fff" /> : <User size={13} color="#fff" />}
                         </div>
 
-                        <div style={{ maxWidth:"82%", minWidth:0 }}>
+                        <div style={{ maxWidth: "82%", minWidth: 0 }}>
                           {/* Bubble */}
                           <div style={{
-                            padding:"10px 13px",
+                            padding: "10px 13px",
                             borderRadius: isBot ? "4px 16px 16px 16px" : "16px 4px 16px 16px",
                             ...(isBot
-                              ? { background:"rgba(12,28,16,.93)", border:"1px solid rgba(22,163,74,.28)", color:"#d1fae5" }
-                              : { background:"linear-gradient(135deg,#16a34a,#15803d)", color:"#fff" }),
+                              ? { background: "rgba(12,28,16,.93)", border: "1px solid rgba(22,163,74,.28)", color: "#d1fae5" }
+                              : { background: "linear-gradient(135deg,#16a34a,#15803d)", color: "#fff" }),
                           }}>
-                            <p style={{ margin:0, fontSize:11.5, whiteSpace:"pre-wrap", lineHeight:1.65, wordBreak:"break-word" }}>{msg.text}</p>
+                            <p style={{
+                              margin: 0,
+                              fontSize: 11.5,
+                              whiteSpace: "pre-wrap",
+                              lineHeight: 1.65,
+                              wordBreak: "break-word"
+                            }}>{msg.text}</p>
                           </div>
 
                           {/* Timestamp */}
-                          <div style={{ fontSize:9, color:"#3d6647", marginTop:3, display:"flex", alignItems:"center", gap:3, justifyContent: isBot ? "flex-start" : "flex-end" }}>
-                            <Clock size={8}/> {fmtTime(msg.timestamp)}
+                          <div style={{
+                            fontSize: 9,
+                            color: "#3d6647",
+                            marginTop: 3,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 3,
+                            justifyContent: isBot ? "flex-start" : "flex-end"
+                          }}>
+                            <Clock size={8} /> {fmtTime(msg.timestamp)}
                           </div>
 
                           {/* WhatsApp CTA button on bot messages */}
@@ -1268,24 +1513,49 @@ export function ChatBot() {
                               rel="noopener noreferrer"
                               className="rfc-wa"
                               style={{
-                                display:"inline-flex", alignItems:"center", gap:6,
-                                marginTop:8, padding:"7px 14px",
-                                background:"#16a34a", borderRadius:20,
-                                color:"#fff", fontSize:11, fontWeight:600,
-                                textDecoration:"none", transition:"background .2s",
-                                border:"none", cursor:"pointer",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: 6,
+                                marginTop: 8,
+                                padding: "7px 14px",
+                                background: "#16a34a",
+                                borderRadius: 20,
+                                color: "#fff",
+                                fontSize: 11,
+                                fontWeight: 600,
+                                textDecoration: "none",
+                                transition: "background .2s",
+                                border: "none",
+                                cursor: "pointer",
                               }}
                             >
-                              <MessageCircle size={12}/> Continue on WhatsApp <ExternalLink size={10}/>
+                              <MessageCircle size={12} /> Continue on WhatsApp <ExternalLink size={10} />
                             </a>
                           )}
 
                           {/* Topic option pills */}
                           {msg.options && msg.options.length > 0 && (
-                            <div style={{ display:"flex", flexWrap:"wrap", gap:6, marginTop:8 }}>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
                               {msg.options.map((opt) => (
-                                <button key={opt} className="rfc-opt" onClick={() => sendMessage(opt)} style={{ fontSize:10, background:"rgba(12,28,16,.8)", border:"1px solid rgba(22,163,74,.45)", borderRadius:20, padding:"4px 11px", color:"#86efac", cursor:"pointer", transition:"all .2s", display:"flex", alignItems:"center", gap:4 }}>
-                                  {opt}<ChevronRight size={9}/>
+                                <button
+                                  key={opt}
+                                  className="rfc-opt"
+                                  onClick={() => sendMessage(opt)}
+                                  style={{
+                                    fontSize: 10,
+                                    background: "rgba(12,28,16,.8)",
+                                    border: "1px solid rgba(22,163,74,.45)",
+                                    borderRadius: 20,
+                                    padding: "4px 11px",
+                                    color: "#86efac",
+                                    cursor: "pointer",
+                                    transition: "all .2s",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 4
+                                  }}
+                                >
+                                  {opt}<ChevronRight size={9} />
                                 </button>
                               ))}
                             </div>
@@ -1297,29 +1567,76 @@ export function ChatBot() {
 
                   {/* Typing indicator */}
                   {typing && (
-                    <div style={{ display:"flex", alignItems:"flex-start", gap:8, marginBottom:12 }}>
-                      <div style={{ width:28, height:28, borderRadius:"50%", background:"#15803d", display:"flex", alignItems:"center", justifyContent:"center" }}>
-                        <MessageCircle size={13} color="#fff"/>
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 12 }}>
+                      <div style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: "50%",
+                        background: "#15803d",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}>
+                        <MessageCircle size={13} color="#fff" />
                       </div>
-                      <div style={{ background:"rgba(12,28,16,.93)", border:"1px solid rgba(22,163,74,.28)", borderRadius:"4px 16px 16px 16px", padding:"11px 14px", display:"flex", alignItems:"center", gap:5 }}>
-                        <span className="rfc-dot1"/><span className="rfc-dot2"/><span className="rfc-dot3"/>
+                      <div style={{
+                        background: "rgba(12,28,16,.93)",
+                        border: "1px solid rgba(22,163,74,.28)",
+                        borderRadius: "4px 16px 16px 16px",
+                        padding: "11px 14px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 5
+                      }}>
+                        <span className="rfc-dot1" /><span className="rfc-dot2" /><span className="rfc-dot3" />
                       </div>
                     </div>
                   )}
 
-                  <div ref={msgsEndRef}/>
+                  <div ref={msgsEndRef} />
                 </div>
 
                 {/* Quick Actions */}
                 {showQA && messages.length <= 2 && (
-                  <div style={{ padding:"8px 12px", borderTop:"1px solid rgba(22,163,74,.18)", background:"rgba(4,12,6,.8)", flexShrink:0 }}>
-                    <p style={{ margin:"0 0 6px", fontSize:8, color:"#3d6647", textTransform:"uppercase", letterSpacing:".08em", display:"flex", alignItems:"center", gap:4 }}>
-                      <Sparkles size={9}/> Quick topics
+                  <div style={{
+                    padding: "8px 12px",
+                    borderTop: "1px solid rgba(22,163,74,.18)",
+                    background: "rgba(4,12,6,.8)",
+                    flexShrink: 0
+                  }}>
+                    <p style={{
+                      margin: "0 0 6px",
+                      fontSize: 8,
+                      color: "#3d6647",
+                      textTransform: "uppercase",
+                      letterSpacing: ".08em",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 4
+                    }}>
+                      <Sparkles size={9} /> Quick topics
                     </p>
-                    <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-                      {QUICK_ACTIONS.map(({ icon:Icon, label, action }) => (
-                        <button key={label} className="rfc-qa" onClick={() => sendMessage(action)} style={{ display:"flex", alignItems:"center", gap:5, fontSize:10, background:"rgba(12,28,16,.75)", border:"1px solid rgba(22,163,74,.35)", borderRadius:20, padding:"5px 11px", color:"#86efac", cursor:"pointer", transition:"all .2s" }}>
-                          <Icon size={11}/> {label}
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                      {QUICK_ACTIONS.map(({ icon: Icon, label, action }) => (
+                        <button
+                          key={label}
+                          className="rfc-qa"
+                          onClick={() => sendMessage(action)}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 5,
+                            fontSize: 10,
+                            background: "rgba(12,28,16,.75)",
+                            border: "1px solid rgba(22,163,74,.35)",
+                            borderRadius: 20,
+                            padding: "5px 11px",
+                            color: "#86efac",
+                            cursor: "pointer",
+                            transition: "all .2s"
+                          }}
+                        >
+                          <Icon size={11} /> {label}
                         </button>
                       ))}
                     </div>
@@ -1327,7 +1644,15 @@ export function ChatBot() {
                 )}
 
                 {/* Input bar */}
-                <div style={{ padding:"10px 12px", borderTop:"1px solid rgba(22,163,74,.18)", background:"rgba(4,12,6,.95)", display:"flex", gap:8, alignItems:"center", flexShrink:0 }}>
+                <div style={{
+                  padding: "10px 12px",
+                  borderTop: "1px solid rgba(22,163,74,.18)",
+                  background: "rgba(4,12,6,.95)",
+                  display: "flex",
+                  gap: 8,
+                  alignItems: "center",
+                  flexShrink: 0
+                }}>
                   <input
                     ref={inputRef}
                     className="rfc-inp"
@@ -1335,15 +1660,38 @@ export function ChatBot() {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                     placeholder="Type a message…"
-                    style={{ flex:1, minWidth:0, background:"rgba(22,163,74,.1)", border:"1px solid rgba(22,163,74,.3)", borderRadius:12, padding:"9px 13px", fontSize:12, color:"#d1fae5", transition:"border .2s" }}
+                    style={{
+                      flex: 1,
+                      minWidth: 0,
+                      background: "rgba(22,163,74,.1)",
+                      border: "1px solid rgba(22,163,74,.3)",
+                      borderRadius: 12,
+                      padding: "9px 13px",
+                      fontSize: 12,
+                      color: "#d1fae5",
+                      transition: "border .2s"
+                    }}
                   />
                   <button
                     className="rfc-send"
                     onClick={() => sendMessage()}
                     disabled={!input.trim()}
-                    style={{ width:38, height:38, borderRadius:12, flexShrink:0, background: input.trim() ? "linear-gradient(135deg,#16a34a,#15803d)" : "rgba(22,163,74,.15)", border:"none", color:"#fff", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", transition:"all .2s" }}
+                    style={{
+                      width: 38,
+                      height: 38,
+                      borderRadius: 12,
+                      flexShrink: 0,
+                      background: input.trim() ? "linear-gradient(135deg,#16a34a,#15803d)" : "rgba(22,163,74,.15)",
+                      border: "none",
+                      color: "#fff",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      transition: "all .2s"
+                    }}
                   >
-                    <Send size={14}/>
+                    <Send size={14} />
                   </button>
                 </div>
               </>

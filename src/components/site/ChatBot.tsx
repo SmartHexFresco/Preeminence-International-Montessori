@@ -5,16 +5,18 @@ import {
   Minimize2, Maximize2, MessageCircle, ChevronRight
 } from "lucide-react";
 
-// ── Constants ────────────────────────────────────────────────────────────────
-const EDGE        = 12;   // px gap kept from any screen edge
-const BTN         = 56;   // floating button size
-const PANEL_W     = 390;  // desktop panel width
-const PANEL_H     = 570;  // desktop panel height
-const DRAG_T      = 6;    // px movement before a press becomes a drag
+// ── Constants ─────────────────────────────────────────────────────────────────
+const WHATSAPP_NUMBER = "+2348133878927"; // displayed: +234 813 387 8927
+const toWADigits = (n) => n.replace(/[\s+\-()]/g, "");
+
+const EDGE    = 12;
+const BTN     = 56;
+const PANEL_W = 390;
+const PANEL_H = 570;
+const DRAG_T  = 6;
 
 const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
 
-// WhatsApp-style doodle wallpaper
 const WALLPAPER = {
   backgroundColor: "#0a1a10",
   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%2316a34a' fill-opacity='0.06'%3E%3Ccircle cx='12' cy='12' r='2'/%3E%3Ccircle cx='40' cy='30' r='2'/%3E%3Cpath d='M55 10c3 3 3 7 0 10-3-3-3-7 0-10z'/%3E%3Cpath d='M20 55c3 3 3 7 0 10-3-3-3-7 0-10z'/%3E%3Ccircle cx='65' cy='55' r='2'/%3E%3C/g%3E%3C/svg%3E")`,
@@ -26,7 +28,7 @@ function getBotReply(msg) {
 
   if (/apply|admission|enroll|join|application/.test(m))
     return {
-      text: "🎓 Applying to Rochas Foundation College\n\nYou can apply through our online admissions portal. Here's what you'll need:\n\n📋 Requirements:\n• Completed application form\n• Previous academic transcripts\n• Birth certificate\n• Passport photos (2 copies)\n• Entrance examination fee\n\n👉 Visit our Admissions page or choose an option below.",
+      text: "🎓 Applying to Rochas Foundation College\n\nYou can apply through our online admissions portal. Here's what you'll need:\n\n📋 Requirements:\n• Completed application form\n• Previous academic transcripts\n• Birth certificate\n• Passport photos (2 copies)\n• Entrance examination fee\n\n👉 Tap an option below or send us a message on WhatsApp!",
       options: ["Start Application", "Check Requirements", "Contact Admissions"],
     };
 
@@ -68,8 +70,8 @@ function getBotReply(msg) {
 
   if (/contact|phone|email|reach/.test(m))
     return {
-      text: "📞 Contact Information\n\nAdmissions Office:\n• Phone: +234 812 345 6789\n• Email: admissions@rochasfoundation.edu\n\nGeneral Enquiries:\n• Email: hello@rochasfoundation.edu\n\nOffice Hours:\n• Monday–Friday: 8AM – 5PM\n• Saturday: 9AM – 1PM\n\n💬 Or keep chatting — I'm here 24/7!",
-      options: ["Send Email", "Request Callback", "Live Chat Support"],
+      text: "📞 Contact Information\n\nWhatsApp / Phone:\n• +234 813 387 8927\n\nAdmissions Email:\n• admissions@rochasfoundation.edu\n\nGeneral Enquiries:\n• hello@rochasfoundation.edu\n\nOffice Hours:\n• Monday–Friday: 8AM – 5PM\n• Saturday: 9AM – 1PM",
+      options: ["Send WhatsApp", "Request Callback", "Live Chat Support"],
     };
 
   return {
@@ -78,18 +80,23 @@ function getBotReply(msg) {
   };
 }
 
-// ── Quick actions bar ─────────────────────────────────────────────────────────
+// ── Quick actions ─────────────────────────────────────────────────────────────
 const QUICK_ACTIONS = [
-  { icon: GraduationCap, label: "Admissions",  action: "Tell me about admissions" },
-  { icon: DollarSign,    label: "Fees",         action: "What are the tuition fees?" },
-  { icon: Award,         label: "Scholarships", action: "Tell me about scholarships" },
-  { icon: Calendar,      label: "Tours",        action: "Book a campus tour" },
-  { icon: BookOpen,      label: "Programs",     action: "What programs do you offer?" },
+  { icon: GraduationCap, label: "Admissions",   action: "Tell me about admissions" },
+  { icon: DollarSign,    label: "Fees",          action: "What are the tuition fees?" },
+  { icon: Award,         label: "Scholarships",  action: "Tell me about scholarships" },
+  { icon: Calendar,      label: "Tours",         action: "Book a campus tour" },
+  { icon: BookOpen,      label: "Programs",      action: "What programs do you offer?" },
 ];
 
-// ── Main component ────────────────────────────────────────────────────────────
+// ── Open WhatsApp with a pre-filled message ───────────────────────────────────
+function openWhatsApp(text) {
+  const url = `https://wa.me/${toWADigits(WHATSAPP_NUMBER)}?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+// ── Component ─────────────────────────────────────────────────────────────────
 export function ChatBot() {
-  // Panel state
   const [open, setOpen]           = useState(false);
   const [minimized, setMinimized] = useState(false);
   const [input, setInput]         = useState("");
@@ -99,25 +106,25 @@ export function ChatBot() {
     {
       id: "1",
       sender: "bot",
-      text: "👋 Hello! I'm Rochas Assistant. How can I help you today? Feel free to ask about admissions, fees, scholarships, programs, or campus visits.",
+      text: "👋 Hello! I'm Rochas Assistant.\n\nI'll answer your question here, then send you to WhatsApp to continue the conversation with our team.\n\nHow can I help you today?",
       timestamp: new Date(),
       options: ["Admissions", "Fees", "Scholarships", "Tours", "Programs"],
     },
   ]);
 
-  // Draggable position (distance from right/bottom edges)
-  const [pos, setPos]           = useState({ right: 24, bottom: 24 });
-  const [placement, setPlacement] = useState({ up: true, left: false });
+  const [pos, setPos]               = useState({ right: 24, bottom: 24 });
+  const [placement, setPlacement]   = useState({ up: true, left: false });
   const [isDragging, setIsDragging] = useState(false);
-  const [hovered, setHovered]     = useState(false);
+  const [hovered, setHovered]       = useState(false);
 
-  const dragRef    = useRef(null); // { startX, startY, startRight, startBottom }
+  const dragRef    = useRef(null);
   const movedRef   = useRef(false);
   const fabRef     = useRef(null);
   const inputRef   = useRef(null);
   const msgsEndRef = useRef(null);
+  const msgsBoxRef = useRef(null);
 
-  // ── Helpers ────────────────────────────────────────────────────────────────
+  // ── Position helpers ───────────────────────────────────────────────────────
   const clampPos = useCallback((p) => {
     const w = window.innerWidth, h = window.innerHeight;
     return {
@@ -134,38 +141,60 @@ export function ChatBot() {
     });
   }, [pos]);
 
-  const scrollToBottom = () =>
-    msgsEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // ── Scroll isolation: lock body when panel is open ─────────────────────────
+  useEffect(() => {
+    if (open && !minimized) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => { document.body.style.overflow = prev; };
+    }
+  }, [open, minimized]);
 
-  useEffect(() => { scrollToBottom(); }, [messages, typing]);
+  // Prevent wheel & touch events on the messages box from reaching the page
+  useEffect(() => {
+    const el = msgsBoxRef.current;
+    if (!el) return;
+
+    const onWheel = (e) => {
+      const { scrollTop, scrollHeight, clientHeight } = el;
+      const atTop    = scrollTop === 0 && e.deltaY < 0;
+      const atBottom = scrollTop + clientHeight >= scrollHeight && e.deltaY > 0;
+      if (!atTop && !atBottom) e.stopPropagation();
+      // Prevent the page from scrolling in ALL cases while panel is open
+      e.stopPropagation();
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [open, minimized]);
+
+  // ── Side effects ──────────────────────────────────────────────────────────
+  useEffect(() => {
+    msgsEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, typing]);
 
   useEffect(() => {
     if (open && !minimized) setTimeout(() => inputRef.current?.focus(), 50);
   }, [open, minimized]);
 
-  // Re-clamp position on resize
   useEffect(() => {
     const onResize = () => setPos((p) => clampPos(p));
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, [clampPos]);
 
-  // Close on Escape
   useEffect(() => {
     const onKey = (e) => { if (e.key === "Escape" && open) setOpen(false); };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
-  // ── Drag (Pointer Events) ──────────────────────────────────────────────────
+  // ── Drag ──────────────────────────────────────────────────────────────────
   const onPointerDown = (e) => {
     fabRef.current?.setPointerCapture(e.pointerId);
     movedRef.current = false;
     setIsDragging(true);
-    dragRef.current = {
-      startX: e.clientX, startY: e.clientY,
-      startRight: pos.right, startBottom: pos.bottom,
-    };
+    dragRef.current = { startX: e.clientX, startY: e.clientY, startRight: pos.right, startBottom: pos.bottom };
   };
 
   const onPointerMove = (e) => {
@@ -179,32 +208,36 @@ export function ChatBot() {
   const onPointerUp = (e) => {
     fabRef.current?.releasePointerCapture(e.pointerId);
     setIsDragging(false);
+    const moved = movedRef.current;
     dragRef.current = null;
-    if (!movedRef.current) {
-      // It was a tap, not a drag — toggle panel
+    movedRef.current = false;
+    if (!moved) {
       if (!open) computePlacement();
       setOpen((v) => !v);
       setMinimized(false);
     }
-    movedRef.current = false;
   };
 
-  // ── Messaging ──────────────────────────────────────────────────────────────
+  // ── Messaging — replies show in chat, then WhatsApp opens ─────────────────
   const sendMessage = (text = input) => {
-    if (!text.trim()) return;
-    const userMsg = { id: Date.now().toString(), sender: "user", text: text.trim(), timestamp: new Date() };
+    const trimmed = (typeof text === "string" ? text : input).trim();
+    if (!trimmed) return;
+
+    const userMsg = { id: Date.now().toString(), sender: "user", text: trimmed, timestamp: new Date() };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setTyping(true);
     setShowQA(false);
 
     setTimeout(() => {
-      const { text: reply, options } = getBotReply(text);
+      const { text: reply, options } = getBotReply(trimmed);
       setMessages((prev) => [
         ...prev,
         { id: (Date.now() + 1).toString(), sender: "bot", text: reply, timestamp: new Date(), options },
       ]);
       setTyping(false);
+      // Send user's original message straight to WhatsApp
+      openWhatsApp(trimmed);
     }, 800 + Math.random() * 400);
   };
 
@@ -212,7 +245,7 @@ export function ChatBot() {
     setMessages([{
       id: Date.now().toString(),
       sender: "bot",
-      text: "👋 Hello! I'm Rochas Assistant. How can I help you today?",
+      text: "👋 Hello! I'm Rochas Assistant.\n\nI'll answer your question here, then send you to WhatsApp to continue with our team.\n\nHow can I help you today?",
       timestamp: new Date(),
       options: ["Admissions", "Fees", "Scholarships", "Tours", "Programs"],
     }]);
@@ -220,13 +253,14 @@ export function ChatBot() {
     setInput("");
   };
 
-  const fmtTime = (d) => d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const fmtTime = (d) =>
+    new Date(d).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-  // ── Panel position style ───────────────────────────────────────────────────
+  // ── Panel position ─────────────────────────────────────────────────────────
   const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
 
-  const panelPositionStyle = isMobile
-    ? { position: "fixed", left: 8, right: 8, bottom: 8, top: "auto" }
+  const panelStyle = isMobile
+    ? { position: "fixed", left: 8, right: 8, bottom: 8, top: "auto", maxHeight: "calc(100dvh - 16px)" }
     : {
         position: "fixed",
         width: PANEL_W,
@@ -243,16 +277,7 @@ export function ChatBot() {
   return (
     <>
       {/* ── Floating Button ── */}
-      <div
-        style={{
-          position: "fixed",
-          right: pos.right,
-          bottom: pos.bottom,
-          zIndex: 9999,
-          touchAction: "none",
-          userSelect: "none",
-        }}
-      >
+      <div style={{ position: "fixed", right: pos.right, bottom: pos.bottom, zIndex: 9999, touchAction: "none", userSelect: "none" }}>
         <button
           ref={fabRef}
           onPointerDown={onPointerDown}
@@ -264,15 +289,11 @@ export function ChatBot() {
           aria-label={open ? "Close Rochas chat" : "Open Rochas chat"}
           aria-expanded={open}
           style={{
-            width: BTN,
-            height: BTN,
-            borderRadius: "50%",
+            width: BTN, height: BTN, borderRadius: "50%",
             background: "linear-gradient(135deg,#16a34a,#15803d)",
             border: "none",
             cursor: isDragging ? "grabbing" : "grab",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display: "flex", alignItems: "center", justifyContent: "center",
             boxShadow: "0 4px 20px rgba(22,163,74,.5)",
             transform: hovered && !isDragging ? "scale(1.1)" : "scale(1)",
             transition: "transform .2s",
@@ -282,7 +303,6 @@ export function ChatBot() {
         >
           {open ? <X size={22} /> : <MessageCircle size={22} />}
 
-          {/* Notification badge */}
           {!open && !isDragging && (
             <span style={{
               position: "absolute", top: -3, right: -3,
@@ -295,7 +315,6 @@ export function ChatBot() {
           )}
         </button>
 
-        {/* Tooltip */}
         {hovered && !open && !isDragging && (
           <div style={{
             position: "absolute", right: BTN + 10, top: "50%",
@@ -309,9 +328,8 @@ export function ChatBot() {
             Chat with Rochas Assistant
             <div style={{
               position: "absolute", left: "100%", top: "50%",
-              transform: "translateY(-50%)",
-              width: 7, height: 7,
-              background: "#1f2937", rotate: "45deg",
+              transform: "translateY(-50%) rotate(45deg)",
+              width: 7, height: 7, background: "#1f2937",
             }} />
           </div>
         )}
@@ -325,7 +343,8 @@ export function ChatBot() {
             onClick={() => setOpen(false)}
             style={{
               position: "fixed", inset: 0, zIndex: 9998,
-              background: "rgba(0,0,0,.45)", backdropFilter: "blur(2px)",
+              background: "rgba(0,0,0,.45)",
+              backdropFilter: "blur(2px)",
             }}
           />
 
@@ -334,7 +353,7 @@ export function ChatBot() {
             aria-label="Rochas Assistant"
             onClick={(e) => e.stopPropagation()}
             style={{
-              ...panelPositionStyle,
+              ...panelStyle,
               zIndex: 9999,
               borderRadius: 20,
               overflow: "hidden",
@@ -359,13 +378,18 @@ export function ChatBot() {
               .rfc-dot1 { animation: rfcBounce 1s infinite 0ms; }
               .rfc-dot2 { animation: rfcBounce 1s infinite 150ms; }
               .rfc-dot3 { animation: rfcBounce 1s infinite 300ms; }
-              .rfc-status-dot { animation: rfcPulse 2s infinite; }
-              .rfc-msgs { scrollbar-width:thin; scrollbar-color:#16a34a33 transparent; }
-              .rfc-msgs::-webkit-scrollbar { width:4px; }
-              .rfc-msgs::-webkit-scrollbar-thumb { background:#16a34a44; border-radius:4px; }
-              .rfc-opt-btn:hover { background:rgba(22,163,74,.55)!important; color:#fff!important; }
-              .rfc-qa-btn:hover  { background:rgba(22,163,74,.45)!important; color:#fff!important; }
-              .rfc-ctrl:hover    { background:rgba(255,255,255,.15)!important; }
+              .rfc-status { animation: rfcPulse 2s infinite; }
+              .rfc-msgs {
+                scrollbar-width: thin;
+                scrollbar-color: #16a34a33 transparent;
+                overscroll-behavior: contain;
+                -webkit-overflow-scrolling: touch;
+              }
+              .rfc-msgs::-webkit-scrollbar { width: 4px; }
+              .rfc-msgs::-webkit-scrollbar-thumb { background: #16a34a44; border-radius: 4px; }
+              .rfc-opt-btn:hover { background: rgba(22,163,74,.55)!important; color:#fff!important; }
+              .rfc-qa-btn:hover  { background: rgba(22,163,74,.45)!important; color:#fff!important; }
+              .rfc-ctrl:hover    { background: rgba(255,255,255,.15)!important; }
               .rfc-input:focus   { outline:none; border-color:rgba(74,222,128,.6)!important; box-shadow:0 0 0 2px rgba(74,222,128,.2); }
             `}</style>
 
@@ -385,11 +409,10 @@ export function ChatBot() {
                   }}>
                     <MessageCircle size={17} color="#fff" />
                   </div>
-                  <span className="rfc-status-dot" style={{
+                  <span className="rfc-status" style={{
                     position: "absolute", bottom: 0, right: 0,
                     width: 10, height: 10, borderRadius: "50%",
-                    background: "#4ade80", border: "2px solid #15803d",
-                    display: "block",
+                    background: "#4ade80", border: "2px solid #15803d", display: "block",
                   }} />
                 </div>
                 <div>
@@ -398,7 +421,7 @@ export function ChatBot() {
                     <span style={{ fontSize: 8, background: "rgba(255,255,255,.2)", padding: "2px 6px", borderRadius: 10, fontWeight: 400 }}>AI</span>
                   </div>
                   <div style={{ fontSize: 9, color: "rgba(187,247,208,.8)", display: "flex", alignItems: "center", gap: 3 }}>
-                    <Clock size={9} /> Online • 24/7
+                    <Clock size={9} /> Replies via WhatsApp • +234 813 387 8927
                   </div>
                 </div>
               </div>
@@ -421,31 +444,33 @@ export function ChatBot() {
 
             {!minimized && (
               <>
-                {/* Messages */}
-                <div className="rfc-msgs" style={{
-                  ...WALLPAPER,
-                  flex: 1,
-                  overflowY: "auto",
-                  padding: "14px 12px",
-                  minHeight: 200,
-                  maxHeight: isMobile ? "calc(100dvh - 230px)" : 330,
-                }}>
+                {/* ── Messages (isolated scroll) ── */}
+                <div
+                  ref={msgsBoxRef}
+                  className="rfc-msgs"
+                  style={{
+                    ...WALLPAPER,
+                    flex: 1,
+                    overflowY: "auto",
+                    overscrollBehavior: "contain",
+                    padding: "14px 12px",
+                    minHeight: 200,
+                    maxHeight: isMobile ? "calc(100dvh - 230px)" : 330,
+                  }}
+                >
                   {messages.map((msg) => {
                     const isBot = msg.sender === "bot";
                     return (
                       <div key={msg.id} style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 12, flexDirection: isBot ? "row" : "row-reverse" }}>
-                        {/* Avatar */}
                         <div style={{
                           width: 28, height: 28, borderRadius: "50%",
                           background: isBot ? "#15803d" : "#16a34a",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          flexShrink: 0,
+                          display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                         }}>
                           {isBot ? <MessageCircle size={13} color="#fff" /> : <User size={13} color="#fff" />}
                         </div>
 
                         <div style={{ maxWidth: "82%" }}>
-                          {/* Bubble */}
                           <div style={{
                             padding: "10px 13px",
                             borderRadius: isBot ? "16px 16px 16px 4px" : "16px 16px 4px 16px",
@@ -458,35 +483,26 @@ export function ChatBot() {
                             </div>
                           </div>
 
-                          {/* Timestamp */}
                           <div style={{
                             fontSize: 9, color: "#4b7a5a", marginTop: 3,
                             display: "flex", alignItems: "center", gap: 3,
                             justifyContent: isBot ? "flex-start" : "flex-end",
                           }}>
-                            <Clock size={8} /> {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}
+                            <Clock size={8} /> {fmtTime(msg.timestamp)}
                           </div>
 
-                          {/* Option buttons */}
                           {msg.options && msg.options.length > 0 && (
                             <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
                               {msg.options.map((opt) => (
-                                <button
-                                  key={opt}
-                                  className="rfc-opt-btn"
-                                  onClick={() => sendMessage(opt)}
+                                <button key={opt} className="rfc-opt-btn" onClick={() => sendMessage(opt)}
                                   style={{
                                     fontSize: 10,
                                     background: "rgba(15,30,18,.8)",
                                     border: "1px solid rgba(22,163,74,.5)",
-                                    borderRadius: 20,
-                                    padding: "4px 10px",
-                                    color: "#86efac",
-                                    cursor: "pointer",
-                                    transition: "all .2s",
+                                    borderRadius: 20, padding: "4px 10px",
+                                    color: "#86efac", cursor: "pointer", transition: "all .2s",
                                     display: "flex", alignItems: "center", gap: 4,
-                                  }}
-                                >
+                                  }}>
                                   {opt} <ChevronRight size={9} />
                                 </button>
                               ))}
@@ -497,7 +513,6 @@ export function ChatBot() {
                     );
                   })}
 
-                  {/* Typing indicator */}
                   {typing && (
                     <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 12 }}>
                       <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#15803d", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -510,35 +525,24 @@ export function ChatBot() {
                       </div>
                     </div>
                   )}
-
                   <div ref={msgsEndRef} />
                 </div>
 
                 {/* Quick Actions */}
                 {showQA && messages.length <= 2 && (
-                  <div style={{
-                    padding: "8px 12px",
-                    borderTop: "1px solid rgba(22,163,74,.2)",
-                    background: "rgba(5,15,8,.7)",
-                  }}>
+                  <div style={{ padding: "8px 12px", borderTop: "1px solid rgba(22,163,74,.2)", background: "rgba(5,15,8,.7)", flexShrink: 0 }}>
                     <div style={{ fontSize: 8, color: "#4b7a5a", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 6, display: "flex", alignItems: "center", gap: 4 }}>
                       <Sparkles size={9} /> Quick Actions
                     </div>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                       {QUICK_ACTIONS.map(({ icon: Icon, label, action }) => (
-                        <button
-                          key={label}
-                          className="rfc-qa-btn"
-                          onClick={() => sendMessage(action)}
+                        <button key={label} className="rfc-qa-btn" onClick={() => sendMessage(action)}
                           style={{
-                            display: "flex", alignItems: "center", gap: 5,
-                            fontSize: 10,
-                            background: "rgba(15,30,18,.7)",
-                            border: "1px solid rgba(22,163,74,.35)",
+                            display: "flex", alignItems: "center", gap: 5, fontSize: 10,
+                            background: "rgba(15,30,18,.7)", border: "1px solid rgba(22,163,74,.35)",
                             borderRadius: 20, padding: "4px 10px",
                             color: "#86efac", cursor: "pointer", transition: "all .2s",
-                          }}
-                        >
+                          }}>
                           <Icon size={11} /> {label}
                         </button>
                       ))}
@@ -546,11 +550,18 @@ export function ChatBot() {
                   </div>
                 )}
 
+                {/* WhatsApp redirect notice */}
+                <div style={{ padding: "6px 14px", background: "rgba(5,15,8,.9)", flexShrink: 0 }}>
+                  <p style={{ fontSize: 9.5, color: "#4b7a5a", margin: 0, textAlign: "center" }}>
+                    💬 Messages are forwarded to WhatsApp · <strong style={{ color: "#16a34a" }}>+234 813 387 8927</strong>
+                  </p>
+                </div>
+
                 {/* Input */}
                 <div style={{
                   padding: "10px 12px",
                   borderTop: "1px solid rgba(22,163,74,.2)",
-                  background: "rgba(5,15,8,.85)",
+                  background: "rgba(5,15,8,.9)",
                   display: "flex", gap: 8, alignItems: "center",
                   flexShrink: 0,
                 }}>
@@ -560,16 +571,13 @@ export function ChatBot() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                    placeholder="Type your message…"
+                    placeholder="Type a message…"
                     style={{
                       flex: 1,
                       background: "rgba(22,163,74,.1)",
                       border: "1px solid rgba(22,163,74,.3)",
-                      borderRadius: 12,
-                      padding: "8px 12px",
-                      fontSize: 12,
-                      color: "#d1fae5",
-                      transition: "border .2s",
+                      borderRadius: 12, padding: "8px 12px",
+                      fontSize: 12, color: "#d1fae5", transition: "border .2s",
                     }}
                   />
                   <button

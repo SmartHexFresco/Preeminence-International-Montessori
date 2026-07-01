@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef } from "react";
 import { Layout } from "@/components/site/Layout";
-import { Check, Download, ChevronDown, FileText, ArrowRight, GraduationCap, Star } from "lucide-react";
+import { Check, Download, ChevronDown, FileText, ArrowRight, GraduationCap, Star, MessageCircle } from "lucide-react";
 import {
   motion, useScroll, useTransform, useSpring, useInView, AnimatePresence
 } from "framer-motion";
@@ -17,6 +17,17 @@ export const Route = createFileRoute("/admissions")({
   }),
   component: AdmissionsPage,
 });
+
+/* ══════════════════════════════════════════════════
+   CONTACT CHANNEL — WhatsApp only, single number
+   Same number used across the Contact page.
+══════════════════════════════════════════════════ */
+const WHATSAPP_NUMBER = "+234 813 387 8927";
+const toWhatsAppDigits = (number) => number.replace(/[\s+]/g, "");
+const whatsappLink = (message) =>
+  `https://wa.me/${toWhatsAppDigits(WHATSAPP_NUMBER)}${
+    message ? `?text=${encodeURIComponent(message)}` : ""
+  }`;
 
 /* ══════════════════════════════════════════════════
    SHARED ANIMATION PRIMITIVES
@@ -144,7 +155,7 @@ function PageHero() {
           <em className="not-italic text-blue-300">Rochas Foundation story.</em>
         </motion.h1>
         <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-base md:text-lg text-blue-200/70 max-w-2xl mx-auto leading-relaxed">
+          className="text-base md:text-lg text-blue-100 max-w-2xl mx-auto leading-relaxed">
           A simple six-step journey to one of the world's most exciting classrooms.
         </motion.p>
       </motion.div>
@@ -188,7 +199,7 @@ function Steps() {
                 <span className="text-xs font-bold text-blue-300">{s.num}</span>
               </div>
               <h3 className="font-display font-bold text-xl text-white mb-2">{s.t}</h3>
-              <p className="text-sm text-blue-200/60 leading-relaxed">{s.d}</p>
+              <p className="text-sm text-blue-100/90 leading-relaxed">{s.d}</p>
               <DrawLine className="h-px w-0 group-hover:w-full bg-blue-500/40 mt-4 transition-all duration-500" />
             </motion.div>
           ))}
@@ -219,7 +230,7 @@ function Fees() {
             </h2>
           </FadeUp>
           <FadeUp delay={0.08}>
-            <p className="text-slate-500 mt-3">2025–2026 academic year</p>
+            <p className="text-slate-600 mt-3">2025–2026 academic year</p>
           </FadeUp>
         </div>
 
@@ -238,7 +249,7 @@ function Fees() {
                   className="grid grid-cols-3 gap-4 px-6 py-5 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors items-center">
                   <div className="font-semibold text-slate-800 text-sm">{f.g}</div>
                   <div className="font-display font-bold text-3xl text-blue-600">{f.a}</div>
-                  <div className="text-slate-500 text-sm">{f.e}</div>
+                  <div className="text-slate-600 text-sm">{f.e}</div>
                 </motion.div>
               ))}
             </StaggerList>
@@ -257,11 +268,15 @@ function Fees() {
                 <Star className="h-5 w-5 text-yellow-300 fill-yellow-300" />
                 <div className="font-display font-bold text-xl text-white">Rochas Foundation Scholars Program</div>
               </div>
-              <div className="text-sm text-blue-200/80">Up to 75% tuition coverage for exceptional students.</div>
+              <div className="text-sm text-blue-50">Up to 75% tuition coverage for exceptional students.</div>
             </div>
-            <button className="relative rounded-xl bg-white text-blue-700 hover:bg-blue-50 px-6 py-3 text-sm font-bold transition-colors whitespace-nowrap flex-shrink-0 shadow-md">
+            <a
+              href={whatsappLink("Hello! I'd like to apply for the Rochas Foundation Scholars Program.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative rounded-xl bg-white text-blue-700 hover:bg-blue-50 px-6 py-3 text-sm font-bold transition-colors whitespace-nowrap flex-shrink-0 shadow-md">
               Apply for Scholarship <ArrowRight className="inline h-4 w-4 ml-1" />
-            </button>
+            </a>
           </div>
         </FadeUp>
       </div>
@@ -314,7 +329,7 @@ function FAQ() {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
                     className="overflow-hidden">
-                    <div className="px-6 pb-5 text-sm text-blue-200/70 leading-relaxed border-t border-blue-700/40 pt-4">
+                    <div className="px-6 pb-5 text-sm text-blue-100/90 leading-relaxed border-t border-blue-700/40 pt-4">
                       {f.a}
                     </div>
                   </motion.div>
@@ -330,15 +345,51 @@ function FAQ() {
 
 /* ══════════════════════════════════════════════════
    INQUIRY + DOWNLOADS - White Section
+   Inquiry form now hands straight to WhatsApp, same number and pattern
+   used on the Contact page.
 ══════════════════════════════════════════════════ */
 function InquirySection() {
   const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({
+    parentName: "",
+    email: "",
+    grade: "",
+    message: "",
+  });
+
+  const updateField = (field) => (e) =>
+    setForm((f) => ({ ...f, [field]: e.target.value }));
+
+  const isValid = form.parentName.trim() && form.email.trim() && form.grade.trim();
+
   const downloads = [
     "Application Form 2025",
     "Financial Aid Application",
     "Medical Records Form",
     "Transfer Records Request",
   ];
+
+  const handleSubmit = () => {
+    if (!isValid) return;
+
+    const text = [
+      "New admissions inquiry from the Rochas Foundation website:",
+      "",
+      `Parent / Guardian Name: ${form.parentName}`,
+      `Email: ${form.email}`,
+      `Grade Applying For: ${form.grade}`,
+      form.message ? "" : null,
+      form.message ? `About the child: ${form.message}` : null,
+    ].filter((line) => line !== null).join("\n");
+
+    window.open(whatsappLink(text), "_blank", "noopener,noreferrer");
+    setSubmitted(true);
+  };
+
+  const resetForm = () => {
+    setForm({ parentName: "", email: "", grade: "", message: "" });
+    setSubmitted(false);
+  };
 
   return (
     <section className="py-24 bg-white">
@@ -363,27 +414,52 @@ function InquirySection() {
                   <div className="h-14 w-14 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center">
                     <Check className="h-6 w-6 text-emerald-600" />
                   </div>
-                  <p className="font-semibold text-slate-800">Inquiry submitted!</p>
-                  <p className="text-sm text-slate-500">Our admissions team will reach out within 2 business days.</p>
+                  <p className="font-semibold text-slate-900">Inquiry ready on WhatsApp!</p>
+                  <p className="text-sm text-slate-600 max-w-xs">
+                    We opened WhatsApp with your details filled in — just hit send there. If it
+                    didn't open,{" "}
+                    <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="text-blue-700 font-semibold underline">
+                      chat with us directly
+                    </a>.
+                  </p>
+                  <button onClick={resetForm} className="text-xs font-semibold text-blue-700 hover:text-blue-800 hover:underline">
+                    Send another inquiry
+                  </button>
                 </motion.div>
               ) : (
                 <div className="grid gap-3">
                   <input
-                    className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full"
+                    value={form.parentName}
+                    onChange={updateField("parentName")}
+                    className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full"
                     placeholder="Parent / guardian name" />
-                  <input type="email"
-                    className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full"
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={updateField("email")}
+                    className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full"
                     placeholder="Email address" />
                   <input
-                    className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full"
+                    value={form.grade}
+                    onChange={updateField("grade")}
+                    className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full"
                     placeholder="Grade applying for" />
-                  <textarea rows={3}
-                    className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full resize-none"
+                  <textarea
+                    rows={3}
+                    value={form.message}
+                    onChange={updateField("message")}
+                    className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full resize-none"
                     placeholder="Tell us a little about your child…" />
-                  <button onClick={() => setSubmitted(true)}
-                    className="rounded-xl bg-blue-600 hover:bg-blue-500 text-white py-3 font-semibold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm">
+                  <button
+                    onClick={handleSubmit}
+                    disabled={!isValid}
+                    className="rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white py-3 font-semibold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm">
                     Submit Inquiry <ArrowRight className="h-4 w-4" />
                   </button>
+                  <p className="text-center text-xs text-slate-500 flex items-center justify-center gap-1">
+                    <MessageCircle className="h-3.5 w-3.5" />
+                    Submitting opens WhatsApp with your inquiry ready to send.
+                  </p>
                 </div>
               )}
             </div>
@@ -401,8 +477,8 @@ function InquirySection() {
                       <div className="h-10 w-10 rounded-lg bg-blue-100 border border-blue-200 flex items-center justify-center flex-shrink-0">
                         <FileText className="h-4 w-4 text-blue-600" />
                       </div>
-                      <div className="flex-1 font-medium text-sm text-slate-700">{f}</div>
-                      <Download className="h-4 w-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
+                      <div className="flex-1 font-medium text-sm text-slate-800">{f}</div>
+                      <Download className="h-4 w-4 text-slate-500 group-hover:text-blue-600 transition-colors" />
                     </motion.a>
                   ))}
                 </StaggerList>
@@ -414,7 +490,7 @@ function InquirySection() {
                   <div className="h-9 w-9 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
                     <Check className="h-4 w-4 text-emerald-600" />
                   </div>
-                  <span className="text-sm font-medium text-emerald-700 leading-snug">
+                  <span className="text-sm font-medium text-emerald-800 leading-snug">
                     Rolling admissions for Grades 6, 7 and 9 still open.
                   </span>
                 </div>
@@ -458,15 +534,21 @@ function CTABanner() {
               </h2>
             </FadeUp>
             <FadeUp delay={0.1}>
-              <p className="text-base text-blue-200/70 max-w-xl mx-auto leading-relaxed mb-10">
+              <p className="text-base text-blue-100 max-w-xl mx-auto leading-relaxed mb-10">
                 Applications for the 2025–2026 academic year are now open. Join a community of curious minds from 42 nations.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3">
-                <a href="/admissions/apply"
+                <a
+                  href={whatsappLink("Hello! I'd like to start my application to Rochas Foundation College.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-xl bg-white text-blue-700 hover:bg-blue-50 px-7 py-3.5 text-sm font-bold transition-colors shadow-lg">
                   Start Application <ArrowRight className="h-4 w-4" />
                 </a>
-                <a href="/admissions/tour"
+                <a
+                  href={whatsappLink("Hello! I'd like to book a campus tour.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-xl border border-white/30 text-white hover:bg-blue-700/50 px-7 py-3.5 text-sm font-semibold transition-colors">
                   Book a Campus Tour
                 </a>

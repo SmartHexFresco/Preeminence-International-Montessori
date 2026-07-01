@@ -1,17 +1,26 @@
 import { Link } from "@tanstack/react-router";
 import {
   Facebook, Instagram, Linkedin, Twitter, Youtube,
-  MapPin, Phone, Mail, Clock, GraduationCap,
+  MapPin, MessageCircle, Mail, Clock, GraduationCap,
   ArrowRight, ExternalLink, Users, Award, Globe, Heart
 } from "lucide-react";
+
+/* ══════════════════════════════════════════════════
+   CONTACT CHANNEL — WhatsApp only, single number
+   Same number used on the Contact and Admissions pages.
+══════════════════════════════════════════════════ */
+const WHATSAPP_NUMBER = "+234 813 387 8927";
+const toWhatsAppDigits = (number) => number.replace(/[\s+]/g, "");
+const whatsappLink = (message) =>
+  `https://wa.me/${toWhatsAppDigits(WHATSAPP_NUMBER)}${
+    message ? `?text=${encodeURIComponent(message)}` : ""
+  }`;
 
 const portals = [
   { label: "Student Portal",  to: "/portal/student" },
   { label: "Parent Login",    to: "/portal/parent"  },
   { label: "About",           to: "/about"          },
-  { label: "Academics",       to: "/academics"      },
   { label: "Admissions",      to: "/admissions"     },
-  { label: "Student Life",    to: "/student-life"   },
   { label: "News & Events",   to: "/news"           },
   { label: "Contact",         to: "/contact"        },
 ];
@@ -97,19 +106,12 @@ export function Footer() {
             </p>
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
-            {/* Changed to use regular <a> tags since routes don't exist yet */}
-            <a
-              href="/admissions/tour"
-              className="rounded-xl border border-blue-400/40 text-blue-100 hover:bg-blue-600/50 hover:text-white px-5 py-2.5 text-sm font-medium transition"
-            >
-              Book a Tour
-            </a>
-            <a
-              href="/admissions/apply"
+            <Link
+              to="/admissions"
               className="inline-flex items-center gap-2 rounded-xl bg-blue-500 hover:bg-blue-400 text-white px-5 py-2.5 text-sm font-semibold shadow-lg shadow-blue-500/30 hover:shadow-blue-400/40 transition-all hover:-translate-y-0.5"
             >
               Apply Now <ArrowRight className="h-4 w-4" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -139,16 +141,21 @@ export function Footer() {
               homes across Africa. Building a new African through charity.
             </p>
 
-            {/* Contact */}
+            {/* Contact — WhatsApp only, no phone/call channel */}
             <ul className="space-y-3 mb-6 text-sm text-blue-100/80">
               <li className="flex items-start gap-2.5">
                 <MapPin className="h-4 w-4 text-blue-300 mt-0.5 flex-shrink-0" />
                 <span>Adjacent to the Enugu Airport Roundabout Junction, Emene, Enugu, Enugu State, Nigeria</span>
               </li>
               <li className="flex items-center gap-2.5">
-                <Phone className="h-4 w-4 text-blue-300 flex-shrink-0" />
-                <a href="tel:+234800762427" className="hover:text-blue-200 transition">
-                  +234 800 ROCHAS
+                <MessageCircle className="h-4 w-4 text-blue-300 flex-shrink-0" />
+                <a
+                  href={whatsappLink("Hello! I'd like to know more about Rochas Foundation College.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-200 transition"
+                >
+                  {WHATSAPP_NUMBER} (WhatsApp)
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
@@ -163,14 +170,16 @@ export function Footer() {
               </li>
             </ul>
 
-            {/* Emergency */}
+            {/* Urgent contact — also routed through WhatsApp, same number */}
             <div className="rounded-xl bg-red-500/20 border border-red-400/30 px-4 py-3 mb-6">
-              <p className="text-xs uppercase tracking-wider text-red-300 font-semibold mb-0.5">Emergency Line</p>
-              <a 
-                href="tel:+2348009110000" 
+              <p className="text-xs uppercase tracking-wider text-red-300 font-semibold mb-0.5">Urgent? Message Us</p>
+              <a
+                href={whatsappLink("This is urgent — I need to reach Rochas Foundation College right away.")}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-sm font-bold text-white hover:text-red-200 transition"
               >
-                +234 800 911 0000
+                Chat on WhatsApp: {WHATSAPP_NUMBER}
               </a>
             </div>
 
@@ -297,6 +306,3 @@ export function Footer() {
     </footer>
   );
 }
-
-
-

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef } from "react";
 import { Layout } from "@/components/site/Layout";
 import {
-  MapPin, Phone, Mail, MessageCircle, Building2, ChevronDown, ArrowRight, CheckCircle2,
+  MapPin, Mail, MessageCircle, Building2, ChevronDown, ArrowRight, CheckCircle2,
 } from "lucide-react";
 import {
   motion, useScroll, useTransform, useSpring, useInView, AnimatePresence,
@@ -19,6 +19,21 @@ export const Route = createFileRoute("/contact")({
   }),
   component: ContactPage,
 });
+
+/* ══════════════════════════════════════════════════
+   CONTACT CHANNEL — WhatsApp only, single number
+══════════════════════════════════════════════════ */
+const WHATSAPP_NUMBER = "+234 813 387 8927";
+const toWhatsAppDigits = (number) => number.replace(/[\s+]/g, "");
+const whatsappLink = (message) =>
+  `https://wa.me/${toWhatsAppDigits(WHATSAPP_NUMBER)}${
+    message ? `?text=${encodeURIComponent(message)}` : ""
+  }`;
+
+const SCHOOL_ADDRESS =
+  "Adjacent to the Enugu Airport Roundabout Junction, Emene, Enugu, Enugu State, Nigeria";
+const mapsSearchLink = (address) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 
 /* ══════════════════════════════════════════════════
    SHARED ANIMATION PRIMITIVES
@@ -159,9 +174,46 @@ function PageHero() {
 
 /* ══════════════════════════════════════════════════
    CONTACT FORM + MAP - Blue Section
+   Form fields are collected and handed straight to WhatsApp — there is
+   no phone/call path anywhere on this page, only WhatsApp.
 ══════════════════════════════════════════════════ */
 function ContactForm() {
   const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    department: "Admissions",
+    message: "",
+  });
+
+  const updateField = (field) => (e) =>
+    setForm((f) => ({ ...f, [field]: e.target.value }));
+
+  const isValid =
+    form.firstName.trim() && form.lastName.trim() && form.email.trim() && form.message.trim();
+
+  const handleSend = () => {
+    if (!isValid) return;
+
+    const text = [
+      "New enquiry from the Rochas Foundation website:",
+      "",
+      `Name: ${form.firstName} ${form.lastName}`,
+      `Email: ${form.email}`,
+      `Department: ${form.department}`,
+      "",
+      `Message: ${form.message}`,
+    ].join("\n");
+
+    window.open(whatsappLink(text), "_blank", "noopener,noreferrer");
+    setSent(true);
+  };
+
+  const resetForm = () => {
+    setForm({ firstName: "", lastName: "", email: "", department: "Admissions", message: "" });
+    setSent(false);
+  };
 
   return (
     <section className="py-24 bg-gradient-to-b from-blue-900 to-blue-800">
@@ -179,9 +231,15 @@ function ContactForm() {
                 <div className="h-16 w-16 rounded-full bg-emerald-800/40 border border-emerald-600/40 flex items-center justify-center">
                   <CheckCircle2 className="h-7 w-7 text-emerald-400" />
                 </div>
-                <p className="font-semibold text-white text-lg">Message sent!</p>
-                <p className="text-sm text-blue-200/60 max-w-xs">Our team will get back to you within 24 hours.</p>
-                <button onClick={() => setSent(false)}
+                <p className="font-semibold text-white text-lg">Message ready on WhatsApp!</p>
+                <p className="text-sm text-blue-200/60 max-w-xs">
+                  We opened WhatsApp with your details filled in — just hit send there. If it
+                  didn't open,{" "}
+                  <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="text-blue-300 underline">
+                    chat with us directly
+                  </a>.
+                </p>
+                <button onClick={resetForm}
                   className="mt-2 text-xs text-blue-400 hover:text-blue-300 transition-colors">
                   Send another message
                 </button>
@@ -189,25 +247,47 @@ function ContactForm() {
             ) : (
               <div className="grid gap-3">
                 <div className="grid sm:grid-cols-2 gap-3">
-                  <input placeholder="First name"
+                  <input
+                    placeholder="First name"
+                    value={form.firstName}
+                    onChange={updateField("firstName")}
                     className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-100 placeholder:text-blue-500/50 outline-none focus:border-blue-500/60 transition w-full" />
-                  <input placeholder="Last name"
+                  <input
+                    placeholder="Last name"
+                    value={form.lastName}
+                    onChange={updateField("lastName")}
                     className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-100 placeholder:text-blue-500/50 outline-none focus:border-blue-500/60 transition w-full" />
                 </div>
-                <input type="email" placeholder="Email address"
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  value={form.email}
+                  onChange={updateField("email")}
                   className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-100 placeholder:text-blue-500/50 outline-none focus:border-blue-500/60 transition w-full" />
-                <select className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-300/70 outline-none focus:border-blue-500/60 transition w-full">
-                  <option>Department · Admissions</option>
+                <select
+                  value={form.department}
+                  onChange={updateField("department")}
+                  className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-300/70 outline-none focus:border-blue-500/60 transition w-full">
+                  <option>Admissions</option>
                   <option>Academics</option>
                   <option>Finance</option>
                   <option>Boarding</option>
                 </select>
-                <textarea rows={5} placeholder="How can we help?"
+                <textarea
+                  rows={5}
+                  placeholder="How can we help?"
+                  value={form.message}
+                  onChange={updateField("message")}
                   className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-100 placeholder:text-blue-500/50 outline-none focus:border-blue-500/60 transition w-full resize-none" />
-                <button onClick={() => setSent(true)}
-                  className="rounded-xl bg-blue-600 hover:bg-blue-500 text-white py-3 font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                <button
+                  onClick={handleSend}
+                  disabled={!isValid}
+                  className="rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white py-3 font-semibold text-sm transition-colors flex items-center justify-center gap-2">
                   Send Message <ArrowRight className="h-4 w-4" />
                 </button>
+                <p className="text-center text-[11px] text-blue-300/50">
+                  Sending opens WhatsApp with your message ready to go.
+                </p>
               </div>
             )}
           </div>
@@ -220,34 +300,59 @@ function ContactForm() {
             <div className="rounded-2xl overflow-hidden border border-blue-700/40 flex-1 min-h-[240px]">
               <iframe
                 title="Campus Map"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=7.43%2C9.03%2C7.53%2C9.10&layer=mapnik"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=7.53%2C6.45%2C7.60%2C6.51&layer=mapnik&marker=6.4761%2C7.5618"
                 className="w-full h-full min-h-[240px]"
                 loading="lazy"
               />
             </div>
 
-            {/* Info cards */}
-            <StaggerList className="grid sm:grid-cols-2 gap-3" stagger={0.08}>
+            {/* Info cards — WhatsApp only, no phone/call channel */}
+            <StaggerList className="grid sm:grid-cols-3 gap-3" stagger={0.08}>
               {[
-                { icon: MapPin,        title: "Visit",     val: "88 Horizon Avenue, Abuja",  accent: "text-blue-300",   bg: "bg-blue-800/60"   },
-                { icon: Phone,         title: "Call",      val: "+234 xxxxxxxxx",            accent: "text-sky-300",    bg: "bg-sky-800/50"    },
-                { icon: Mail,          title: "Email",     val: "hello@rochasfoundation.edu",accent: "text-indigo-300", bg: "bg-indigo-800/50" },
-                { icon: MessageCircle, title: "Live Chat", val: "Avg reply: 2 min",          accent: "text-emerald-300",bg: "bg-emerald-800/50"},
+                {
+                  icon: MapPin,
+                  title: "Visit",
+                  val: SCHOOL_ADDRESS,
+                  href: mapsSearchLink(SCHOOL_ADDRESS),
+                  accent: "text-blue-300",
+                  bg: "bg-blue-800/60",
+                },
+                {
+                  icon: MessageCircle,
+                  title: "WhatsApp",
+                  val: WHATSAPP_NUMBER,
+                  href: whatsappLink("Hello! I'd like to know more about Rochas Foundation College."),
+                  accent: "text-emerald-300",
+                  bg: "bg-emerald-800/50",
+                },
+                {
+                  icon: Mail,
+                  title: "Email",
+                  val: "hello@rochasfoundation.edu",
+                  href: "mailto:hello@rochasfoundation.edu",
+                  accent: "text-indigo-300",
+                  bg: "bg-indigo-800/50",
+                },
               ].map((item) => {
                 const Icon = item.icon;
                 return (
-                  <motion.div key={item.title} variants={staggerItem}
+                  <motion.a
+                    key={item.title}
+                    variants={staggerItem}
+                    href={item.href}
+                    target={item.title !== "Email" ? "_blank" : undefined}
+                    rel={item.title !== "Email" ? "noopener noreferrer" : undefined}
                     className="rounded-xl bg-blue-800/40 border border-blue-700/40 p-4 flex items-start gap-3 hover:border-blue-600/60 transition-colors group">
                     <div className={`h-9 w-9 rounded-lg ${item.bg} flex items-center justify-center flex-shrink-0`}>
                       <Icon className={`h-4 w-4 ${item.accent}`} />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <div className="font-semibold text-sm text-white">{item.title}</div>
-                      <div className={`text-xs mt-0.5 ${item.accent === "text-emerald-300" ? "text-emerald-300/80" : "text-blue-200/60"}`}>
+                      <div className={`text-xs mt-0.5 break-words ${item.accent}`}>
                         {item.val}
                       </div>
                     </div>
-                  </motion.div>
+                  </motion.a>
                 );
               })}
             </StaggerList>
@@ -260,13 +365,15 @@ function ContactForm() {
 
 /* ══════════════════════════════════════════════════
    DEPARTMENT CONTACTS - White Section
+   Every department routes through the same single WhatsApp number —
+   no direct-dial numbers anywhere.
 ══════════════════════════════════════════════════ */
 function Departments() {
   const depts = [
-    { t: "Admissions", e: "admissions@rochasfoundation.edu", p: "+234 xxxxxxxxx", accent: "text-blue-600",   iconBg: "bg-blue-100",   border: "border-blue-200"   },
-    { t: "Academics",  e: "academics@rochasfoundation.edu",  p: "+234 xxxxxxxxx", accent: "text-sky-600",    iconBg: "bg-sky-100",    border: "border-sky-200"    },
-    { t: "Finance",    e: "finance@rochasfoundation.edu",    p: "+234 xxxxxxxxx", accent: "text-indigo-600", iconBg: "bg-indigo-100", border: "border-indigo-200" },
-    { t: "Boarding",   e: "boarding@rochasfoundation.edu",   p: "+234 xxxxxxxxx", accent: "text-cyan-600",   iconBg: "bg-cyan-100",   border: "border-cyan-200"   },
+    { t: "Admissions", e: "admissions@rochasfoundation.edu", accent: "text-blue-600",   iconBg: "bg-blue-100",   border: "border-blue-200"   },
+    { t: "Academics",  e: "academics@rochasfoundation.edu",  accent: "text-sky-600",    iconBg: "bg-sky-100",    border: "border-sky-200"    },
+    { t: "Finance",    e: "finance@rochasfoundation.edu",    accent: "text-indigo-600", iconBg: "bg-indigo-100", border: "border-indigo-200" },
+    { t: "Boarding",   e: "boarding@rochasfoundation.edu",   accent: "text-cyan-600",   iconBg: "bg-cyan-100",   border: "border-cyan-200"   },
   ];
 
   return (
@@ -283,18 +390,24 @@ function Departments() {
 
         <StaggerList className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {depts.map((d) => (
-            <motion.a key={d.t} href={`/${d.t.toLowerCase()}`} variants={staggerItem}
-              className={`group rounded-2xl bg-white border ${d.border} p-6 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 block`}>
+            <motion.div key={d.t} variants={staggerItem}
+              className="group rounded-2xl bg-white border border-slate-200 p-6 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
               <div className={`h-11 w-11 rounded-xl ${d.iconBg} flex items-center justify-center mb-4 group-hover:scale-105 transition`}>
                 <Building2 className={`h-5 w-5 ${d.accent}`} />
               </div>
               <div className="font-display font-bold text-slate-800 text-lg mb-2">{d.t}</div>
-              <div className={`text-xs break-words mb-1 ${d.accent}`}>{d.e}</div>
-              <div className="text-xs text-slate-400">{d.p}</div>
-              <div className="mt-4 pt-4 border-t border-slate-100 flex items-center gap-1 text-xs font-medium text-blue-600 group-hover:text-blue-700 transition-colors">
-                Contact <ArrowRight className="h-3 w-3" />
-              </div>
-            </motion.a>
+              <a href={`mailto:${d.e}`} className={`block text-xs break-words mb-4 hover:underline ${d.accent}`}>
+                {d.e}
+              </a>
+              <a
+                href={whatsappLink(`Hello! I have an enquiry for the ${d.t} department.`)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pt-4 border-t border-slate-100 flex items-center gap-1 text-xs font-medium text-blue-600 group-hover:text-blue-700 transition-colors"
+              >
+                Chat on WhatsApp <ArrowRight className="h-3 w-3" />
+              </a>
+            </motion.div>
           ))}
         </StaggerList>
       </div>
@@ -308,10 +421,10 @@ function Departments() {
 function FAQ() {
   const [open, setOpen] = useState(0);
   const faqs = [
-    { q: "What's the fastest way to book a campus tour?",  a: "Use the inquiry form above or email admissions directly. Tours run Tuesday–Thursday at 10am and 2pm." },
+    { q: "What's the fastest way to book a campus tour?",  a: "Message us on WhatsApp or email admissions directly. Tours run Tuesday–Thursday at 10am and 2pm." },
     { q: "Do you offer evening drop-in sessions?",         a: "Yes — the first Wednesday of each month from 5–7pm. RSVP via the events page." },
-    { q: "Can I email a specific teacher?",                a: "Yes. Use the staff directory in the parent portal, or call our switchboard and we'll connect you." },
-    { q: "How quickly do you respond to enquiries?",       a: "We aim to respond to all enquiries within 24 hours on weekdays. Urgent matters can be handled via Live Chat." },
+    { q: "Can I reach a specific teacher?",                a: "Yes. Use the staff directory in the parent portal, or message us on WhatsApp and we'll connect you." },
+    { q: "How quickly do you respond to enquiries?",       a: "We aim to respond to all enquiries within 24 hours on weekdays. Urgent matters can be sent straight to us on WhatsApp." },
   ];
 
   return (

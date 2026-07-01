@@ -17,8 +17,8 @@ const whatsappLink = (message) =>
   }`;
 
 const portals = [
-  { label: "Student Portal",  to: "/portal/student" },
-  { label: "Parent Login",    to: "/portal/parent"  },
+  { label: "Student Portal",  to: "https://results.rfcobiohia.com.ng/student" },
+{ label: "Parent Login",    to: "https://results.rfcobiohia.com.ng" },
   { label: "About",           to: "/about"          },
   { label: "Admissions",      to: "/admissions"     },
   { label: "News & Events",   to: "/news"           },

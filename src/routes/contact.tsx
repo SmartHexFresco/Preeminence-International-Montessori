@@ -2,38 +2,80 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef } from "react";
 import { Layout } from "@/components/site/Layout";
 import {
-  MapPin, Mail, MessageCircle, Building2, ChevronDown, ArrowRight, CheckCircle2,
+  MapPin, Mail, MessageCircle, Phone, Building2, ChevronDown, ArrowRight, CheckCircle2,
+  type LucideIcon,
 } from "lucide-react";
 import {
   motion, useScroll, useTransform, useSpring, useInView, AnimatePresence,
 } from "framer-motion";
+import {
+  WHATSAPP_NUMBER, whatsappLink, getLocation, locationLink,
+  type GeoCoords,
+} from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Rochas Foundation College" },
-      { name: "description", content: "Get in touch with admissions, faculty or campus services. We respond within 24 hours." },
-      { property: "og:title", content: "Contact Rochas Foundation" },
-      { property: "og:description", content: "Get in touch with admissions, faculty or campus services." },
+      { title: "Contact — Preeminence International Montessori" },
+      { name: "description", content: "Get in touch with admissions, our guides or campus services. We respond within 24 hours." },
+      { property: "og:title", content: "Contact Preeminence" },
+      { property: "og:description", content: "Get in touch with admissions, our guides or campus services." },
     ],
   }),
   component: ContactPage,
 });
 
-/* ══════════════════════════════════════════════════
-   CONTACT CHANNEL — WhatsApp only, single number
-══════════════════════════════════════════════════ */
-const WHATSAPP_NUMBER = "+234 813 387 8927";
-const toWhatsAppDigits = (number) => number.replace(/[\s+]/g, "");
-const whatsappLink = (message) =>
-  `https://wa.me/${toWhatsAppDigits(WHATSAPP_NUMBER)}${
-    message ? `?text=${encodeURIComponent(message)}` : ""
-  }`;
-
 const SCHOOL_ADDRESS =
-  "Adjacent to the Enugu Airport Roundabout Junction, Emene, Enugu, Enugu State, Nigeria";
-const mapsSearchLink = (address) =>
+  "39 Obodoko Layout, Amankpaka, Ugwuogo Nike, Enugu";
+const mapsSearchLink = (address: string) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+
+type InfoCard = {
+  icon: LucideIcon;
+  title: string;
+  accent: string;
+  bg: string;
+  val?: string;
+  href?: string;
+  numbers?: { label: string; href: string }[];
+};
+
+const CONTACT_CARDS: InfoCard[] = [
+  {
+    icon: MapPin,
+    title: "Visit",
+    val: SCHOOL_ADDRESS,
+    href: mapsSearchLink(SCHOOL_ADDRESS),
+    accent: "text-blue-600",
+    bg: "bg-blue-100",
+  },
+  {
+    icon: MessageCircle,
+    title: "WhatsApp",
+    val: WHATSAPP_NUMBER,
+    href: whatsappLink("Hello! I'd like to know more about Preeminence International Montessori."),
+    accent: "text-emerald-600",
+    bg: "bg-emerald-100",
+  },
+  {
+    icon: Phone,
+    title: "Call Us",
+    numbers: [
+      { label: "0803 794 4661", href: "tel:+2348037944661" },
+      { label: "0806 901 4998", href: "tel:+2348069014998" },
+    ],
+    accent: "text-amber-600",
+    bg: "bg-amber-100",
+  },
+  {
+    icon: Mail,
+    title: "Email",
+    val: "hello@preeminence.edu",
+    href: "mailto:hello@preeminence.edu",
+    accent: "text-indigo-600",
+    bg: "bg-indigo-100",
+  },
+];
 
 /* ══════════════════════════════════════════════════
    SHARED ANIMATION PRIMITIVES
@@ -95,7 +137,7 @@ function StaggerList({ children, className = "", stagger = 0.07 }) {
 
 const staggerItem = {
   hidden:  { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const } },
 };
 
 function DrawLine({ className = "", delay = 0 }) {
@@ -133,18 +175,18 @@ function PageHero() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const smooth = useSpring(scrollYProgress, { stiffness: 60, damping: 22, restDelta: 0.001 });
-  const yBg      = useTransform(smooth, [0, 1], [0, 160]);
-  const scaleBg  = useTransform(smooth, [0, 1], [1.06, 1]);
-  const yContent = useTransform(smooth, [0, 1], [0, -40]);
-  const opacity  = useTransform(smooth, [0, 0.6], [1, 0]);
+  const yBg      = useTransform(smooth, [0, 1], [0, 60]);
+  const scaleBg  = useTransform(smooth, [0, 1], [1.03, 1]);
+  const yContent = useTransform(smooth, [0, 1], [0, -14]);
+  const opacity  = useTransform(smooth, [0, 1], [1, 0.25]);
 
   return (
-    <section ref={ref} className="relative overflow-hidden pb-24 min-h-[500px] flex items-center bg-gradient-to-br from-blue-800 via-blue-700 to-blue-900">
+    <section ref={ref} className="relative overflow-hidden pb-24 min-h-[500px] flex items-center bg-white">
       <motion.div style={{ y: yBg, scale: scaleBg }} className="absolute inset-0 origin-center">
-        <img src={HERO_IMG} alt="Contact" className="absolute inset-0 h-full w-full object-cover opacity-40" />
+        <img src={HERO_IMG} alt="Contact" className="absolute inset-0 h-full w-full object-cover opacity-70" />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-800/70 to-blue-900/60" />
-      <div className="absolute inset-0 opacity-[0.04]" style={{
+      <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/55 to-transparent" />
+      <div className="absolute inset-0 opacity-[0.05]" style={{
         backgroundImage: "linear-gradient(#93c5fd 1px,transparent 1px),linear-gradient(90deg,#93c5fd 1px,transparent 1px)",
         backgroundSize: "56px 56px",
       }} />
@@ -152,19 +194,19 @@ function PageHero() {
         className="relative mx-auto max-w-7xl px-6 text-center w-full pt-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-800/50 px-4 py-1.5 mb-6">
-          <span className="h-1.5 w-1.5 rounded-full bg-blue-300 animate-pulse" />
-          <span className="text-[11px] font-medium tracking-widest uppercase text-blue-200/80">Contact</span>
+          className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/80 px-4 py-1.5 mb-6">
+          <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
+          <span className="text-[11px] font-medium tracking-widest uppercase text-blue-700">Contact</span>
         </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-display text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-[1.05] mb-6">
+          className="font-display text-5xl md:text-6xl xl:text-7xl font-bold text-blue-900 leading-[1.05] mb-6">
           Let's start a<br />
-          <em className="not-italic text-blue-300">conversation.</em>
+          <em className="not-italic text-[#C21E1E]">conversation.</em>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-base md:text-lg text-blue-200/70 max-w-2xl mx-auto leading-relaxed">
+          className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
           Whether you're applying, partnering or just curious — we'd love to hear from you.
         </motion.p>
       </motion.div>
@@ -174,8 +216,8 @@ function PageHero() {
 
 /* ══════════════════════════════════════════════════
    CONTACT FORM + MAP - Blue Section
-   Form fields are collected and handed straight to WhatsApp — there is
-   no phone/call path anywhere on this page, only WhatsApp.
+   Form fields are collected and handed straight to WhatsApp — no email
+   sending on this page. Phone numbers are listed for direct calls.
 ══════════════════════════════════════════════════ */
 function ContactForm() {
   const [sent, setSent] = useState(false);
@@ -186,6 +228,10 @@ function ContactForm() {
     department: "Admissions",
     message: "",
   });
+  const [shareLoc, setShareLoc] = useState(false);
+  const [location, setLocation] = useState<GeoCoords | null>(null);
+  const [locating, setLocating] = useState(false);
+  const [locError, setLocError] = useState(false);
 
   const updateField = (field) => (e) =>
     setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -193,17 +239,37 @@ function ContactForm() {
   const isValid =
     form.firstName.trim() && form.lastName.trim() && form.email.trim() && form.message.trim();
 
+  const toggleShareLoc = async () => {
+    if (shareLoc) {
+      setShareLoc(false);
+      setLocation(null);
+      setLocError(false);
+      return;
+    }
+    setLocating(true);
+    setLocError(false);
+    const loc = await getLocation();
+    setLocating(false);
+    if (loc) {
+      setLocation(loc);
+      setShareLoc(true);
+    } else {
+      setLocError(true);
+    }
+  };
+
   const handleSend = () => {
     if (!isValid) return;
 
     const text = [
-      "New enquiry from the Rochas Foundation website:",
+      "New enquiry from the Preeminence website:",
       "",
       `Name: ${form.firstName} ${form.lastName}`,
       `Email: ${form.email}`,
       `Department: ${form.department}`,
       "",
       `Message: ${form.message}`,
+      ...(location ? ["", `📍 From: ${locationLink(location)}`] : []),
     ].join("\n");
 
     window.open(whatsappLink(text), "_blank", "noopener,noreferrer");
@@ -212,35 +278,38 @@ function ContactForm() {
 
   const resetForm = () => {
     setForm({ firstName: "", lastName: "", email: "", department: "Admissions", message: "" });
+    setLocation(null);
+    setShareLoc(false);
+    setLocError(false);
     setSent(false);
   };
 
   return (
-    <section className="py-24 bg-gradient-to-b from-blue-900 to-blue-800">
+    <section className="py-24 bg-white">
       <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-8">
 
         {/* Form */}
         <FadeFrom dir="left">
-          <div className="rounded-2xl bg-blue-800/40 border border-blue-700/40 backdrop-blur-sm p-8 h-full">
-            <h3 className="font-display font-bold text-2xl text-white mb-6">Send us a message</h3>
+          <div className="rounded-2xl bg-warm-white border border-slate-200 p-8 h-full">
+            <h3 className="font-display font-bold text-2xl text-blue-900 mb-6">Send us a message</h3>
 
             {sent ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                 className="flex flex-col items-center justify-center h-64 gap-3 text-center">
-                <div className="h-16 w-16 rounded-full bg-emerald-800/40 border border-emerald-600/40 flex items-center justify-center">
-                  <CheckCircle2 className="h-7 w-7 text-emerald-400" />
+                <div className="h-16 w-16 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center">
+                  <CheckCircle2 className="h-7 w-7 text-emerald-600" />
                 </div>
-                <p className="font-semibold text-white text-lg">Message ready on WhatsApp!</p>
-                <p className="text-sm text-blue-200/60 max-w-xs">
+                <p className="font-semibold text-blue-900 text-lg">Message ready on WhatsApp!</p>
+                <p className="text-sm text-slate-600 max-w-xs">
                   We opened WhatsApp with your details filled in — just hit send there. If it
                   didn't open,{" "}
-                  <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="text-blue-300 underline">
+                  <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline">
                     chat with us directly
                   </a>.
                 </p>
                 <button onClick={resetForm}
-                  className="mt-2 text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                  className="mt-2 text-xs text-blue-600 hover:text-blue-700 transition-colors">
                   Send another message
                 </button>
               </motion.div>
@@ -251,41 +320,62 @@ function ContactForm() {
                     placeholder="First name"
                     value={form.firstName}
                     onChange={updateField("firstName")}
-                    className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-100 placeholder:text-blue-500/50 outline-none focus:border-blue-500/60 transition w-full" />
+                    className="rounded-xl bg-white border border-slate-200 px-4 py-3 text-sm text-blue-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full" />
                   <input
                     placeholder="Last name"
                     value={form.lastName}
                     onChange={updateField("lastName")}
-                    className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-100 placeholder:text-blue-500/50 outline-none focus:border-blue-500/60 transition w-full" />
+                    className="rounded-xl bg-white border border-slate-200 px-4 py-3 text-sm text-blue-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full" />
                 </div>
                 <input
                   type="email"
                   placeholder="Email address"
                   value={form.email}
                   onChange={updateField("email")}
-                  className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-100 placeholder:text-blue-500/50 outline-none focus:border-blue-500/60 transition w-full" />
+                  className="rounded-xl bg-white border border-slate-200 px-4 py-3 text-sm text-blue-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full" />
                 <select
                   value={form.department}
                   onChange={updateField("department")}
-                  className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-300/70 outline-none focus:border-blue-500/60 transition w-full">
+                  className="rounded-xl bg-white border border-slate-200 px-4 py-3 text-sm text-blue-900 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full">
                   <option>Admissions</option>
                   <option>Academics</option>
                   <option>Finance</option>
-                  <option>Boarding</option>
+                  <option>Administration</option>
                 </select>
                 <textarea
                   rows={5}
                   placeholder="How can we help?"
                   value={form.message}
                   onChange={updateField("message")}
-                  className="rounded-xl bg-blue-900/60 border border-blue-700/40 px-4 py-3 text-sm text-blue-100 placeholder:text-blue-500/50 outline-none focus:border-blue-500/60 transition w-full resize-none" />
+                  className="rounded-xl bg-white border border-slate-200 px-4 py-3 text-sm text-blue-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition w-full resize-none" />
+                <label className="flex items-start gap-3 rounded-xl bg-white border border-slate-200 px-4 py-3 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={shareLoc}
+                    onChange={toggleShareLoc}
+                    disabled={locating}
+                    className="mt-1 h-4 w-4 accent-blue-600"
+                  />
+                  <div className="text-sm">
+                    <div className="text-slate-800 font-medium">Share my location</div>
+                    <div className="text-slate-500 text-xs">
+                      {locating
+                        ? "Detecting location…"
+                        : locError
+                          ? "Location unavailable — we'll send your message without it."
+                          : location
+                            ? "Location ready — it'll be added to your message."
+                            : "Lets our team know which area you're writing from."}
+                    </div>
+                  </div>
+                </label>
                 <button
                   onClick={handleSend}
                   disabled={!isValid}
-                  className="rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white py-3 font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                  className="rounded-xl bg-yellow-400 text-blue-900 hover:bg-yellow-300 disabled:opacity-40 disabled:cursor-not-allowed  py-3 font-semibold text-sm transition-colors flex items-center justify-center gap-2">
                   Send Message <ArrowRight className="h-4 w-4" />
                 </button>
-                <p className="text-center text-[11px] text-blue-300/50">
+                <p className="text-center text-[11px] text-slate-400">
                   Sending opens WhatsApp with your message ready to go.
                 </p>
               </div>
@@ -297,44 +387,39 @@ function ContactForm() {
         <FadeFrom dir="right">
           <div className="flex flex-col gap-4 h-full">
             {/* Map */}
-            <div className="rounded-2xl overflow-hidden border border-blue-700/40 flex-1 min-h-[240px]">
+            <div className="rounded-2xl overflow-hidden border border-slate-200 flex-1 min-h-[240px]">
               <iframe
                 title="Campus Map"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=7.53%2C6.45%2C7.60%2C6.51&layer=mapnik&marker=6.4761%2C7.5618"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=7.50%2C6.49%2C7.58%2C6.57&layer=mapnik&marker=6.53%2C7.54"
                 className="w-full h-full min-h-[240px]"
                 loading="lazy"
               />
             </div>
 
-            {/* Info cards — WhatsApp only, no phone/call channel */}
-            <StaggerList className="grid sm:grid-cols-3 gap-3" stagger={0.08}>
-              {[
-                {
-                  icon: MapPin,
-                  title: "Visit",
-                  val: SCHOOL_ADDRESS,
-                  href: mapsSearchLink(SCHOOL_ADDRESS),
-                  accent: "text-blue-300",
-                  bg: "bg-blue-800/60",
-                },
-                {
-                  icon: MessageCircle,
-                  title: "WhatsApp",
-                  val: WHATSAPP_NUMBER,
-                  href: whatsappLink("Hello! I'd like to know more about Rochas Foundation College."),
-                  accent: "text-emerald-300",
-                  bg: "bg-emerald-800/50",
-                },
-                {
-                  icon: Mail,
-                  title: "Email",
-                  val: "hello@rochasfoundation.edu",
-                  href: "mailto:hello@rochasfoundation.edu",
-                  accent: "text-indigo-300",
-                  bg: "bg-indigo-800/50",
-                },
-              ].map((item) => {
+            {/* Info cards — WhatsApp, phone & email channels */}
+            <StaggerList className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3" stagger={0.08}>
+              {CONTACT_CARDS.map((item) => {
                 const Icon = item.icon;
+                if (item.numbers) {
+                  return (
+                    <motion.div
+                      key={item.title}
+                      variants={staggerItem}
+                      className="rounded-xl bg-warm-white border border-slate-200 p-4 flex flex-col items-center text-center hover:border-blue-300 transition-colors">
+                      <div className={`h-9 w-9 rounded-lg ${item.bg} flex items-center justify-center mb-2 flex-shrink-0`}>
+                        <Icon className={`h-4 w-4 ${item.accent}`} />
+                      </div>
+                      <div className="font-semibold text-sm text-blue-900">{item.title}</div>
+                      <div className="mt-1 space-y-1">
+                        {item.numbers.map((n) => (
+                          <a key={n.href} href={n.href} className={`block text-xs ${item.accent} hover:underline`}>
+                            {n.label}
+                          </a>
+                        ))}
+                      </div>
+                    </motion.div>
+                  );
+                }
                 return (
                   <motion.a
                     key={item.title}
@@ -342,15 +427,13 @@ function ContactForm() {
                     href={item.href}
                     target={item.title !== "Email" ? "_blank" : undefined}
                     rel={item.title !== "Email" ? "noopener noreferrer" : undefined}
-                    className="rounded-xl bg-blue-800/40 border border-blue-700/40 p-4 flex items-start gap-3 hover:border-blue-600/60 transition-colors group">
-                    <div className={`h-9 w-9 rounded-lg ${item.bg} flex items-center justify-center flex-shrink-0`}>
+                    className="rounded-xl bg-warm-white border border-slate-200 p-4 flex flex-col items-center text-center hover:border-blue-300 transition-colors group">
+                    <div className={`h-9 w-9 rounded-lg ${item.bg} flex items-center justify-center mb-2 flex-shrink-0`}>
                       <Icon className={`h-4 w-4 ${item.accent}`} />
                     </div>
-                    <div className="min-w-0">
-                      <div className="font-semibold text-sm text-white">{item.title}</div>
-                      <div className={`text-xs mt-0.5 break-words ${item.accent}`}>
-                        {item.val}
-                      </div>
+                    <div className="font-semibold text-sm text-blue-900">{item.title}</div>
+                    <div className={`text-xs mt-1 break-words ${item.accent}`}>
+                      {item.val}
                     </div>
                   </motion.a>
                 );
@@ -370,20 +453,20 @@ function ContactForm() {
 ══════════════════════════════════════════════════ */
 function Departments() {
   const depts = [
-    { t: "Admissions", e: "admissions@rochasfoundation.edu", accent: "text-blue-600",   iconBg: "bg-blue-100",   border: "border-blue-200"   },
-    { t: "Academics",  e: "academics@rochasfoundation.edu",  accent: "text-sky-600",    iconBg: "bg-sky-100",    border: "border-sky-200"    },
-    { t: "Finance",    e: "finance@rochasfoundation.edu",    accent: "text-indigo-600", iconBg: "bg-indigo-100", border: "border-indigo-200" },
-    { t: "Boarding",   e: "boarding@rochasfoundation.edu",   accent: "text-cyan-600",   iconBg: "bg-cyan-100",   border: "border-cyan-200"   },
+    { t: "Admissions", e: "admissions@preeminence.edu", accent: "text-blue-600",   iconBg: "bg-blue-100",   border: "border-blue-200"   },
+    { t: "Academics",  e: "academics@preeminence.edu",  accent: "text-sky-600",    iconBg: "bg-sky-100",    border: "border-sky-200"    },
+    { t: "Finance",    e: "finance@preeminence.edu",    accent: "text-indigo-600", iconBg: "bg-indigo-100", border: "border-indigo-200" },
+    { t: "Administration", e: "admin@preeminence.edu",    accent: "text-cyan-600",   iconBg: "bg-cyan-100",   border: "border-cyan-200"   },
   ];
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-warm-white">
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center mb-14">
           <SectionLabel label="Department Contacts" light={false} />
           <FadeUp>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900">
-              Reach the right <em className="not-italic text-blue-600">team.</em>
+              Reach the right <em className="not-italic text-[#C21E1E]">team.</em>
             </h2>
           </FadeUp>
         </div>
@@ -391,7 +474,7 @@ function Departments() {
         <StaggerList className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {depts.map((d) => (
             <motion.div key={d.t} variants={staggerItem}
-              className="group rounded-2xl bg-white border border-slate-200 p-6 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
+              className="group rounded-2xl bg-warm-white border border-slate-200 p-6 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
               <div className={`h-11 w-11 rounded-xl ${d.iconBg} flex items-center justify-center mb-4 group-hover:scale-105 transition`}>
                 <Building2 className={`h-5 w-5 ${d.accent}`} />
               </div>
@@ -428,13 +511,13 @@ function FAQ() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-blue-900 to-blue-800">
+    <section className="py-24 bg-warm-white">
       <div className="mx-auto max-w-3xl px-6">
         <div className="text-center mb-14">
-          <SectionLabel label="FAQ" light={true} />
+          <SectionLabel label="FAQ" light={false} />
           <FadeUp>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
-              Quick <em className="not-italic text-blue-300">answers.</em>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-blue-900">
+              Quick <em className="not-italic text-[#C21E1E]">answers.</em>
             </h2>
           </FadeUp>
         </div>
@@ -442,12 +525,12 @@ function FAQ() {
         <StaggerList className="space-y-3" stagger={0.07}>
           {faqs.map((f, i) => (
             <motion.div key={f.q} variants={staggerItem}
-              className="rounded-2xl bg-blue-800/40 border border-blue-700/40 overflow-hidden hover:border-blue-600/60 transition-colors">
+              className="rounded-2xl bg-white border border-slate-200 overflow-hidden hover:border-blue-300 transition-colors">
               <button onClick={() => setOpen(open === i ? -1 : i)}
                 className="w-full px-6 py-5 flex items-center justify-between text-left gap-4">
-                <span className="font-semibold text-white text-sm leading-snug">{f.q}</span>
+                <span className="font-semibold text-blue-900 text-sm leading-snug">{f.q}</span>
                 <motion.div animate={{ rotate: open === i ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                  <ChevronDown className={`h-5 w-5 flex-shrink-0 ${open === i ? "text-blue-400" : "text-blue-500"}`} />
+                  <ChevronDown className={`h-5 w-5 flex-shrink-0 ${open === i ? "text-blue-600" : "text-slate-400"}`} />
                 </motion.div>
               </button>
               <AnimatePresence initial={false}>
@@ -459,7 +542,7 @@ function FAQ() {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
                     className="overflow-hidden">
-                    <div className="px-6 pb-5 text-sm text-blue-200/70 leading-relaxed border-t border-blue-700/40 pt-4">
+                    <div className="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-200 pt-4">
                       {f.a}
                     </div>
                   </motion.div>
@@ -481,38 +564,38 @@ function CTABanner() {
   const inView = useInView(ref, { once: false, margin: "-60px 0px", amount: 0.15 });
 
   return (
-    <section className="py-24 bg-gradient-to-b from-blue-800 to-blue-900">
+    <section className="py-24 bg-white">
       <div className="mx-auto max-w-7xl px-6">
         <motion.div ref={ref}
           initial={{ opacity: 0, scale: 0.96, y: 24 }}
           animate={inView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 24 }}
           transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="relative rounded-3xl bg-blue-700/50 border border-blue-500/30 backdrop-blur-sm p-12 md:p-16 overflow-hidden text-center">
+          className="relative rounded-3xl bg-blue-50 border border-blue-200 p-12 md:p-16 overflow-hidden text-center">
           <img
             src="https://images.unsplash.com/photo-1562774053-701939374585?w=1200&q=80"
-            alt="" className="absolute inset-0 h-full w-full object-cover opacity-10" />
+            alt="" className="absolute inset-0 h-full w-full object-cover opacity-20" />
           <div className="absolute inset-0 opacity-[0.05]" style={{
-            backgroundImage: "linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)",
+            backgroundImage: "linear-gradient(#2563eb 1px,transparent 1px),linear-gradient(90deg,#2563eb 1px,transparent 1px)",
             backgroundSize: "48px 48px",
           }} />
           <div className="relative">
             <FadeUp>
-              <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
+              <h2 className="font-display text-4xl md:text-5xl font-bold text-blue-900 mb-4">
                 Ready to visit us<br />
-                <em className="not-italic text-blue-300">in person?</em>
+                <em className="not-italic text-[#C21E1E]">in person?</em>
               </h2>
             </FadeUp>
             <FadeUp delay={0.1}>
-              <p className="text-base text-blue-200/70 max-w-xl mx-auto leading-relaxed mb-10">
+              <p className="text-base text-slate-600 max-w-xl mx-auto leading-relaxed mb-10">
                 Nothing beats seeing the campus for yourself. Book a personal tour and meet our team face to face.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <a href="/admissions/tour"
-                  className="inline-flex items-center gap-2 rounded-xl bg-white text-blue-700 hover:bg-blue-50 px-7 py-3.5 text-sm font-bold transition-colors shadow-lg">
+                  className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 text-blue-900 hover:bg-yellow-300 px-7 py-3.5 text-sm font-bold transition-colors shadow-lg">
                   Book a Campus Tour <ArrowRight className="h-4 w-4" />
                 </a>
                 <a href="/admissions"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/30 text-white hover:bg-blue-700/50 px-7 py-3.5 text-sm font-semibold transition-colors">
+                  className="inline-flex items-center gap-2 rounded-xl border border-blue-300 text-blue-700 hover:bg-blue-100 px-7 py-3.5 text-sm font-semibold transition-colors">
                   View Admissions
                 </a>
               </div>

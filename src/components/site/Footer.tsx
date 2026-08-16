@@ -1,20 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import {
   Facebook, Instagram, Linkedin, Twitter, Youtube,
-  MapPin, MessageCircle, Mail, Clock, GraduationCap,
-  ArrowRight, ExternalLink, Users, Award, Globe, Heart
+  MapPin, MessageCircle, Mail, Phone, Clock,
+  ArrowRight, ExternalLink
 } from "lucide-react";
-
-/* ══════════════════════════════════════════════════
-   CONTACT CHANNEL — WhatsApp only, single number
-   Same number used on the Contact and Admissions pages.
-══════════════════════════════════════════════════ */
-const WHATSAPP_NUMBER = "+234 813 387 8927";
-const toWhatsAppDigits = (number) => number.replace(/[\s+]/g, "");
-const whatsappLink = (message) =>
-  `https://wa.me/${toWhatsAppDigits(WHATSAPP_NUMBER)}${
-    message ? `?text=${encodeURIComponent(message)}` : ""
-  }`;
+import { WHATSAPP_NUMBER, whatsappLink } from "@/lib/whatsapp";
 
 const portals = [
   { label: "Student Portal",  to: "https://results.rfcobiohia.com.ng/student" },
@@ -34,10 +24,10 @@ const socials = [
 ];
 
 const accreditations = [
-  "Cambridge Certified",
-  "IB World School",
+  "Montessori Method",
+  "Nigerian Primary Curriculum",
   "ISO 21001",
-  "WAEC Partner"
+  "Safe & Caring School"
 ];
 
 const footerLinks = [
@@ -47,21 +37,13 @@ const footerLinks = [
   "Accreditations"
 ];
 
-// Foundation stats
-const stats = [
-  { icon: Users, value: "21,000+", label: "Children Educated" },
-  { icon: Award, value: "3,000+", label: "Graduates & Undergraduates" },
-  { icon: Globe, value: "10", label: "College Campuses" },
-  { icon: Heart, value: "2000", label: "Founded" },
-];
-
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-blue-700 text-white overflow-hidden">
+    <footer className="relative bg-white text-blue-900 border-t border-slate-200 overflow-hidden">
       {/* Top decorative line */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
 
       {/* Subtle grid bg */}
       <div
@@ -74,41 +56,24 @@ export function Footer() {
       />
 
       {/* Glow blobs */}
-      <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-blue-600/40 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-blue-500/40 blur-3xl pointer-events-none" />
-
-      {/* ── Stats Banner ── */}
-      <div className="relative border-b border-blue-600/40 bg-blue-800/30">
-        <div className="mx-auto max-w-7xl px-6 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map(({ icon: Icon, value, label }) => (
-              <div key={label} className="text-center">
-                <div className="flex justify-center mb-2">
-                  <Icon className="h-6 w-6 text-blue-300/60" />
-                </div>
-                <div className="text-2xl md:text-3xl font-bold text-white">{value}</div>
-                <div className="text-xs text-blue-200/70 mt-1">{label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-blue-100 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-blue-100 blur-3xl pointer-events-none" />
 
       {/* ── CTA banner ── */}
-      <div className="relative border-b border-blue-600/40">
+      <div className="relative border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h3 className="font-display text-2xl md:text-3xl font-bold text-white">
-              Ready to join the <span className="text-blue-300">Rochas family?</span>
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-blue-900">
+              Ready to join the <span className="text-[#C21E1E]">Preeminence family?</span>
             </h3>
-            <p className="text-sm text-blue-200/80 mt-1">
+            <p className="text-sm text-slate-600 mt-1">
               Applications for the 2025–2026 academic year are now open.
             </p>
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
             <Link
               to="/admissions"
-              className="inline-flex items-center gap-2 rounded-xl bg-blue-500 hover:bg-blue-400 text-white px-5 py-2.5 text-sm font-semibold shadow-lg shadow-blue-500/30 hover:shadow-blue-400/40 transition-all hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-5 py-2.5 text-sm font-semibold shadow-lg shadow-yellow-500/30 hover:shadow-yellow-400/40 transition-all hover:-translate-y-0.5"
             >
               Apply Now <ArrowRight className="h-4 w-4" />
             </Link>
@@ -124,60 +89,67 @@ export function Footer() {
           <div>
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2.5 mb-5 w-fit group">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg flex-shrink-0">
-                <GraduationCap className="h-5 w-5 text-white" />
-              </div>
+              <div className="h-12 w-auto flex-shrink-0">
+              <img src="/images/preeminence_logo.png" alt="Preeminence International Montessori"
+                className="h-12 w-auto object-contain" />
+            </div>
               <div className="leading-none">
-                <div className="font-display font-bold text-sm text-white tracking-wide group-hover:text-blue-200 transition">
-                  ROCHAS FOUNDATION
+                <div className="font-display font-bold text-sm text-blue-900 tracking-wide group-hover:text-blue-700 transition">
+                  PREEMINENCE
                 </div>
-                <div className="text-[9px] uppercase tracking-[0.2em] text-blue-300/60 mt-0.5">College</div>
+                <div className="text-[9px] uppercase tracking-[0.2em] text-slate-500 mt-0.5">International Montessori</div>
               </div>
             </Link>
 
-            <p className="text-sm text-blue-100/80 leading-relaxed max-w-[260px] mb-6">
-              Founded in 2000, Rochas Foundation is a non-governmental organization dedicated to 
-              providing free, qualitative education to intelligent children from less privileged 
-              homes across Africa. Building a new African through charity.
+            <p className="text-sm text-slate-600 leading-relaxed max-w-[260px] mb-6">
+              Preeminence International Montessori is a warm, child-centred school where
+              curious young minds are guided to grow with confidence, creativity and character.
             </p>
 
-            {/* Contact — WhatsApp only, no phone/call channel */}
-            <ul className="space-y-3 mb-6 text-sm text-blue-100/80">
+            {/* Contact — WhatsApp, phone & email channels */}
+            <ul className="space-y-3 mb-6 text-sm text-slate-600">
               <li className="flex items-start gap-2.5">
-                <MapPin className="h-4 w-4 text-blue-300 mt-0.5 flex-shrink-0" />
-                <span>Adjacent to the Enugu Airport Roundabout Junction, Emene, Enugu, Enugu State, Nigeria</span>
+                <MapPin className="h-4 w-4 text-slate-400 mt-0.5 flex-shrink-0" />
+                <span>39 Obodoko Layout, Amankpaka, Ugwuogo Nike, Enugu</span>
               </li>
               <li className="flex items-center gap-2.5">
-                <MessageCircle className="h-4 w-4 text-blue-300 flex-shrink-0" />
+                <MessageCircle className="h-4 w-4 text-slate-400 flex-shrink-0" />
                 <a
-                  href={whatsappLink("Hello! I'd like to know more about Rochas Foundation College.")}
+                  href={whatsappLink("Hello! I'd like to know more about Preeminence International Montessori.")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-blue-200 transition"
+                  className="hover:text-blue-700 transition"
                 >
                   {WHATSAPP_NUMBER} (WhatsApp)
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <Mail className="h-4 w-4 text-blue-300 flex-shrink-0" />
-                <a href="mailto:admissions@rochas.edu.ng" className="hover:text-blue-200 transition">
-                  admissions@rochas.edu.ng
+                <Phone className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                <div className="flex flex-col">
+                  <a href="tel:+2348037944661" className="hover:text-blue-700 transition">0803 794 4661</a>
+                  <a href="tel:+2348069014998" className="hover:text-blue-700 transition">0806 901 4998</a>
+                </div>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Mail className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                <a href="mailto:admissions@preeminence.edu.ng" className="hover:text-blue-700 transition">
+                  admissions@preeminence.edu.ng
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <Clock className="h-4 w-4 text-blue-300 flex-shrink-0" />
+                <Clock className="h-4 w-4 text-slate-400 flex-shrink-0" />
                 <span>Mon–Fri · 7:30 AM – 5:00 PM</span>
               </li>
             </ul>
 
             {/* Urgent contact — also routed through WhatsApp, same number */}
-            <div className="rounded-xl bg-red-500/20 border border-red-400/30 px-4 py-3 mb-6">
-              <p className="text-xs uppercase tracking-wider text-red-300 font-semibold mb-0.5">Urgent? Message Us</p>
+            <div className="rounded-xl bg-red-500/10 border border-red-200 px-4 py-3 mb-6">
+              <p className="text-xs uppercase tracking-wider text-red-600 font-semibold mb-0.5">Urgent? Message Us</p>
               <a
-                href={whatsappLink("This is urgent — I need to reach Rochas Foundation College right away.")}
+                href={whatsappLink("This is urgent — I need to reach Preeminence International Montessori right away.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-bold text-white hover:text-red-200 transition"
+                className="text-sm font-bold text-slate-800 hover:text-red-600 transition"
               >
                 Chat on WhatsApp: {WHATSAPP_NUMBER}
               </a>
@@ -190,7 +162,7 @@ export function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className={`h-9 w-9 rounded-lg bg-white/10 border border-blue-500/30 flex items-center justify-center text-blue-200 hover:text-white transition-all ${hover}`}
+                  className={`h-9 w-9 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-white transition-all ${hover}`}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -202,54 +174,37 @@ export function Footer() {
 
           {/* Accreditation badges */}
           <div>
-            <h4 className="text-xs uppercase tracking-widest text-blue-300 font-semibold mb-4">
+            <h4 className="text-xs uppercase tracking-widest text-slate-500 font-semibold mb-4">
               Accreditations
             </h4>
             <div className="flex flex-col gap-3">
               {accreditations.map((badge) => (
                 <div
                   key={badge}
-                  className="flex items-center gap-2 rounded-lg border border-blue-500/30 bg-white/10 px-3 py-1.5 w-fit"
+                  className="flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 w-fit"
                 >
-                  <div className="h-1.5 w-1.5 rounded-full bg-blue-300" />
-                  <span className="text-xs text-blue-100/80 font-medium">{badge}</span>
+                  <div className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+                  <span className="text-xs text-blue-800 font-medium">{badge}</span>
                 </div>
               ))}
             </div>
 
-            {/* Campuses */}
-            <div className="mt-6">
-              <h4 className="text-xs uppercase tracking-widest text-blue-300 font-semibold mb-3">
-                Our Campuses
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {["Owerri", "Ogboko", "Jos", "Ibadan", "Kano", "Zaria", "Bauchi", "Sokoto", "Adamawa", "Enugu"].map((city) => (
-                  <span
-                    key={city}
-                    className="text-xs bg-white/10 border border-blue-500/30 rounded-full px-3 py-1 text-blue-100/80"
-                  >
-                    {city}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Exchange Program */}
-            <div className="mt-6 rounded-xl bg-yellow-500/20 border border-yellow-400/30 px-4 py-3">
-              <p className="text-xs uppercase tracking-wider text-yellow-300 font-semibold mb-0.5">
+            {/* Excellence Rewarded */}
+            <div className="mt-6 rounded-xl bg-yellow-50 border border-yellow-200 px-4 py-3">
+              <p className="text-xs uppercase tracking-wider text-yellow-700 font-semibold mb-0.5">
                 Excellence Rewarded
               </p>
-              <p className="text-sm text-blue-100/90">
-                Top students receive annual exchange program to the United States
+              <p className="text-sm text-slate-700">
+                Outstanding pupils are proudly celebrated and rewarded each term.
               </p>
             </div>
           </div>
         </div>
 
         {/* ── Portals strip ── */}
-        <div className="mt-12 pt-8 border-t border-blue-500/30">
+        <div className="mt-12 pt-8 border-t border-slate-200">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-            <span className="text-xs uppercase tracking-widest text-blue-300 font-semibold whitespace-nowrap">
+            <span className="text-xs uppercase tracking-widest text-slate-500 font-semibold whitespace-nowrap">
               Quick Access
             </span>
             <div className="flex flex-wrap gap-2">
@@ -257,7 +212,7 @@ export function Footer() {
                 <Link
                   key={p.to}
                   to={p.to}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 border border-blue-500/30 px-3.5 py-1.5 text-xs font-medium text-blue-100/80 hover:bg-blue-600/50 hover:text-white hover:border-blue-400/50 transition"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-200 px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition"
                 >
                   <ExternalLink className="h-3 w-3" />
                   {p.label}
@@ -268,22 +223,22 @@ export function Footer() {
         </div>
 
         {/* ── Map embed ── */}
-        <div className="mt-8 rounded-2xl overflow-hidden h-44 border border-blue-500/30">
+        <div className="mt-8 rounded-2xl overflow-hidden h-44 border border-slate-200">
           <iframe
             title="Campus map"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=7.5267%2C6.4495%2C7.5567%2C6.4695&layer=mapnik&marker=6.4595%2C7.5417"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=7.50%2C6.49%2C7.58%2C6.57&layer=mapnik&marker=6.53%2C7.54"
             className="w-full h-full grayscale opacity-50"
             loading="lazy"
           />
         </div>
 
         {/* ── Bottom bar ── */}
-        <div className="mt-8 pt-6 border-t border-blue-500/30 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-blue-200/60">
-            © {year} Rochas Foundation College. All rights reserved. Powered by{" "}
+        <div className="mt-8 pt-6 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-slate-500">
+            © {year} Preeminence International Montessori. All rights reserved. Powered by{" "}
             <a 
               href="https://bravotechub.com" 
-              className="text-blue-200/80 hover:text-blue-100 transition"
+              className="text-blue-700 hover:text-blue-600 transition"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -295,7 +250,7 @@ export function Footer() {
               <a
                 key={text}
                 href="#"
-                className="text-xs text-blue-200/60 hover:text-blue-100 transition"
+                className="text-xs text-slate-500 hover:text-blue-700 transition"
               >
                 {text}
               </a>

@@ -45,53 +45,108 @@
   --animate-marquee: marquee 30s linear infinite;
 }
 
+/* Brand palettes — Navy #152A6E, Gold #FFC107, Red #C21E1E, Warm White #FFFDF7 */
+@theme {
+  --color-warm-white: #FFFDF7;
+  --color-warm-white-50: #FFFEFA;
+  --color-warm-white-100: #FFFDF7;
+
+  --color-blue-50: #EEF2FA;
+  --color-blue-100: #DCE4F4;
+  --color-blue-200: #B8C7E8;
+  --color-blue-300: #8FA4D8;
+  --color-blue-400: #5E7BB8;
+  --color-blue-500: #3C5790;
+  --color-blue-600: #263E80;
+  --color-blue-700: #1C3376;
+  --color-blue-800: #172E70;
+  --color-blue-900: #152A6E;
+  --color-blue-950: #0D1D4D;
+
+  --color-yellow-50: #FFF9E0;
+  --color-yellow-100: #FFF2BC;
+  --color-yellow-200: #FFE98D;
+  --color-yellow-300: #FFE05C;
+  --color-yellow-400: #FFC107;
+  --color-yellow-500: #E6AC00;
+  --color-yellow-600: #C49100;
+  --color-yellow-700: #9A7100;
+  --color-yellow-800: #7A5700;
+  --color-yellow-900: #5C4000;
+  --color-yellow-950: #3D2B00;
+
+  --color-amber-50: #FFF9E0;
+  --color-amber-100: #FFF2BC;
+  --color-amber-200: #FFE98D;
+  --color-amber-300: #FFE05C;
+  --color-amber-400: #FFC107;
+  --color-amber-500: #E6AC00;
+  --color-amber-600: #C49100;
+  --color-amber-700: #9A7100;
+  --color-amber-800: #7A5700;
+  --color-amber-900: #5C4000;
+  --color-amber-950: #3D2B00;
+
+  --color-red-50: #FBEDED;
+  --color-red-100: #F7D6D6;
+  --color-red-200: #EEAEAE;
+  --color-red-300: #E38585;
+  --color-red-400: #D75858;
+  --color-red-500: #C21E1E;
+  --color-red-600: #A41B1B;
+  --color-red-700: #841515;
+  --color-red-800: #651111;
+  --color-red-900: #4A0D0D;
+  --color-red-950: #330808;
+}
+
 :root {
   --radius: 0.875rem;
 
-  /* Navy #14213D */
-  --background: oklch(0.99 0.005 250);
-  --foreground: oklch(0.22 0.06 265);
+  /* Preeminence brand — Navy #152A6E, Red #C21E1E, Gold #FFC107, Warm White #FFFDF7 */
+  --background: #FFFDF7;
+  --foreground: #152A6E;
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.06 265);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.06 265);
+  --card: #FFFDF7;
+  --card-foreground: #152A6E;
+  --popover: #FFFDF7;
+  --popover-foreground: #152A6E;
 
-  --primary: oklch(0.25 0.08 265);            /* navy */
-  --primary-foreground: oklch(0.99 0.005 250);
+  --primary: #152A6E;                         /* navy */
+  --primary-foreground: #FFFDF7;
 
-  --secondary: oklch(0.96 0.01 250);
-  --secondary-foreground: oklch(0.22 0.06 265);
+  --secondary: #EEF2FA;
+  --secondary-foreground: #152A6E;
 
-  --muted: oklch(0.96 0.008 250);
-  --muted-foreground: oklch(0.5 0.03 260);
+  --muted: #F3F0E9;
+  --muted-foreground: #5C6580;
 
-  --accent: oklch(0.95 0.02 220);
-  --accent-foreground: oklch(0.22 0.06 265);
+  --accent: #F7E9D9;
+  --accent-foreground: #152A6E;
 
-  --gold: oklch(0.78 0.16 75);                /* #FCA311 */
-  --gold-foreground: oklch(0.22 0.06 265);
-  --cyan: oklch(0.78 0.15 220);               /* #00C2FF */
-  --coral: oklch(0.7 0.18 25);                /* #FF6B6B */
+  --gold: #FFC107;
+  --gold-foreground: #152A6E;
+  --cyan: #00C2FF;
+  --coral: #FF6B6B;
 
-  --destructive: oklch(0.6 0.22 27);
-  --destructive-foreground: oklch(0.99 0.005 250);
-  --border: oklch(0.9 0.01 250);
-  --input: oklch(0.92 0.01 250);
-  --ring: oklch(0.78 0.15 220);
+  --destructive: #C21E1E;
+  --destructive-foreground: #FFFDF7;
+  --border: #E5E0D6;
+  --input: #EAE5DB;
+  --ring: #FFC107;
 
-  --gradient-hero: linear-gradient(135deg, oklch(0.25 0.08 265) 0%, oklch(0.35 0.12 250) 50%, oklch(0.45 0.15 220) 100%);
-  --gradient-gold: linear-gradient(135deg, oklch(0.82 0.16 80), oklch(0.7 0.18 50));
-  --gradient-cyan: linear-gradient(135deg, oklch(0.78 0.15 220), oklch(0.65 0.2 260));
-  --gradient-coral: linear-gradient(135deg, oklch(0.75 0.18 30), oklch(0.7 0.2 350));
-  --gradient-mesh: radial-gradient(at 20% 20%, oklch(0.78 0.15 220 / 0.3) 0px, transparent 50%),
-                   radial-gradient(at 80% 30%, oklch(0.78 0.16 75 / 0.25) 0px, transparent 50%),
-                   radial-gradient(at 60% 80%, oklch(0.7 0.18 25 / 0.2) 0px, transparent 50%);
+  --gradient-hero: linear-gradient(135deg, #152A6E 0%, #1C3376 50%, #263E80 100%);
+  --gradient-gold: linear-gradient(135deg, #FFC107, #E6AC00);
+  --gradient-cyan: linear-gradient(135deg, #00C2FF, #1E6FB8);
+  --gradient-coral: linear-gradient(135deg, #FF6B6B, #C21E1E);
+  --gradient-mesh: radial-gradient(at 20% 20%, #00C2FF33 0px, transparent 50%),
+                   radial-gradient(at 80% 30%, #FFC10740 0px, transparent 50%),
+                   radial-gradient(at 60% 80%, #C21E1E33 0px, transparent 50%);
 
-  --shadow-glow: 0 0 60px -10px oklch(0.78 0.15 220 / 0.4);
-  --shadow-gold: 0 10px 40px -10px oklch(0.78 0.16 75 / 0.5);
-  --shadow-elegant: 0 20px 60px -15px oklch(0.25 0.08 265 / 0.25);
-  --shadow-soft: 0 4px 24px -4px oklch(0.25 0.08 265 / 0.08);
+  --shadow-glow: 0 0 60px -10px #00C2FF66;
+  --shadow-gold: 0 10px 40px -10px #FFC10780;
+  --shadow-elegant: 0 20px 60px -15px #152A6E40;
+  --shadow-soft: 0 4px 24px -4px #152A6E14;
 }
 
 .dark {

@@ -5,10 +5,10 @@ import HomePage from "@/components/site/HomePage";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Rochas Foundation College — Where curious minds shape the future" },
-      { name: "description", content: "Premier international secondary school for grades 6–12. IB, IGCSE & AP curricula, world-class STEM, arts and athletics." },
-      { property: "og:title", content: "Rochas Foundation College" },
-      { property: "og:description", content: "A premier international secondary school for grades 6–12." },
+      { title: "Preeminence International Montessori — Where curious minds shape the future" },
+      { name: "description", content: "A warm, child-centred international Montessori school for Nursery through Primary. The Montessori method, Nigerian curriculum and joyful hands-on learning." },
+      { property: "og:title", content: "Preeminence International Montessori" },
+      { property: "og:description", content: "A warm, child-centred Montessori school for Nursery through Primary." },
     ],
   }),
   component: () => <Layout><HomePage /></Layout>,

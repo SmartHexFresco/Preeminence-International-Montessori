@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AdmissionsRouteImport } from './routes/admissions'
-import { Route as AcademicsRouteImport } from './routes/academics'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -31,11 +30,6 @@ const AdmissionsRoute = AdmissionsRouteImport.update({
   path: '/admissions',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AcademicsRoute = AcademicsRouteImport.update({
-  id: '/academics',
-  path: '/academics',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -50,7 +44,6 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/academics': typeof AcademicsRoute
   '/admissions': typeof AdmissionsRoute
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
@@ -58,7 +51,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/academics': typeof AcademicsRoute
   '/admissions': typeof AdmissionsRoute
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
@@ -67,36 +59,21 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/academics': typeof AcademicsRoute
   '/admissions': typeof AdmissionsRoute
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/academics'
-    | '/admissions'
-    | '/contact'
-    | '/news'
+  fullPaths: '/' | '/about' | '/admissions' | '/contact' | '/news'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/academics' | '/admissions' | '/contact' | '/news'
-  id:
-    | '__root__'
-    | '/'
-    | '/about'
-    | '/academics'
-    | '/admissions'
-    | '/contact'
-    | '/news'
+  to: '/' | '/about' | '/admissions' | '/contact' | '/news'
+  id: '__root__' | '/' | '/about' | '/admissions' | '/contact' | '/news'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AcademicsRoute: typeof AcademicsRoute
   AdmissionsRoute: typeof AdmissionsRoute
   ContactRoute: typeof ContactRoute
   NewsRoute: typeof NewsRoute
@@ -125,13 +102,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdmissionsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/academics': {
-      id: '/academics'
-      path: '/academics'
-      fullPath: '/academics'
-      preLoaderRoute: typeof AcademicsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -152,7 +122,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AcademicsRoute: AcademicsRoute,
   AdmissionsRoute: AdmissionsRoute,
   ContactRoute: ContactRoute,
   NewsRoute: NewsRoute,

@@ -20,7 +20,7 @@ export const Route = createFileRoute("/news")({
 
 /* ─── IMAGES ─── */
 const IMGS = {
-  hero:     "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=80",
+  hero:     "/images/optimized/classroom-1.webp",
   library:  "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=900&q=80",
   campus:   "https://images.unsplash.com/photo-1562774053-701939374585?w=1200&q=80",
   students: "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=900&q=80",

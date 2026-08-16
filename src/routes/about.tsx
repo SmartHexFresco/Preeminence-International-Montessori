@@ -25,7 +25,7 @@ export const Route = createFileRoute("/about")({
 const IMGS = {
   campus:     "https://images.unsplash.com/photo-1562774053-701939374585?w=1200&q=80",
   principal:  "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=600&q=80",
-  hero:       "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=80",
+  hero:       "/images/optimized/classroom-1.webp",
   curiosity:  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=700&q=80",
   empathy:    "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=700&q=80",
   global:     "https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=700&q=80",

@@ -169,7 +169,7 @@ function SectionLabel({ label, light = true }) {
 /* ══════════════════════════════════════════════════
    PAGE HERO - Blue Gradient
 ══════════════════════════════════════════════════ */
-const HERO_IMG = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=80";
+const HERO_IMG = "/images/optimized/classroom-1.webp";
 
 function PageHero() {
   const ref = useRef(null);

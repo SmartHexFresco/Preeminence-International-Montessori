@@ -147,7 +147,7 @@ const catStyle = {
    ALL POSTS DATA
 ══════════════════════════════════════════════════ */
 const ALL_POSTS = [
-  { t: "Little hands, big hearts: our Kindness Week",  c: "Community", img: "/images/hero.jpg", d: "Apr 18, 2026" },
+  { t: "Little hands, big hearts: our Kindness Week",  c: "Community", img: "/images/optimized/hero.webp", d: "Apr 18, 2026" },
   { t: "Reading Week: our book parade was magical",    c: "Academic",  img: IMGS.library,  d: "Apr 10, 2026" },
   { t: "Open House registration now live",             c: "Community", img: IMGS.students, d: "Apr 4, 2026"  },
   { t: "Science fair: young explorers wow parents",   c: "Academic",  img: IMGS.grad,     d: "Mar 12, 2026" },
@@ -319,7 +319,7 @@ function OpenHouseBanner() {
           transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="relative rounded-3xl bg-white border border-slate-200 shadow-sm overflow-hidden">
           <motion.img
-            src="/images/hero.jpg"
+            src="/images/optimized/hero.webp"
             alt=""
             style={{ y: bgY }}
             className="absolute inset-0 h-[116%] w-full object-cover -top-[8%] opacity-20"

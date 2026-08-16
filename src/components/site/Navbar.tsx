@@ -87,7 +87,7 @@ export function Navbar() {
               className="flex items-center gap-2.5 group flex-shrink-0"
             >
               <div className="relative">
-                <img src="/images/preeminence_logo.png" alt="Preeminence International Montessori"
+                <img src="/images/optimized/preeminence_logo.webp" alt="Preeminence International Montessori"
                   className="h-11 w-auto object-contain flex-shrink-0" />
               </div>
               <div className="leading-none">

@@ -18,18 +18,18 @@ import {
    IMAGES — Replace each value with your own image path or URL.
 ───────────────────────────────────────────────────────────────────────────── */
 const IMGS = {
-  hero:      "/images/hero.jpg",
-  stem:      "/images/classroom-3.jpeg",
-  sports:    "/images/sports.jpeg",
-  library:   "/images/classroom-1.jpeg",
-  arts:      "/images/classroom-2.jpeg",
-  campus:    "/images/gallery-1.png",
-  students:  "/images/students.jpeg",
-  grad:      "/images/gallery-2.png",
-  lab2:      "/images/gallery-3.png",
-  texture:   "/images/image.png",
-  gallery4:  "/images/gallery-4.jpeg",
-  gallery5:  "/images/gallery-5.jpeg",
+  hero:      "/images/optimized/hero.webp",
+  stem:      "/images/optimized/classroom-3.webp",
+  sports:    "/images/optimized/sports.webp",
+  library:   "/images/optimized/classroom-1.webp",
+  arts:      "/images/optimized/classroom-2.webp",
+  campus:    "/images/optimized/gallery-1.webp",
+  students:  "/images/optimized/students.webp",
+  grad:      "/images/optimized/gallery-2.webp",
+  lab2:      "/images/optimized/gallery-3.webp",
+  texture:   "/images/optimized/image.webp",
+  gallery4:  "/images/optimized/gallery-4.webp",
+  gallery5:  "/images/optimized/gallery-5.webp",
 };
 
 const CUSTOM_HERO_IMAGE = "";
@@ -170,7 +170,7 @@ function Hero() {
       className="relative flex items-center overflow-hidden bg-gradient-to-br from-blue-900 to-blue-800"
       style={{ minHeight: "100svh", paddingTop: NAV_H }}>
       <motion.div style={{ y: yBgFar, scale: scaleBg }} className="absolute inset-0 origin-center">
-        <img src={HERO_BG} alt="campus" className="h-full w-full object-cover" />
+        <img src={HERO_BG} alt="campus" fetchpriority="high" decoding="async" className="h-full w-full object-cover" />
       </motion.div>
       <div className="absolute inset-y-0 left-0 w-full lg:w-[60%] pointer-events-none bg-gradient-to-r from-blue-950/80 via-blue-950/50 to-transparent" />
       <motion.div style={{ y: yContent, opacity: opacityContent }}
@@ -324,7 +324,7 @@ function Events() {
                   exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.35, delay: i * 0.05 }}
                   className="group rounded-2xl overflow-hidden bg-warm-white border border-slate-200 hover:border-blue-300 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
                   <div className="aspect-[16/9] relative overflow-hidden">
-                    <img src={e.img} alt={e.t}
+                    <img src={e.img} alt={e.t} loading="lazy" decoding="async"
                       className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
                     <div className="absolute top-3 left-3 rounded-lg bg-blue-600 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">{e.d}</div>
@@ -444,7 +444,7 @@ function Academics() {
               </button>
             </div>
             <div className="aspect-[4/3] rounded-2xl overflow-hidden relative">
-              <img src={data[active].img} alt={data[active].title} className="h-full w-full object-cover" />
+              <img src={data[active].img} alt={data[active].title} loading="lazy" decoding="async" className="h-full w-full object-cover" />
               <div className="absolute bottom-5 left-5 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl p-3">
                 {(() => { const I = data[active].icon; return <I className="h-6 w-6 text-blue-600" />; })()}
               </div>
@@ -488,7 +488,7 @@ function Testimonials() {
               <p className={`font-display text-lg leading-snug italic mb-5 ${active===i?"text-blue-900":"text-slate-700"}`}>"{item.quote}"</p>
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200">
-                  <img src={item.img} alt={item.name} className="h-full w-full portrait-fill" />
+                  <img src={item.img} alt={item.name} loading="lazy" decoding="async" className="h-full w-full portrait-fill" />
                 </div>
                 <div>
                   <div className={`text-sm font-semibold ${active===i?"text-blue-900":"text-slate-800"}`}>{item.name}</div>
@@ -548,7 +548,7 @@ function Gallery() {
             }} onClick={() => setOpenIdx(i)}
               className={`group relative overflow-hidden rounded-2xl border border-slate-200 ${i===0?"md:col-span-2":""}`}>
               <div className={`${i===0?"aspect-[16/9]":"aspect-square"} overflow-hidden`}>
-                <img src={photo.src} alt={photo.label}
+                <img src={photo.src} alt={photo.label} loading="lazy" decoding="async"
                   className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
                 <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition duration-300">
@@ -624,7 +624,7 @@ function VirtualTour() {
               </FadeUp>
             </div>
             <FadeFrom dir="right" className="aspect-video rounded-2xl overflow-hidden relative group cursor-pointer border border-slate-200 shadow-md">
-              <motion.img src={IMGS.campus} alt="Virtual tour preview"
+              <motion.img src={IMGS.campus} alt="Virtual tour preview" loading="lazy" decoding="async"
                 style={{ y: bgY }}
                 className="h-[116%] w-full object-cover absolute inset-0 -top-[8%] opacity-60 group-hover:opacity-80 transition-all duration-700" />
               <div className="absolute inset-0 flex items-center justify-center">

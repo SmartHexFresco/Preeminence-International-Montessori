@@ -90,7 +90,7 @@ export function Footer() {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2.5 mb-5 w-fit group">
               <div className="h-12 w-auto flex-shrink-0">
-              <img src="/images/preeminence_logo.png" alt="Preeminence International Montessori"
+              <img src="/images/optimized/preeminence_logo.webp" alt="Preeminence International Montessori"
                 className="h-12 w-auto object-contain" />
             </div>
               <div className="leading-none">

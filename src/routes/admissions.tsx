@@ -111,7 +111,7 @@ function SectionLabel({ label, light = true }) {
 /* ══════════════════════════════════════════════════
    PAGE HERO — Blue Gradient
 ══════════════════════════════════════════════════ */
-const HERO_IMG = "/images/optimized/classroom-1.webp";
+const HERO_IMG = "/images/optimized/classroom-1-hero.webp";
 
 function PageHero() {
   const ref = useRef(null);
@@ -125,9 +125,9 @@ function PageHero() {
   return (
     <section ref={ref} className="relative overflow-hidden pb-24 min-h-[500px] flex items-center bg-white">
       <motion.div style={{ y: yBg, scale: scaleBg }} className="absolute inset-0 origin-center">
-        <img src={HERO_IMG} alt="Admissions" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+        <img src={HERO_IMG} alt="Admissions" className="absolute inset-0 h-full w-full object-cover opacity-85" />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/55 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/30 to-transparent" />
       <div className="absolute inset-0 opacity-[0.05]" style={{
         backgroundImage: "linear-gradient(#93c5fd 1px,transparent 1px),linear-gradient(90deg,#93c5fd 1px,transparent 1px)",
         backgroundSize: "56px 56px",

@@ -20,7 +20,7 @@ export const Route = createFileRoute("/news")({
 
 /* ─── IMAGES ─── */
 const IMGS = {
-  hero:     "/images/optimized/classroom-1.webp",
+  hero:     "/images/optimized/classroom-1-hero.webp",
   library:  "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=900&q=80",
   campus:   "https://images.unsplash.com/photo-1562774053-701939374585?w=1200&q=80",
   students: "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=900&q=80",
@@ -107,9 +107,9 @@ function PageHero() {
   return (
     <section ref={ref} className="relative overflow-hidden pb-24 min-h-[500px] flex items-center bg-white">
       <motion.div style={{ y: yBg, scale: scaleBg }} className="absolute inset-0 origin-center">
-        <img src={IMGS.hero} alt="Newsroom" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+        <img src={IMGS.hero} alt="Newsroom" className="absolute inset-0 h-full w-full object-cover opacity-85" />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/55 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/30 to-transparent" />
       <div className="absolute inset-0 opacity-[0.05]" style={{
         backgroundImage: "linear-gradient(#93c5fd 1px,transparent 1px),linear-gradient(90deg,#93c5fd 1px,transparent 1px)",
         backgroundSize: "56px 56px",

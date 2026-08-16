@@ -10,6 +10,15 @@ const MAX_WIDTH = 1600;
 const QUALITY = 80;
 const EFFORT = 6;
 
+const HERO_OVERRIDES = {
+  "classroom-1.jpeg": {
+    name: "classroom-1-hero.webp",
+    width: 1920,
+    quality: 88,
+    sharpen: true,
+  },
+};
+
 const byName = (a, b) => a.localeCompare(b, undefined, { numeric: true });
 
 async function main() {
@@ -53,6 +62,30 @@ async function main() {
   const totalBefore = rows.reduce((s, r) => s + r.before, 0);
   const totalAfter = rows.reduce((s, r) => s + r.after, 0);
   const pct = ((1 - totalAfter / totalBefore) * 100).toFixed(1);
+
+  for (const [src, cfg] of Object.entries(HERO_OVERRIDES)) {
+    const inputPath = join(SRC_DIR, src);
+    const outPath = join(OUT_DIR, cfg.name);
+    if (!(await stat(inputPath).then(() => true).catch(() => false))) {
+      console.warn(`Skipping hero override: ${src} not found`);
+      continue;
+    }
+    let pipeline = sharp(inputPath).resize({ width: cfg.width });
+    if (cfg.sharpen) pipeline = pipeline.sharpen();
+    await pipeline
+      .webp({ quality: cfg.quality, effort: EFFORT, alphaQuality: cfg.quality - 10 })
+      .toFile(outPath);
+    const [inSize, outSize] = await Promise.all([
+      stat(inputPath),
+      stat(outPath),
+    ]);
+    rows.push({
+      file: cfg.name,
+      before: inSize.size,
+      after: outSize.size,
+      width: cfg.width,
+    });
+  }
 
   console.log(
     ["Image", "src w", "Before", "After", "Saved"].join("\t")

@@ -25,7 +25,7 @@ export const Route = createFileRoute("/about")({
 const IMGS = {
   campus:     "https://images.unsplash.com/photo-1562774053-701939374585?w=1200&q=80",
   principal:  "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=600&q=80",
-  hero:       "/images/optimized/classroom-1.webp",
+  hero:       "/images/optimized/classroom-1-hero.webp",
   curiosity:  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=700&q=80",
   empathy:    "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=700&q=80",
   global:     "https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=700&q=80",
@@ -171,9 +171,9 @@ function PageHero() {
   return (
     <section ref={ref} className="relative -z-10 overflow-hidden pb-24 min-h-[500px] flex items-center bg-white">
       <motion.div style={{ y: yBg, scale: scaleBg }} className="absolute inset-0 origin-center">
-        <img src={IMGS.hero} alt="Preeminence International Montessori students" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+        <img src={IMGS.hero} alt="Preeminence International Montessori students" className="absolute inset-0 h-full w-full object-cover opacity-85" />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/55 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/30 to-transparent" />
       <div className="absolute inset-0 opacity-[0.05]" style={{
         backgroundImage: "linear-gradient(#93c5fd 1px,transparent 1px),linear-gradient(90deg,#93c5fd 1px,transparent 1px)",
         backgroundSize: "56px 56px",

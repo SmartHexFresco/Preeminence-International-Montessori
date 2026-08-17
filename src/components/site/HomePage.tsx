@@ -14,6 +14,11 @@ import {
   ChevronLeft, ChevronRight, X,
 } from "lucide-react";
 
+import {
+  Carousel, CarouselContent, CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+
 /* ─────────────────────────────────────────────────────────────────────────────
    IMAGES — Replace each value with your own image path or URL.
 ───────────────────────────────────────────────────────────────────────────── */
@@ -394,6 +399,24 @@ function Portal() {
 /* ══════════════════════════════════════════════════ ACADEMICS - with soft background pattern */
 function Academics() {
   const [active, setActive] = useState(0);
+  const [api, setApi] = useState<CarouselApi | null>(null);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (!api) return;
+    const onSelect = () => setActive(api.selectedScrollSnap());
+    api.on("select", onSelect);
+    setActive(api.selectedScrollSnap());
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
+
+  useEffect(() => {
+    if (!api || paused) return;
+    const id = setInterval(() => api.scrollNext(), 5000);
+    return () => clearInterval(id);
+  }, [api, paused, active]);
   const tabs = ["Montessori Method","Digital Learning","Creative Computing","Science & Discovery","Play & Movement"];
   const data = [
     { title:"Nursery–Primary 6 · The Montessori Way", badge:"Child-Led",  desc:"A child-centred approach where each little learner follows their own interests with hands-on materials, gently guided by trained Montessori guides.",                               bullets:["Child-led learning stations","Montessori materials & sensorial work","Mixed-age, family-like classrooms","Patient observation & individual guidance"], img:IMGS.students, icon:BookOpen  },
@@ -416,41 +439,82 @@ function Academics() {
         </div>
         <FadeUp delay={0.1} className="flex flex-wrap justify-center gap-2 mb-10">
           {tabs.map((t, i) => (
-            <button key={t} onClick={() => setActive(i)}
+            <button key={t} onClick={() => { api?.scrollTo(i); setActive(i); }}
               className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${active===i?"bg-blue-600 text-white":"bg-warm-white border border-slate-200 text-slate-600 hover:bg-slate-100"}`}>
               {t}
             </button>
           ))}
         </FadeUp>
-        <AnimatePresence mode="wait">
-          <motion.div key={active}
-            initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.35 }}
-            className="grid lg:grid-cols-2 gap-10 items-center bg-warm-white border border-slate-200 rounded-3xl p-8">
-            <div>
-              <span className="inline-block rounded-full bg-blue-100 border border-blue-200 text-blue-700 text-xs font-medium px-3 py-1 tracking-wider uppercase mb-5">{data[active].badge}</span>
-              <h3 className="font-display font-bold text-2xl md:text-3xl text-slate-800 mb-4 leading-snug">{data[active].title}</h3>
-              <p className="text-sm text-slate-600 leading-relaxed mb-6">{data[active].desc}</p>
-              <ul className="space-y-3 mb-8">
-                {data[active].bullets.map((b, bi) => (
-                  <motion.li key={b} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: bi * 0.07 }}
-                    className="flex items-start gap-3 text-sm text-slate-600">
-                    <CheckCircle2 className="h-4 w-4 text-blue-500 flex-shrink-0 mt-0.5" />{b}
-                  </motion.li>
-                ))}
-              </ul>
-              <button className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 text-blue-900 hover:bg-yellow-300 px-5 py-3 text-sm font-semibold transition-colors">
-                Download Prospectus <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden relative">
-              <img src={data[active].img} alt={data[active].title} loading="lazy" decoding="async" className="h-full w-full object-cover" />
-              <div className="absolute bottom-5 left-5 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl p-3">
-                {(() => { const I = data[active].icon; return <I className="h-6 w-6 text-blue-600" />; })()}
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+        <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+          <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
+            <CarouselContent>
+              {data.map((d, i) => (
+                <CarouselItem key={d.title}>
+                  <div className="grid lg:grid-cols-2 gap-10 items-center bg-warm-white border border-slate-200 rounded-3xl p-6 md:p-8 h-full">
+                    <div>
+                      <motion.span
+                        initial={{ opacity: 0, scale: 0.8, y: 12 }}
+                        animate={i === active ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 12 }}
+                        transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.05 }}
+                        className="inline-block rounded-full bg-blue-100 border border-blue-200 text-blue-700 text-xs font-medium px-3 py-1 tracking-wider uppercase mb-5">
+                        {d.badge}
+                      </motion.span>
+                      <motion.h3
+                        initial={{ opacity: 0, scale: 0.8, y: 12 }}
+                        animate={i === active ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 12 }}
+                        transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.15 }}
+                        className="font-display font-bold text-2xl md:text-3xl text-slate-800 mb-4 leading-snug">
+                        {d.title}
+                      </motion.h3>
+                      <motion.p
+                        initial={{ opacity: 0, scale: 0.85, y: 10 }}
+                        animate={i === active ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.85, y: 10 }}
+                        transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.25 }}
+                        className="text-sm text-slate-600 leading-relaxed mb-6">
+                        {d.desc}
+                      </motion.p>
+                      <ul className="space-y-3 mb-8">
+                        {d.bullets.map((b, bi) => (
+                          <motion.li
+                            key={b}
+                            initial={{ opacity: 0, scale: 0.75, x: -10 }}
+                            animate={i === active ? { opacity: 1, scale: 1, x: 0 } : { opacity: 0, scale: 0.75, x: -10 }}
+                            transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.35 + bi * 0.08 }}
+                            className="flex items-start gap-3 text-sm text-slate-600">
+                            <CheckCircle2 className="h-4 w-4 text-blue-500 flex-shrink-0 mt-0.5" />{b}
+                          </motion.li>
+                        ))}
+                      </ul>
+                      <motion.button
+                        initial={{ opacity: 0, scale: 0.85, y: 10 }}
+                        animate={i === active ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.85, y: 10 }}
+                        transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.45 + d.bullets.length * 0.08 }}
+                        className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 text-blue-900 hover:bg-yellow-300 px-5 py-3 text-sm font-semibold transition-colors">
+                        Download Prospectus <ArrowRight className="h-4 w-4" />
+                      </motion.button>
+                    </div>
+                    <div className="aspect-[4/3] rounded-2xl overflow-hidden relative">
+                      <img src={d.img} alt={d.title} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                      <div className="absolute bottom-5 left-5 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl p-3">
+                        {(() => { const I = d.icon; return <I className="h-6 w-6 text-blue-600" />; })()}
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+          <div className="flex items-center justify-center gap-3 mt-6">
+            <button onClick={() => api?.scrollPrev()} aria-label="Previous slide"
+              className="h-10 w-10 rounded-full border border-slate-200 bg-warm-white text-slate-600 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition flex items-center justify-center shadow-sm">
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button onClick={() => api?.scrollNext()} aria-label="Next slide"
+              className="h-10 w-10 rounded-full border border-slate-200 bg-warm-white text-slate-600 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition flex items-center justify-center shadow-sm">
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );

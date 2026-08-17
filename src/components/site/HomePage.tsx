@@ -399,24 +399,33 @@ function Portal() {
 /* ══════════════════════════════════════════════════ ACADEMICS - with soft background pattern */
 function Academics() {
   const [active, setActive] = useState(0);
-  const [api, setApi] = useState<CarouselApi | null>(null);
+  const [textApi, setTextApi] = useState<CarouselApi | null>(null);
+  const [imgApi, setImgApi] = useState<CarouselApi | null>(null);
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (!api) return;
-    const onSelect = () => setActive(api.selectedScrollSnap());
-    api.on("select", onSelect);
-    setActive(api.selectedScrollSnap());
+    if (!textApi || !imgApi) return;
+    const onText = () => setActive(textApi.selectedScrollSnap());
+    const onImg = () => setActive(imgApi.selectedScrollSnap());
+    textApi.on("select", onText);
+    imgApi.on("select", onImg);
     return () => {
-      api.off("select", onSelect);
+      textApi.off("select", onText);
+      imgApi.off("select", onImg);
     };
-  }, [api]);
+  }, [textApi, imgApi]);
 
   useEffect(() => {
-    if (!api || paused) return;
-    const id = setInterval(() => api.scrollNext(), 5000);
+    if (!textApi || !imgApi) return;
+    textApi.scrollTo(active);
+    imgApi.scrollTo(active);
+  }, [active, textApi, imgApi]);
+
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setActive((a) => (a + 1) % data.length), 5000);
     return () => clearInterval(id);
-  }, [api, paused, active]);
+  }, [paused, active, data.length]);
   const tabs = ["Montessori Method","Digital Learning","Creative Computing","Science & Discovery","Play & Movement"];
   const data = [
     { title:"Nursery–Primary 6 · The Montessori Way", badge:"Child-Led",  desc:"A child-centred approach where each little learner follows their own interests with hands-on materials, gently guided by trained Montessori guides.",                               bullets:["Child-led learning stations","Montessori materials & sensorial work","Mixed-age, family-like classrooms","Patient observation & individual guidance"], img:IMGS.students, icon:BookOpen  },
@@ -439,18 +448,18 @@ function Academics() {
         </div>
         <FadeUp delay={0.1} className="flex flex-wrap justify-center gap-2 mb-10">
           {tabs.map((t, i) => (
-            <button key={t} onClick={() => { api?.scrollTo(i); setActive(i); }}
+            <button key={t} onClick={() => setActive(i)}
               className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${active===i?"bg-blue-600 text-white":"bg-warm-white border border-slate-200 text-slate-600 hover:bg-slate-100"}`}>
               {t}
             </button>
           ))}
         </FadeUp>
         <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-          <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
-            <CarouselContent>
-              {data.map((d, i) => (
-                <CarouselItem key={d.title}>
-                  <div className="grid lg:grid-cols-2 gap-10 items-center bg-warm-white border border-slate-200 rounded-3xl p-6 md:p-8 h-full">
+          <div className="grid lg:grid-cols-2 gap-10 items-center bg-warm-white border border-slate-200 rounded-3xl p-6 md:p-8 overflow-hidden">
+            <Carousel opts={{ align: "start" }} setApi={setTextApi}>
+              <CarouselContent>
+                {data.map((d, i) => (
+                  <CarouselItem key={d.title}>
                     <div>
                       <motion.span
                         initial={{ opacity: 0, scale: 0.8, y: 12 }}
@@ -493,23 +502,31 @@ function Academics() {
                         Download Prospectus <ArrowRight className="h-4 w-4" />
                       </motion.button>
                     </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+            <Carousel opts={{ align: "start" }} setApi={setImgApi}>
+              <CarouselContent>
+                {data.map((d, i) => (
+                  <CarouselItem key={d.title}>
                     <div className="aspect-[4/3] rounded-2xl overflow-hidden relative">
                       <img src={d.img} alt={d.title} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                       <div className="absolute bottom-5 left-5 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl p-3">
                         {(() => { const I = d.icon; return <I className="h-6 w-6 text-blue-600" />; })()}
                       </div>
                     </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          </div>
           <div className="flex items-center justify-center gap-3 mt-6">
-            <button onClick={() => api?.scrollPrev()} aria-label="Previous slide"
+            <button onClick={() => setActive((a) => (a + data.length - 1) % data.length)} aria-label="Previous slide"
               className="h-10 w-10 rounded-full border border-slate-200 bg-warm-white text-slate-600 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition flex items-center justify-center shadow-sm">
               <ChevronLeft className="h-5 w-5" />
             </button>
-            <button onClick={() => api?.scrollNext()} aria-label="Next slide"
+            <button onClick={() => setActive((a) => (a + 1) % data.length)} aria-label="Next slide"
               className="h-10 w-10 rounded-full border border-slate-200 bg-warm-white text-slate-600 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition flex items-center justify-center shadow-sm">
               <ChevronRight className="h-5 w-5" />
             </button>

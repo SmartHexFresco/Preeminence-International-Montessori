@@ -402,6 +402,14 @@ function Academics() {
   const [textApi, setTextApi] = useState<CarouselApi | null>(null);
   const [imgApi, setImgApi] = useState<CarouselApi | null>(null);
   const [paused, setPaused] = useState(false);
+  const tabs = ["Montessori Method","Digital Learning","Creative Computing","Science & Discovery","Play & Movement"];
+  const data = [
+    { title:"Nursery–Primary 6 · The Montessori Way", badge:"Child-Led",  desc:"A child-centred approach where each little learner follows their own interests with hands-on materials, gently guided by trained Montessori guides.",                               bullets:["Child-led learning stations","Montessori materials & sensorial work","Mixed-age, family-like classrooms","Patient observation & individual guidance"], img:IMGS.students, icon:BookOpen  },
+    { title:"Digital Learning & Computer Skills",      badge:"Digital Skills",desc:"Children build digital confidence from day one — typing, navigating computers and exploring safe, playful educational apps with our guides.",                                          bullets:["Guided typing & computer basics","Safe educational apps & games","Digital drawing & creativity tools","ICT woven into every lesson"],                                    img:IMGS.library,  icon:Laptop    },
+    { title:"Creative Computing & Multimedia",           badge:"Creative Tech",desc:"Children explore technology creatively — digital art, drawing, animations and multimedia projects that blend imagination with computer skills.",                                              bullets:["Digital art & drawing apps","Animation & creative projects","Making music & videos with tech","Showcase of digital creations"],                                     img:IMGS.arts,     icon:Palette   },
+    { title:"Nature & Hands-on Science",              badge:"Discovery",  desc:"Nature walks, our school garden and simple safe experiments that let children observe, question and explore the living world.",                                                  bullets:["School garden & nature walks","Simple, safe experiments","Discovery corners in every class","Curiosity-first questioning"],                              img:IMGS.stem,     icon:Microscope},
+    { title:"Learning Through Play",                  badge:"Play-Based", desc:"Purposeful play, outdoor games and structured movement that build motor skills, teamwork, confidence and joy every single day.",                                                   bullets:["Daily outdoor playtime","Motor-skills development","Team games & sharing","Play-based learning curriculum"],                                          img:IMGS.sports,   icon:Users     },
+  ];
 
   useEffect(() => {
     if (!textApi || !imgApi) return;
@@ -426,14 +434,6 @@ function Academics() {
     const id = setInterval(() => setActive((a) => (a + 1) % data.length), 5000);
     return () => clearInterval(id);
   }, [paused, active, data.length]);
-  const tabs = ["Montessori Method","Digital Learning","Creative Computing","Science & Discovery","Play & Movement"];
-  const data = [
-    { title:"Nursery–Primary 6 · The Montessori Way", badge:"Child-Led",  desc:"A child-centred approach where each little learner follows their own interests with hands-on materials, gently guided by trained Montessori guides.",                               bullets:["Child-led learning stations","Montessori materials & sensorial work","Mixed-age, family-like classrooms","Patient observation & individual guidance"], img:IMGS.students, icon:BookOpen  },
-    { title:"Digital Learning & Computer Skills",      badge:"Digital Skills",desc:"Children build digital confidence from day one — typing, navigating computers and exploring safe, playful educational apps with our guides.",                                          bullets:["Guided typing & computer basics","Safe educational apps & games","Digital drawing & creativity tools","ICT woven into every lesson"],                                    img:IMGS.library,  icon:Laptop    },
-    { title:"Creative Computing & Multimedia",           badge:"Creative Tech",desc:"Children explore technology creatively — digital art, drawing, animations and multimedia projects that blend imagination with computer skills.",                                              bullets:["Digital art & drawing apps","Animation & creative projects","Making music & videos with tech","Showcase of digital creations"],                                     img:IMGS.arts,     icon:Palette   },
-    { title:"Nature & Hands-on Science",              badge:"Discovery",  desc:"Nature walks, our school garden and simple safe experiments that let children observe, question and explore the living world.",                                                  bullets:["School garden & nature walks","Simple, safe experiments","Discovery corners in every class","Curiosity-first questioning"],                              img:IMGS.stem,     icon:Microscope},
-    { title:"Learning Through Play",                  badge:"Play-Based", desc:"Purposeful play, outdoor games and structured movement that build motor skills, teamwork, confidence and joy every single day.",                                                   bullets:["Daily outdoor playtime","Motor-skills development","Team games & sharing","Play-based learning curriculum"],                                          img:IMGS.sports,   icon:Users     },
-  ];
   return (
     <section className="py-24 bg-blue-50/40 relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-warm-white to-transparent pointer-events-none" />
